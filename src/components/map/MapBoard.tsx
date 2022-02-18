@@ -6,7 +6,8 @@
  */
 
 import { Map } from 'ol';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
+import { FaRegCopy } from 'react-icons/fa';
 import './MapBoard.scss';
 
 interface Props
@@ -26,11 +27,25 @@ export default function MapBoard({ map }: Props): ReactElement | null
 	// 맵이 유효할 경우
 	if (map)
 	{
+		const [ epsg, setEpsg ] = useState('');
+
+		const showZoom = () =>
+		{
+			const meta = document.querySelector('.map-board > [data-name=meta]');
+
+			// 메타 태그가 유효할 경우
+			if (meta)
+			{
+				const tag = meta.querySelector('input[name=zoom]') as HTMLInputElement;
+				tag.value = map.getView().getZoom()?.toString() || '';
+			}
+		};
+
 		useEffect(() =>
 		{
-			const projection = document.querySelector('.map-board > [data-name=projection]') as HTMLElement;
-			const proj = projection.querySelector('input[name=proj]') as HTMLInputElement;
-			proj.value = map.getView().getProjection().getCode();
+			showZoom();
+
+			setEpsg(map.getView().getProjection().getCode());
 		}, [ map ]);
 
 		map.on('pointermove', (e) =>
@@ -67,6 +82,8 @@ export default function MapBoard({ map }: Props): ReactElement | null
 			}
 		});
 
+		map.on('moveend', showZoom);
+
 		const copy = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
 		{
 			const div = e.currentTarget.parentElement as HTMLElement;
@@ -76,13 +93,23 @@ export default function MapBoard({ map }: Props): ReactElement | null
 			document.execCommand('Copy');
 		};
 
+		const copyButton = (
+			<button onClick={copy}><FaRegCopy /></button>
+		);
+
 		return (
 			<div className='map-board'>
-				<div className='item' data-name='projection'>
+				<div className='item' data-name='meta'>
 					<div>
 						<small>proj</small>
-						<input name='proj' value='' readOnly />
-						<button onClick={copy}>📋</button>
+						<input name='proj' value={epsg} readOnly />
+						{copyButton}
+					</div>
+
+					<div>
+						<small>zoom</small>
+						<input name='zoom' readOnly />
+						{copyButton}
 					</div>
 				</div>
 
@@ -90,25 +117,25 @@ export default function MapBoard({ map }: Props): ReactElement | null
 					<div>
 						<small>minX</small>
 						<input name='minX' value='0' readOnly />
-						<button onClick={copy}>📋</button>
+						{copyButton}
 					</div>
 
 					<div>
 						<small>minY</small>
 						<input name='minY' value='0' readOnly />
-						<button onClick={copy}>📋</button>
+						{copyButton}
 					</div>
 
 					<div>
 						<small>maxX</small>
 						<input name='maxX' value='0' readOnly />
-						<button onClick={copy}>📋</button>
+						{copyButton}
 					</div>
 
 					<div>
 						<small>maxY</small>
 						<input name='maxY' value='0' readOnly />
-						<button onClick={copy}>📋</button>
+						{copyButton}
 					</div>
 				</div>
 
@@ -116,13 +143,13 @@ export default function MapBoard({ map }: Props): ReactElement | null
 					<div>
 						<small>x</small>
 						<input name='x' value='0' readOnly />
-						<button onClick={copy}>📋</button>
+						{copyButton}
 					</div>
 
 					<div>
 						<small>y</small>
 						<input name='y' value='0' readOnly />
-						<button onClick={copy}>📋</button>
+						{copyButton}
 					</div>
 				</div>
 			</div>

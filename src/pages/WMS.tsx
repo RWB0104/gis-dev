@@ -1,11 +1,21 @@
+/**
+ * WMS 페이지 컴포넌트
+ *
+ * @author RWB
+ * @since 2022.02.19 Sat 03:04:39
+ */
+
 import { Map, View } from 'ol';
 import { ImageWMS, OSM, TileWMS } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
-import './WMS.scss';
 import ImageLayer from 'ol/layer/Image';
+import { defaults } from 'ol/interaction';
+import MapInteraction, { LocationWithMarker, SejongCity } from '../components/map/MapInteraction';
+import MapBoard from '../components/map/MapBoard';
+import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
+import './WMS.scss';
 
 /**
  * WMS 페이지 ReactElement 반환 메서드
@@ -15,80 +25,60 @@ import ImageLayer from 'ol/layer/Image';
 export default function WMS(): ReactElement
 {
 	const [ type, setType ] = useState(true);
-	const [ map, setMap ] = useState(new Map({}));
+	const [ mapState, setMapState ] = useState(new Map({}));
 
 	useEffect(() =>
 	{
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
+		document.querySelector('#map > .ol-viewport')?.remove();
 
-		const mapObject = new Map({
+		const map = new Map({
 			layers: [
 				new TileLayer({
 					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' })
 				}),
 				getLayer(type)
 			],
-			target: 'wms',
+			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', [ 127.28923267492068, 36.48024986578043 ]),
-				zoom: 19
+				zoom: 19,
+				constrainResolution: true
 			})
 		});
 
-		mapObject.on('pointermove', (e) =>
-		{
-			const boundary = document.querySelector('#wms > .boundary');
-			const position = document.querySelector('#wms > .position');
-
-			// 태그가 유효할 경우
-			if (boundary)
-			{
-				const [ minX, minY, maxX, maxY ] = e.map.getView().calculateExtent();
-				boundary.innerHTML = `<small>${minX} / ${minY}</small><br /><small>${maxX} / ${maxY}</small>`;
-			}
-
-			// 태그가 유효할 경우
-			if (position)
-			{
-				const [ x, y ] = e.coordinate;
-				position.innerHTML = `<small>${x} / ${y}</small>`;
-			}
-
-			mapObject.getViewport().style.cursor = mapObject.hasFeatureAtPixel(e.pixel) ? 'pointer' : '';
-		});
-
-		mapObject.on('click', (e) => mapObject.forEachFeatureAtPixel(e.pixel, feature => console.dir(feature.getProperties())));
-
-		setMap(mapObject);
+		setMapState(map);
 	}, []);
 
 	useEffect(() =>
 	{
-		map.getAllLayers().filter(layer => layer.get('id') === 'wms').forEach(layer => map.removeLayer(layer));
-		map.addLayer(getLayer(type));
+		mapState.getAllLayers().filter(layer => layer.get('id') === 'wms').forEach(layer => mapState.removeLayer(layer));
+		mapState.addLayer(getLayer(type));
 	}, [ type ]);
 
-	return (
-		<React.Fragment>
-			<section id='wms' className='page'>
-				<div className='type'>
-					<div>
-						<input id='tile' type='radio' name='type' value='tile' checked={type} onChange={() => setType(true)} />
-						<label htmlFor='tile'>TileWMS</label>
-					</div>
+	const onTypeClick = (type: boolean) =>
+	{
+		setType(type);
+	};
 
-					<div>
-						<input id='image' type='radio' name='type' value='image' checked={!type} onChange={() => setType(false)} />
-						<label htmlFor='image'>ImageWMS</label>
-					</div>
+	return (
+		<section id='wms' className='page'>
+			<article className='map-wrapper'>
+				<div id='map'></div>
+
+				<div className='wms-board'>
+					<button onClick={() => onTypeClick(true)} data-selected={type}><IoAppsSharp /> Tile</button>
+					<button onClick={() => onTypeClick(false)} data-selected={!type}><IoImagesSharp /> Image</button>
 				</div>
 
-				<div className='boundary'></div>
-				<div className='position'></div>
-			</section>
-		</React.Fragment>
+				<MapInteraction>
+					<SejongCity map={mapState} />
+					<LocationWithMarker map={mapState} />
+				</MapInteraction>
+
+				<MapBoard map={mapState} />
+			</article>
+		</section>
 	);
 }
 

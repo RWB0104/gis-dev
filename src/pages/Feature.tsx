@@ -1,29 +1,33 @@
 /**
- * OSM 페이지 컴포넌트
+ * 피쳐 페이지 컴포넌트
  *
  * @author RWB
- * @since 2022.02.17 Thu 01:04:47
+ * @since 2022.02.19 Sat 00:01:07
  */
 
 import { Map, View } from 'ol';
 import { OSM as OSMLayer } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import './OSM.scss';
+import MapBoard from '../components/map/MapBoard';
+import MapInteraction, { LocationWithMarker } from '../components/map/MapInteraction';
+import './Feature.scss';
 
 /**
- * OSM 페이지 ReactElement 반환 메서드
+ * 피쳐 페이지 ReactElement 반환 메서드
  *
  * @returns {ReactElement} ReactElement
  */
-export default function OSM(): ReactElement
+export default function Feature(): ReactElement
 {
+	const [ mapState, setMapState ] = useState(new Map({}));
+
 	useEffect(() =>
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		new Map({
+		const map = new Map({
 			layers: [
 				new TileLayer({
 					source: new OSMLayer({
@@ -42,12 +46,20 @@ export default function OSM(): ReactElement
 				constrainResolution: true
 			})
 		});
+
+		setMapState(map);
 	}, []);
 
 	return (
-		<section id='osm' className='page'>
+		<section id='feature' className='page'>
 			<article className='map-wrapper'>
 				<div id='map'></div>
+
+				<MapInteraction>
+					<LocationWithMarker map={mapState} />
+				</MapInteraction>
+
+				<MapBoard map={mapState} />
 			</article>
 		</section>
 	);

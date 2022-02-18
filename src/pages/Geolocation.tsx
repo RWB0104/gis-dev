@@ -42,7 +42,8 @@ export default function Geolocation(): ReactElement
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', [ 126.9779495953371, 37.566340091156945 ]),
-				zoom: 19
+				zoom: 19,
+				constrainResolution: true
 			})
 		});
 

@@ -1,4 +1,11 @@
-import { Map, View, Overlay } from 'ol';
+/**
+ * WFS 페이지 컴포넌트
+ *
+ * @author RWB
+ * @since 2022.02.19 Sat 01:52:32
+ */
+
+import { Map, View } from 'ol';
 import { OSM, Vector } from 'ol/source';
 import { Vector as VecterLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
@@ -8,6 +15,8 @@ import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
+import MapInteraction, { LocationWithMarker, SejongCity } from '../components/map/MapInteraction';
+import MapBoard from '../components/map/MapBoard';
 import './WFS.scss';
 
 /**
@@ -17,11 +26,11 @@ import './WFS.scss';
  */
 export default function WFS(): ReactElement
 {
-	const [ map, setMap ] = useState(new Map({}));
+	const [ mapState, setMapState ] = useState(new Map({}));
 
 	useEffect(() =>
 	{
-		document.querySelector('#wfs > .ol-viewport')?.remove();
+		document.querySelector('#map > .ol-viewport')?.remove();
 
 		proj4.defs(EPSG5179.name, EPSG5179.proj);
 		proj4.defs(EPSG5181.name, EPSG5181.proj);
@@ -52,11 +61,11 @@ export default function WFS(): ReactElement
 					text: feature.get('buld_nm')
 				})
 			}),
-			zIndex: 5,
-			minZoom: 15
+			minZoom: 15,
+			zIndex: 5
 		});
 
-		const mapObject = new Map({
+		const map = new Map({
 			layers: [
 				wfsLayer,
 				new TileLayer({
@@ -65,53 +74,30 @@ export default function WFS(): ReactElement
 					})
 				})
 			],
-			target: 'wfs',
+			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', [ 127.28923267492068, 36.48024986578043 ]),
-				zoom: 19
+				zoom: 19,
+				constrainResolution: true
 			})
 		});
 
-		mapObject.on('pointermove', (e) =>
-		{
-			const boundary = document.querySelector('#wfs > .boundary');
-			const position = document.querySelector('#wfs > .position');
-
-			// 태그가 유효할 경우
-			if (boundary)
-			{
-				const [ minX, minY, maxX, maxY ] = e.map.getView().calculateExtent();
-				boundary.innerHTML = `<small>${minX} / ${minY}</small><br /><small>${maxX} / ${maxY}</small>`;
-			}
-
-			// 태그가 유효할 경우
-			if (position)
-			{
-				const [ x, y ] = e.coordinate;
-				position.innerHTML = `<small>${x} / ${y}</small>`;
-			}
-
-			mapObject.getViewport().style.cursor = mapObject.hasFeatureAtPixel(e.pixel) ? 'pointer' : '';
-		});
-
-		// map.on('click', (e) => map.forEachFeatureAtPixel(e.pixel, feature => console.dir(feature.getProperties())));
-
-
-
-		setMap(mapObject);
+		setMapState(map);
 	}, []);
 
 	return (
-		<React.Fragment>
-			<section id='wfs' className='page'>
-				<div className='boundary'></div>
-				<div className='position'></div>
-				<div className='popup'>
-					<button>❌</button>
-					<ul></ul>1
-				</div>
-			</section>
-		</React.Fragment>
+		<section id='wfs' className='page'>
+			<article className='map-wrapper'>
+				<div id='map'></div>
+
+				<MapInteraction>
+					<SejongCity map={mapState} />
+					<LocationWithMarker map={mapState} />
+				</MapInteraction>
+
+				<MapBoard map={mapState} />
+			</article>
+		</section>
 	);
 }

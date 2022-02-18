@@ -13,6 +13,7 @@ import ROOT from './pages/ROOT';
 import OSM from './pages/OSM';
 import MapInfo from './pages/MapInfo';
 import Geolocation from './pages/Geolocation';
+import Feature from './pages/Feature';
 import WFS from './pages/WFS';
 import WMS from './pages/WMS';
 import './App.scss';
@@ -41,6 +42,7 @@ function App(): ReactElement
 					<Route path='/osm/' element={<OSM />} />
 					<Route path='/map-info/' element={<MapInfo />} />
 					<Route path='/geolocation/' element={<Geolocation />} />
+					<Route path='/feature/' element={<Feature />} />
 					<Route path='/wfs/' element={<WFS />} />
 					<Route path='/wms/' element={<WMS />} />
 				</Routes>
