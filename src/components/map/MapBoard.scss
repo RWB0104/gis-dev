@@ -16,6 +16,13 @@
 	box-shadow: 3px 3px 10px grey;
 	box-sizing: border-box;
 
+	width: 220px;
+	height: 325px;
+
+	overflow: hidden;
+
+	transition: width 0.3s, height 0.3s;
+
 	.item {
 		display: flex;
 		flex-direction: column;
@@ -72,5 +79,30 @@
 				}
 			}
 		}
+
+		&[data-name=header] {
+			display: block;
+
+			button {
+				padding: 5px;
+				box-sizing: border-box;
+
+				border: transparent;
+				background-color: transparent;
+
+				cursor: pointer;
+			}
+		}
+	}
+
+	&[data-show=false] {
+		width: 30px;
+		height: 30px;
+
+		padding: 2px;
+
+		border-radius: 4px;
+
+		transition: width 0.3s, height 0.3s;
 	}
 }

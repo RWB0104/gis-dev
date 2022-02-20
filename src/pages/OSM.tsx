@@ -10,7 +10,6 @@ import { OSM as OSMLayer } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import React, { ReactElement, useEffect } from 'react';
 import proj4 from 'proj4';
-import './OSM.scss';
 
 /**
  * OSM 페이지 ReactElement 반환 메서드

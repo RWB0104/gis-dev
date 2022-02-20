@@ -11,7 +11,6 @@ import TileLayer from 'ol/layer/Tile';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
-import './MapInfo.scss';
 
 /**
  * 맵 정보 페이지 ReactElement 반환 메서드

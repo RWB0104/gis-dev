@@ -30,7 +30,7 @@ export default function ROOT(): ReactElement
 				<Link to='/feature' title='feature'><FaMapMarkerAlt /> Feature</Link>
 				<Link to='/wfs' title='WFS'><FaMap /> WFS</Link>
 				<Link to='/wms' title='WMS'><FaMap /> WMS</Link>
-				<Link to='/wfs-popup' title='WMS Popup'><BiMessageSquareDetail /> WFS Popup</Link>
+				<Link to='/wfs-popup' title='WFS Popup'><BiMessageSquareDetail /> WFS Popup</Link>
 				<Link to='/wms-popup' title='WMS Popup'><BiMessageSquareDetail /> WMS Popup</Link>
 				<Link to='/transaction-insert' title='WFS Transaction Insert'><FaPlusSquare /> WFS-T Insert</Link>
 				<Link to='/transaction-update' title='WFS Transaction Update'><FaPenSquare /> WFS-T Update</Link>

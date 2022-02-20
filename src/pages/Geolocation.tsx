@@ -12,7 +12,6 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
 import MapInteraction, { Location } from '../components/map/MapInteraction';
-import './Geolocation.scss';
 
 /**
  * 지오 로케이션 페이지 ReactElement 반환 메서드

@@ -16,6 +16,7 @@ import Geolocation from './pages/Geolocation';
 import Feature from './pages/Feature';
 import WFS from './pages/WFS';
 import WMS from './pages/WMS';
+import WFSPopup from './pages/WFSPopup';
 import './App.scss';
 
 /**
@@ -45,6 +46,7 @@ function App(): ReactElement
 					<Route path='/feature/' element={<Feature />} />
 					<Route path='/wfs/' element={<WFS />} />
 					<Route path='/wms/' element={<WMS />} />
+					<Route path='/wfs-popup/' element={<WFSPopup />} />
 				</Routes>
 			</BrowserRouter>
 		</HelmetProvider>

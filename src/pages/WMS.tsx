@@ -11,7 +11,6 @@ import TileLayer from 'ol/layer/Tile';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import ImageLayer from 'ol/layer/Image';
-import { defaults } from 'ol/interaction';
 import MapInteraction, { LocationWithMarker, SejongCity } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';

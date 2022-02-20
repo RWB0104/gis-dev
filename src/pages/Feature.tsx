@@ -12,7 +12,6 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
 import MapInteraction, { LocationWithMarker } from '../components/map/MapInteraction';
-import './Feature.scss';
 
 /**
  * 피쳐 페이지 ReactElement 반환 메서드

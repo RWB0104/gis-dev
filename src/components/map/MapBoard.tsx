@@ -7,7 +7,8 @@
 
 import { Map } from 'ol';
 import { ReactElement, useEffect, useState } from 'react';
-import { FaRegCopy } from 'react-icons/fa';
+import { FaRegCopy, FaRegWindowMinimize } from 'react-icons/fa';
+import { FiMaximize } from 'react-icons/fi';
 import './MapBoard.scss';
 
 interface Props
@@ -27,6 +28,7 @@ export default function MapBoard({ map }: Props): ReactElement | null
 	// 맵이 유효할 경우
 	if (map)
 	{
+		const [ show, setShow ] = useState(true);
 		const [ epsg, setEpsg ] = useState('');
 
 		const showZoom = () =>
@@ -97,8 +99,17 @@ export default function MapBoard({ map }: Props): ReactElement | null
 			<button onClick={copy}><FaRegCopy /></button>
 		);
 
+		const sizeClick = () =>
+		{
+			setShow(!show);
+		};
+
 		return (
-			<div className='map-board'>
+			<div className='map-board' data-show={show}>
+				<div className='item' data-name='header'>
+					<button onClick={sizeClick}>{show ? <FaRegWindowMinimize /> : <FiMaximize />}</button>
+				</div>
+
 				<div className='item' data-name='meta'>
 					<div>
 						<small>proj</small>
