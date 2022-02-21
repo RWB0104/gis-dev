@@ -5,10 +5,13 @@
  * @since 2022.02.19 Sat 13:27:34
  */
 
+import { Map } from 'ol';
+import { GrClose } from 'react-icons/gr';
 import './Popup.scss';
 
 interface Props
 {
+	map?: Map
 	children?: JSX.Element | JSX.Element[]
 }
 
@@ -19,11 +22,17 @@ interface Props
  *
  * @returns {JSX.Element} Element
  */
-export default function Popup({ children }: Props)
+export default function Popup({ map, children }: Props)
 {
 	return (
 		<div className='map-popup'>
-			{children}
+			<div className='map-popup-header'>
+				<button onClick={() => map && map.getOverlayById('popup').setPosition(undefined)}><GrClose color='inherit' /></button>
+			</div>
+
+			<div className='map-popup-body'>
+				{children}
+			</div>
 		</div>
 	);
 }

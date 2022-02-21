@@ -27,6 +27,7 @@ import Popup from '../components/map/Popup';
 export default function WFSPopup(): ReactElement
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
+	const [ popupState, setPopupState ] = useState() as [JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>>];
 
 	useEffect(() =>
 	{
@@ -65,13 +66,12 @@ export default function WFSPopup(): ReactElement
 			zIndex: 5
 		});
 
-		//const popup = document.querySelector('.map-popup') as HTMLElement | null;
-		const popup = document.createElement('div');
-		popup.classList.add('ol-popup-custom');
-		popup.innerHTML = 'sdafjasfjlksadjlasduiou32542389';
-		console.dir(popup);
+		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+
 		const overlay = new Overlay({
+			id: 'popup',
 			element: popup || undefined,
+			positioning: 'center-center',
 			autoPan: {
 				animation: {
 					duration: 250
@@ -88,6 +88,7 @@ export default function WFSPopup(): ReactElement
 					})
 				})
 			],
+			overlays: [ overlay ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
@@ -97,18 +98,43 @@ export default function WFSPopup(): ReactElement
 			})
 		});
 
+		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
+
 		map.on('singleclick', (e) =>
 		{
+			// 해당 픽셀에 객체가 있을 경우
 			if (map.hasFeatureAtPixel(e.pixel))
 			{
 				map.forEachFeatureAtPixel(e.pixel, feature =>
 				{
+					// 해당 객체의 아이디가 buld_sejong으로 시작할 경우
 					if (feature.getId()?.toString().startsWith('buld_sejong'))
 					{
-						console.dir(overlay);
-						overlay.setPosition(e.coordinate);
+						const geom = feature.getGeometry();
+
+						// 공간정보가 유효할 경우
+						if (geom)
+						{
+							const [ minX, minY, maxX, maxY ] = geom.getExtent();
+
+							setPopupState((
+								<ul>
+									<li>{feature.getId() || ''}</li>
+									<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
+									<li>{feature.get('bul_man_no')}</li>
+								</ul>
+							));
+
+							overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
+						}
 					}
 				});
+			}
+
+			// 없을 경우
+			else
+			{
+				overlay.setPosition(undefined);
 			}
 		});
 
@@ -127,20 +153,7 @@ export default function WFSPopup(): ReactElement
 
 				<MapBoard map={mapState} />
 
-				<Popup>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-					<p>kfaskhlfjaslkdfjkl</p>
-				</Popup>
+				<Popup map={mapState}>{popupState}</Popup>
 			</article>
 		</section>
 	);

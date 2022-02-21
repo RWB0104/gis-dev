@@ -17,6 +17,7 @@ import Feature from './pages/Feature';
 import WFS from './pages/WFS';
 import WMS from './pages/WMS';
 import WFSPopup from './pages/WFSPopup';
+import WMSPopup from './pages/WMSPopup';
 import './App.scss';
 
 /**
@@ -47,6 +48,7 @@ function App(): ReactElement
 					<Route path='/wfs/' element={<WFS />} />
 					<Route path='/wms/' element={<WMS />} />
 					<Route path='/wfs-popup/' element={<WFSPopup />} />
+					<Route path='/wms-popup/' element={<WMSPopup />} />
 				</Routes>
 			</BrowserRouter>
 		</HelmetProvider>
