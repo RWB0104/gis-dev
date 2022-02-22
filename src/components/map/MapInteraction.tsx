@@ -13,6 +13,7 @@ import { Icon, Style } from 'ol/style';
 import proj4 from 'proj4';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { FaHome } from 'react-icons/fa';
+import { seoulPosition } from '../../common/position';
 import './MapInteraction.scss';
 
 interface Props
@@ -23,6 +24,12 @@ interface Props
 interface SubProps
 {
 	map?: Map
+}
+
+interface SubProps2
+{
+	map?: Map,
+	position?: number[]
 }
 
 /**
@@ -160,20 +167,20 @@ export function LocationWithMarker({ map }: SubProps)
 }
 
 /**
- * 세종시 이동 버튼 Element 반환 메서드
+ * 초기 위치 이동 버튼 Element 반환 메서드
  *
- * @param {SubProps} props: 프로퍼티
+ * @param {SubProps2} props: 프로퍼티
  *
  * @returns {JSX.Element} Element
  */
-export function SejongCity({ map }: SubProps)
+export function HomeButton({ map, position = seoulPosition }: SubProps2)
 {
 	// 맵 객체가 유효할 경우
 	if (map)
 	{
 		const onClick = () =>
 		{
-			flyTo(map.getView(), proj4('EPSG:4326', 'EPSG:3857', [ 127.28923267492068, 36.48024986578043 ]));
+			flyTo(map.getView(), proj4('EPSG:4326', 'EPSG:3857', position));
 		};
 
 		return (

@@ -11,13 +11,14 @@ import TileLayer from 'ol/layer/Tile';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import ImageLayer from 'ol/layer/Image';
-import MapInteraction, { LocationWithMarker, SejongCity } from '../components/map/MapInteraction';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
 import Popup from '../components/map/Popup';
 import './WMS.scss';
 import { GeoJSON } from 'ol/format';
 import { getCenter } from 'ol/extent';
+import { sejongPosition } from '../common/position';
 
 /**
  * WMS 팝업 페이지 ReactElement 반환 메서드
@@ -58,7 +59,7 @@ export default function WMS(): ReactElement
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
-				center: proj4('EPSG:4326', 'EPSG:3857', [ 127.28923267492068, 36.48024986578043 ]),
+				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 19,
 				constrainResolution: true
 			})
@@ -130,7 +131,7 @@ export default function WMS(): ReactElement
 				</div>
 
 				<MapInteraction>
-					<SejongCity map={mapState} />
+					<HomeButton map={mapState} position={sejongPosition} />
 					<LocationWithMarker map={mapState} />
 				</MapInteraction>
 

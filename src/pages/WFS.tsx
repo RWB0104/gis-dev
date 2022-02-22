@@ -15,8 +15,9 @@ import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
-import MapInteraction, { LocationWithMarker, SejongCity } from '../components/map/MapInteraction';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
+import { sejongPosition } from '../common/position';
 
 /**
  * WFS 페이지 ReactElement 반환 메서드
@@ -76,7 +77,7 @@ export default function WFS(): ReactElement
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
-				center: proj4('EPSG:4326', 'EPSG:3857', [ 127.28923267492068, 36.48024986578043 ]),
+				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 19,
 				constrainResolution: true
 			})
@@ -91,7 +92,7 @@ export default function WFS(): ReactElement
 				<div id='map'></div>
 
 				<MapInteraction>
-					<SejongCity map={mapState} />
+					<HomeButton map={mapState} position={sejongPosition} />
 					<LocationWithMarker map={mapState} />
 				</MapInteraction>
 

@@ -18,6 +18,7 @@ import WFS from './pages/WFS';
 import WMS from './pages/WMS';
 import WFSPopup from './pages/WFSPopup';
 import WMSPopup from './pages/WMSPopup';
+import WFSTransactionInsert from './pages/WFSTransactionInsert';
 import './App.scss';
 
 /**
@@ -49,6 +50,7 @@ function App(): ReactElement
 					<Route path='/wms/' element={<WMS />} />
 					<Route path='/wfs-popup/' element={<WFSPopup />} />
 					<Route path='/wms-popup/' element={<WMSPopup />} />
+					<Route path='/transaction-insert/' element={<WFSTransactionInsert />} />
 				</Routes>
 			</BrowserRouter>
 		</HelmetProvider>

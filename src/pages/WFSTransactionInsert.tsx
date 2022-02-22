@@ -1,8 +1,8 @@
 /**
- * WFS 팝업 페이지 컴포넌트
+ * WFS Transaction 삽입 페이지 컴포넌트
  *
  * @author RWB
- * @since 2022.02.19 Sat 10:17:24
+ * @since 2022.02.23 Wed 01:02:51
  */
 
 import { Map, Overlay, View } from 'ol';
@@ -18,14 +18,14 @@ import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
-import { sejongPosition } from '../common/position';
+import { sejongPosition, seoulPosition } from '../common/position';
 
 /**
- * WFS 팝업 페이지 ReactElement 반환 메서드
+ * WFS Transaction 삽입 페이지 ReactElement 반환 메서드
  *
  * @returns {ReactElement} ReactElement
  */
-export default function WFSPopup(): ReactElement
+export default function WFSTransactionInsert(): ReactElement
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>>];
@@ -39,7 +39,7 @@ export default function WFSPopup(): ReactElement
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
-			url: (extent) => `https://api.itcode.dev/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			url: (extent) => `https://api.itcode.dev/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_test&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
 			strategy: bbox
 		});
 
@@ -93,7 +93,7 @@ export default function WFSPopup(): ReactElement
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
-				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
+				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
 				constrainResolution: true
 			})
@@ -108,8 +108,8 @@ export default function WFSPopup(): ReactElement
 			{
 				map.forEachFeatureAtPixel(e.pixel, feature =>
 				{
-					// 해당 객체의 아이디가 buld_sejong으로 시작할 경우
-					if (feature.getId()?.toString().startsWith('buld_sejong'))
+					// 해당 객체의 아이디가 buld_test으로 시작할 경우
+					if (feature.getId()?.toString().startsWith('buld_test'))
 					{
 						const geom = feature.getGeometry();
 
@@ -117,12 +117,13 @@ export default function WFSPopup(): ReactElement
 						if (geom)
 						{
 							const [ minX, minY, maxX, maxY ] = geom.getExtent();
-
+							console.dir(feature);
 							setPopupState((
 								<ul>
 									<li>{feature.getId() || ''}</li>
-									<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
-									<li>{feature.get('bul_man_no')}</li>
+									<li>{feature.get('name') || <span>이름 없음</span>}</li>
+									<li>{feature.get('address') ? <a href={`https://map.naver.com/v5/search/${feature.get('address')}`} target='_blank'>{feature.get('address')}</a> : <span>주소 없음</span>}</li>
+									<li>{feature.get('reg_date')}</li>
 								</ul>
 							));
 
@@ -148,7 +149,7 @@ export default function WFSPopup(): ReactElement
 				<div id='map'></div>
 
 				<MapInteraction>
-					<HomeButton map={mapState} position={sejongPosition} />
+					<HomeButton map={mapState} />
 					<LocationWithMarker map={mapState} />
 				</MapInteraction>
 
