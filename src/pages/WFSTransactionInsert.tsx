@@ -5,9 +5,9 @@
  * @since 2022.02.23 Wed 01:02:51
  */
 
-import { Map, Overlay, View } from 'ol';
+import { Feature, Map, Overlay, View } from 'ol';
 import { OSM, Vector } from 'ol/source';
-import { Vector as VecterLayer } from 'ol/layer';
+import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
@@ -15,10 +15,13 @@ import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
-import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
+import MapInteraction, { LocationWithMarker, HomeButton, AddPolygon, DeletePolygon } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
-import { sejongPosition, seoulPosition } from '../common/position';
+import { seoulPosition } from '../common/position';
+import Geometry from 'ol/geom/Geometry';
+import Polygon from 'ol/geom/Polygon';
+import { insertTransaction } from '../common/transaction';
 
 /**
  * WFS Transaction 삽입 페이지 ReactElement 반환 메서드
@@ -43,7 +46,7 @@ export default function WFSTransactionInsert(): ReactElement
 			strategy: bbox
 		});
 
-		const wfsLayer = new VecterLayer({
+		const wfsLayer = new VectorLayer({
 			source: wfs,
 			style: (feature) => new Style({
 				stroke: new Stroke({
@@ -60,9 +63,12 @@ export default function WFSTransactionInsert(): ReactElement
 						color: 'rgba(0, 0, 0, 1)',
 						width: 4
 					}),
-					text: feature.get('buld_nm')
+					text: feature.get('name')
 				})
 			}),
+			properties: {
+				name: 'wfs'
+			},
 			minZoom: 15,
 			zIndex: 5
 		});
@@ -84,9 +90,8 @@ export default function WFSTransactionInsert(): ReactElement
 			layers: [
 				wfsLayer,
 				new TileLayer({
-					source: new OSM({
-						attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>'
-					})
+					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
+					properties: { name: 'base' }
 				})
 			],
 			overlays: [ overlay ],
@@ -117,13 +122,13 @@ export default function WFSTransactionInsert(): ReactElement
 						if (geom)
 						{
 							const [ minX, minY, maxX, maxY ] = geom.getExtent();
-							console.dir(feature);
+
 							setPopupState((
 								<ul>
-									<li>{feature.getId() || ''}</li>
+									<li><b>{feature.getId() || ''}</b></li>
 									<li>{feature.get('name') || <span>이름 없음</span>}</li>
-									<li>{feature.get('address') ? <a href={`https://map.naver.com/v5/search/${feature.get('address')}`} target='_blank'>{feature.get('address')}</a> : <span>주소 없음</span>}</li>
-									<li>{feature.get('reg_date')}</li>
+									<li>🏠 {feature.get('address') ? <a href={`https://map.naver.com/v5/search/${feature.get('address')}`} target='_blank'>{feature.get('address')}</a> : <span>주소 없음</span>}</li>
+									<li>🕗 {feature.get('reg_date')}</li>
 								</ul>
 							));
 
@@ -149,6 +154,21 @@ export default function WFSTransactionInsert(): ReactElement
 				<div id='map'></div>
 
 				<MapInteraction>
+					<AddPolygon map={mapState} drawend={async (e) =>
+					{
+						const feature: Feature<Geometry> = e.feature;
+						const polygon: Polygon = feature.getGeometry() as Polygon;
+
+						const response = await insertTransaction({ body: {
+							name: 'test',
+							address: 'asfad'
+						},
+						geom: polygon.getFlatCoordinates() });
+
+						console.dir(response);
+
+						mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource().refresh();
+					}} />
 					<HomeButton map={mapState} />
 					<LocationWithMarker map={mapState} />
 				</MapInteraction>

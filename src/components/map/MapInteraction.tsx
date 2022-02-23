@@ -7,12 +7,13 @@
 
 import { Feature, Map, View } from 'ol';
 import Point from 'ol/geom/Point';
+import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
 import proj4 from 'proj4';
 import { BiCurrentLocation } from 'react-icons/bi';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaPlus } from 'react-icons/fa';
 import { seoulPosition } from '../../common/position';
 import './MapInteraction.scss';
 
@@ -30,6 +31,12 @@ interface SubProps2
 {
 	map?: Map,
 	position?: number[]
+}
+
+interface SubProps3
+{
+	map?: Map,
+	drawend?: (e: DrawEvent) => void
 }
 
 /**
@@ -185,6 +192,92 @@ export function HomeButton({ map, position = seoulPosition }: SubProps2)
 
 		return (
 			<button className='sejong' title='세종시 이동' onClick={onClick}><FaHome size={25} color="white" /></button>
+		);
+	}
+
+	// 아닐 경우
+	else
+	{
+		return null;
+	}
+}
+
+export function AddPolygon({ map, drawend }: SubProps3)
+{
+	// 맵 객체가 유효할 경우
+	if (map)
+	{
+		const drawSource = new VectorSource();
+
+		const drawInteraction = new Draw({
+			source: drawSource,
+			type: 'Polygon'
+		});
+
+		const onClick = () =>
+		{
+			// 드로우 벡터 레이어가 없을 경우
+			if (map.getAllLayers().filter(layer => layer.get('name') === 'draw').length === 0)
+			{
+				const drawLayer = new VectorLayer({
+					source: drawSource,
+					properties: { name: 'draw' }
+				});
+
+				map.addLayer(drawLayer);
+
+				drawInteraction.on('drawstart', () => drawSource.clear());
+
+				// 드로우 종료 메서드가 있을 경우
+				if (drawend)
+				{
+					drawInteraction.on('drawend', (e) =>
+					{
+						drawend(e);
+						map.removeInteraction(drawInteraction);
+						console.dir(e);
+					});
+				}
+			}
+
+			map.addInteraction(drawInteraction);
+		};
+
+		return (
+			<button className='add' title='건물 추가' onClick={onClick}><FaPlus size={20} color="white" /></button>
+		);
+	}
+
+	// 아닐 경우
+	else
+	{
+		return null;
+	}
+}
+
+export function DeletePolygon({ map }: SubProps)
+{
+	// 맵 객체가 유효할 경우
+	if (map)
+	{
+		map.on('singleclick', (e) =>
+		{
+			// 해당 픽셀에 객체가 있을 경우
+			if (map.hasFeatureAtPixel(e.pixel))
+			{
+				map.forEachFeatureAtPixel(e.pixel, feature =>
+				{
+					// 해당 객체의 아이디가 buld_test으로 시작할 경우
+					if (feature.getId()?.toString().startsWith('buld_test'))
+					{
+						console.dir(feature);
+					}
+				});
+			}
+		});
+
+		return (
+			<button className='delete' title='건물 삭제'><FaPlus size={20} color="white" /></button>
 		);
 	}
 

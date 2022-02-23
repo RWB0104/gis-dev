@@ -51,7 +51,8 @@ export default function WMS(): ReactElement
 		const map = new Map({
 			layers: [
 				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' })
+					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
+					properties: { name: 'base' }
 				}),
 				getLayer(type)
 			],

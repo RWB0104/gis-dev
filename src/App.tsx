@@ -7,7 +7,7 @@
 
 import { ReactElement, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/header/Header';
 import ROOT from './pages/ROOT';
 import OSM from './pages/OSM';
@@ -37,21 +37,21 @@ function App(): ReactElement
 
 	return (
 		<HelmetProvider>
-			<BrowserRouter>
+			<BrowserRouter basename='gis-dev'>
 				<Header />
 
-				<Routes>
-					<Route path='/' element={<ROOT />} />
-					<Route path='/osm/' element={<OSM />} />
-					<Route path='/map-info/' element={<MapInfo />} />
-					<Route path='/geolocation/' element={<Geolocation />} />
-					<Route path='/feature/' element={<Feature />} />
-					<Route path='/wfs/' element={<WFS />} />
-					<Route path='/wms/' element={<WMS />} />
-					<Route path='/wfs-popup/' element={<WFSPopup />} />
-					<Route path='/wms-popup/' element={<WMSPopup />} />
-					<Route path='/transaction-insert/' element={<WFSTransactionInsert />} />
-				</Routes>
+				<Switch>
+					<Route exact path='/' component={ROOT} />
+					<Route path='/osm/' component={OSM} />
+					<Route path='/map-info/' component={MapInfo} />
+					<Route path='/geolocation/' component={Geolocation} />
+					<Route path='/feature/' component={Feature} />
+					<Route path='/wfs/' component={WFS} />
+					<Route path='/wms/' component={WMS} />
+					<Route path='/wfs-popup/' component={WFSPopup} />
+					<Route path='/wms-popup/' component={WMSPopup} />
+					<Route path='/transaction-insert/' component={WFSTransactionInsert} />
+				</Switch>
 			</BrowserRouter>
 		</HelmetProvider>
 	);

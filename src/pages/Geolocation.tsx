@@ -6,7 +6,7 @@
  */
 
 import { Map, View } from 'ol';
-import { OSM as OSMLayer } from 'ol/source';
+import { OSM } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import React, { ReactElement, useEffect, useState } from 'react';
 import proj4 from 'proj4';
@@ -29,12 +29,8 @@ export default function Geolocation(): ReactElement
 		const map = new Map({
 			layers: [
 				new TileLayer({
-					source: new OSMLayer({
-						attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>'
-					}),
-					properties: {
-						name: 'base'
-					}
+					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
+					properties: { name: 'base' }
 				})
 			],
 			target: 'map',

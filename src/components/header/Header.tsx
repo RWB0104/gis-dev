@@ -17,7 +17,7 @@ export default function Header(): ReactElement
 {
 	return (
 		<header>
-			<img src="/logo.png" />
+			<img src="/gis-dev/logo.png" />
 
 			<h1>TITLE</h1>
 		</header>

@@ -7,7 +7,7 @@
 
 import { Map, Overlay, View } from 'ol';
 import { OSM, Vector } from 'ol/source';
-import { Vector as VecterLayer } from 'ol/layer';
+import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
@@ -43,7 +43,7 @@ export default function WFSPopup(): ReactElement
 			strategy: bbox
 		});
 
-		const wfsLayer = new VecterLayer({
+		const wfsLayer = new VectorLayer({
 			source: wfs,
 			style: (feature) => new Style({
 				stroke: new Stroke({
@@ -84,9 +84,8 @@ export default function WFSPopup(): ReactElement
 			layers: [
 				wfsLayer,
 				new TileLayer({
-					source: new OSM({
-						attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>'
-					})
+					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
+					properties: { name: 'base' }
 				})
 			],
 			overlays: [ overlay ],

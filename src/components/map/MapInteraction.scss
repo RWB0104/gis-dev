@@ -26,12 +26,14 @@
 
 		&.location {
 			background-color: limegreen;
-			color: grey;
 		}
 
 		&.sejong {
 			background-color: dodgerblue;
-			color: grey;
+		}
+
+		&.add {
+			background-color: crimson;
 		}
 	}
 }

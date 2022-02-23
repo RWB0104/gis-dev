@@ -25,12 +25,8 @@ export default function OSM(): ReactElement
 		new Map({
 			layers: [
 				new TileLayer({
-					source: new OSMLayer({
-						attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>'
-					}),
-					properties: {
-						name: 'base'
-					}
+					source: new OSMLayer({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
+					properties: { name: 'base' }
 				})
 			],
 			target: 'map',
