@@ -8,15 +8,15 @@
 import { Map, View } from 'ol';
 import { OSM as OSMLayer } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
-import React, { ReactElement, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import proj4 from 'proj4';
 
 /**
- * OSM 페이지 ReactElement 반환 메서드
+ * OSM 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function OSM(): ReactElement
+export default function OSM()
 {
 	useEffect(() =>
 	{

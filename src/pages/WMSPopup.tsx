@@ -8,7 +8,7 @@
 import { Map, Overlay, View } from 'ol';
 import { ImageWMS, OSM, TileWMS, Vector } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import ImageLayer from 'ol/layer/Image';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
@@ -19,13 +19,14 @@ import './WMS.scss';
 import { GeoJSON } from 'ol/format';
 import { getCenter } from 'ol/extent';
 import { sejongPosition } from '../common/position';
+import { WMS_URL } from '../common/env';
 
 /**
- * WMS 팝업 페이지 ReactElement 반환 메서드
+ * WMS 팝업 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function WMS(): ReactElement
+export default function WMS()
 {
 	const [ type, setType ] = useState(true);
 	const [ mapState, setMapState ] = useState(new Map({}));
@@ -77,32 +78,44 @@ export default function WMS(): ReactElement
 				INFO_FORMAT: 'application/json'
 			});
 
+			// GetFeatureInfo URL이 유효할 경우
 			if (url)
 			{
 				const request = await fetch(url.toString(), { method: 'GET' });
-				const json = await request.json();
 
-				// 객체가 하나도 없을 경우
-				if (json.features.length === 0)
+				// 응답이 정상일 경우
+				if (request.ok)
 				{
-					overlay.setPosition(undefined);
+					const json = await request.json();
+
+					// 객체가 하나도 없을 경우
+					if (json.features.length === 0)
+					{
+						overlay.setPosition(undefined);
+					}
+
+					// 객체가 있을 경우
+					else
+					{
+						const feature = new GeoJSON().readFeature(json.features[0]);
+						const vector = new Vector({ features: [ feature ] });
+
+						setPopupState(
+							<ul>
+								<li>{feature.getId() || ''}</li>
+								<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
+								<li>{feature.get('bul_man_no')}</li>
+							</ul>
+						);
+
+						overlay.setPosition(getCenter(vector.getExtent()));
+					}
 				}
 
-				// 객체가 있을 경우
+				// 아닐 경우
 				else
 				{
-					const feature = new GeoJSON().readFeature(json.features[0]);
-					const vector = new Vector({ features: [ feature ] });
-
-					setPopupState(
-						<ul>
-							<li>{feature.getId() || ''}</li>
-							<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
-							<li>{feature.get('bul_man_no')}</li>
-						</ul>
-					);
-
-					overlay.setPosition(getCenter(vector.getExtent()));
+					alert(request.status);
 				}
 			}
 		});
@@ -116,19 +129,14 @@ export default function WMS(): ReactElement
 		mapState.addLayer(getLayer(type));
 	}, [ type ]);
 
-	const onTypeClick = (type: boolean) =>
-	{
-		setType(type);
-	};
-
 	return (
 		<section id='wms' className='page'>
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
 				<div className='wms-board'>
-					<button onClick={() => onTypeClick(true)} data-selected={type}><IoAppsSharp /> Tile</button>
-					<button onClick={() => onTypeClick(false)} data-selected={!type}><IoImagesSharp /> Image</button>
+					<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
+					<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
 				</div>
 
 				<MapInteraction>
@@ -158,7 +166,7 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 	{
 		return new TileLayer({
 			source: new TileWMS({
-				url: 'https://api.itcode.dev/geoserver/wms',
+				url: WMS_URL,
 				params: {
 					layers: 'buld_sejong',
 					tiled: true
@@ -178,7 +186,7 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 	{
 		return new ImageLayer({
 			source: new ImageWMS({
-				url: 'https://api.itcode.dev/geoserver/wms',
+				url: WMS_URL,
 				params: {
 					layers: 'buld_sejong'
 				},

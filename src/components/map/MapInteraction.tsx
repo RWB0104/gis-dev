@@ -40,11 +40,11 @@ interface SubProps3
 }
 
 /**
- * 맵 상호작용 Element 반환 메서드
+ * 맵 상호작용 JSX 반환 메서드
  *
  * @param {Props} props: 프로퍼티
  *
- * @returns {JSX.Element} Element
+ * @returns {JSX.Element} JSX
  */
 export default function MapInteraction({ children }: Props)
 {
@@ -56,11 +56,11 @@ export default function MapInteraction({ children }: Props)
 }
 
 /**
- * 위치 버튼 Element 반환 메서드
+ * 위치 버튼 JSX 반환 메서드
  *
  * @param {SubProps} props: 프로퍼티
  *
- * @returns {JSX.Element} Element
+ * @returns {JSX.Element | null} JSX
  */
 export function Location({ map }: SubProps)
 {
@@ -214,6 +214,15 @@ export function AddPolygon({ map, drawend }: SubProps3)
 			type: 'Polygon'
 		});
 
+		document.onkeyup = (e) =>
+		{
+			// ESC를 눌렀을 경우
+			if (e.key.toLowerCase() === 'escape')
+			{
+				map.removeInteraction(drawInteraction);
+			}
+		};
+
 		const onClick = () =>
 		{
 			// 드로우 벡터 레이어가 없을 경우
@@ -235,7 +244,6 @@ export function AddPolygon({ map, drawend }: SubProps3)
 					{
 						drawend(e);
 						map.removeInteraction(drawInteraction);
-						console.dir(e);
 					});
 				}
 			}

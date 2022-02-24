@@ -5,22 +5,29 @@
  * @since 2022.02.13 Sun 21:49:03
  */
 
-import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { BiCurrentLocation, BiMessageSquareDetail } from 'react-icons/bi';
 import { FaInfoCircle, FaMap, FaMapMarkedAlt, FaMapMarkerAlt, FaMinusSquare, FaPenSquare, FaPlusSquare } from 'react-icons/fa';
 import './ROOT.scss';
 
 /**
- * 루트 페이지 ReactElement 반환 메서드
+ * 루트 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function ROOT(): ReactElement
+export default function ROOT()
 {
 	return (
 		<section id='root' className='page'>
-			<video src='./background.mp4' muted autoPlay loop />
+			<video src='/gis-dev/background.mp4' muted autoPlay loop ref={(ref) =>
+			{
+				// ref가 유효할 경우
+				if (ref)
+				{
+					ref.muted = true;
+					ref.play();
+				}
+			}} />
 
 			<article>
 				<h3>List</h3>
@@ -35,6 +42,7 @@ export default function ROOT(): ReactElement
 				<Link to='/transaction-insert' title='WFS Transaction Insert'><FaPlusSquare /> WFS-T Insert</Link>
 				<Link to='/transaction-update' title='WFS Transaction Update'><FaPenSquare /> WFS-T Update</Link>
 				<Link to='/transaction-delete' title='WFS Transaction Delete'><FaMinusSquare /> WFS-T Delete</Link>
+				<Link to='/advanced' title='Advanced Map'><FaMinusSquare /> Advanced Map</Link>
 			</article>
 		</section>
 	);

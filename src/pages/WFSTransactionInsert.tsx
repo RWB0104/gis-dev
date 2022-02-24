@@ -12,26 +12,37 @@ import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import { Style, Stroke, Fill, Text } from 'ol/style';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
-import MapInteraction, { LocationWithMarker, HomeButton, AddPolygon, DeletePolygon } from '../components/map/MapInteraction';
+import MapInteraction, { LocationWithMarker, HomeButton, AddPolygon } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
 import { seoulPosition } from '../common/position';
 import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import { insertTransaction } from '../common/transaction';
+import { WFS_URL } from '../common/env';
+
+interface SubProps
+{
+	feature?: Feature<Geometry>
+}
 
 /**
- * WFS Transaction 삽입 페이지 ReactElement 반환 메서드
+ * WFS Transaction 삽입 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function WFSTransactionInsert(): ReactElement
+export default function WFSTransactionInsert()
 {
+	const initModal: SubProps = {
+		feature: undefined
+	};
+
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>>];
+	const [ modalState, setModalState ] = useState(initModal);
 
 	useEffect(() =>
 	{
@@ -42,7 +53,7 @@ export default function WFSTransactionInsert(): ReactElement
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
-			url: (extent) => `https://api.itcode.dev/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_test&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_test&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
 			strategy: bbox
 		});
 
@@ -159,11 +170,13 @@ export default function WFSTransactionInsert(): ReactElement
 						const feature: Feature<Geometry> = e.feature;
 						const polygon: Polygon = feature.getGeometry() as Polygon;
 
-						const response = await insertTransaction({ body: {
-							name: 'test',
-							address: 'asfad'
-						},
-						geom: polygon.getFlatCoordinates() });
+						const response = await insertTransaction({
+							body: {
+								name: 'test',
+								address: 'asfad'
+							},
+							geom: polygon.getFlatCoordinates()
+						});
 
 						console.dir(response);
 
@@ -176,7 +189,28 @@ export default function WFSTransactionInsert(): ReactElement
 				<MapBoard map={mapState} />
 
 				<Popup map={mapState}>{popupState}</Popup>
+
+				<InsertForm isShow={showState} />
 			</article>
 		</section>
+	);
+}
+
+function InsertForm({ feature }: SubProps)
+{
+	return (
+		<div className='insert-form' data-show={feature !== undefined}>
+			<form>
+				<div className='form-row'>
+					<small>이름</small>
+					<input name='name' />
+				</div>
+
+				<div className='form-row'>
+					<small>주소</small>
+					<input name='address' />
+				</div>
+			</form>
+		</div>
 	);
 }

@@ -12,19 +12,20 @@ import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import { Style, Stroke, Fill, Text } from 'ol/style';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { sejongPosition } from '../common/position';
+import { WFS_URL } from '../common/env';
 
 /**
- * WFS 페이지 ReactElement 반환 메서드
+ * WFS 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function WFS(): ReactElement
+export default function WFS()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
@@ -37,7 +38,7 @@ export default function WFS(): ReactElement
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
-			url: (extent) => `https://api.itcode.dev/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
 			strategy: bbox
 		});
 

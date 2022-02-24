@@ -8,17 +8,17 @@
 import { Map, View } from 'ol';
 import { OSM } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
 import MapInteraction, { Location } from '../components/map/MapInteraction';
 
 /**
- * 지오 로케이션 페이지 ReactElement 반환 메서드
+ * 지오 로케이션 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function Geolocation(): ReactElement
+export default function Geolocation()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 

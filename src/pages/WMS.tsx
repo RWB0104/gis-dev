@@ -8,7 +8,7 @@
 import { Map, View } from 'ol';
 import { ImageWMS, OSM, TileWMS } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import ImageLayer from 'ol/layer/Image';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
@@ -16,13 +16,14 @@ import MapBoard from '../components/map/MapBoard';
 import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
 import './WMS.scss';
 import { sejongPosition } from '../common/position';
+import { WMS_URL } from '../common/env';
 
 /**
- * WMS 페이지 ReactElement 반환 메서드
+ * WMS 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function WMS(): ReactElement
+export default function WMS()
 {
 	const [ type, setType ] = useState(true);
 	const [ mapState, setMapState ] = useState(new Map({}));
@@ -57,19 +58,14 @@ export default function WMS(): ReactElement
 		mapState.addLayer(getLayer(type));
 	}, [ type ]);
 
-	const onTypeClick = (type: boolean) =>
-	{
-		setType(type);
-	};
-
 	return (
 		<section id='wms' className='page'>
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
 				<div className='wms-board'>
-					<button onClick={() => onTypeClick(true)} data-selected={type}><IoAppsSharp /> Tile</button>
-					<button onClick={() => onTypeClick(false)} data-selected={!type}><IoImagesSharp /> Image</button>
+					<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
+					<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
 				</div>
 
 				<MapInteraction>
@@ -97,7 +93,7 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 	{
 		return new TileLayer({
 			source: new TileWMS({
-				url: 'https://api.itcode.dev/geoserver/wms',
+				url: WMS_URL,
 				params: {
 					layers: 'buld_sejong',
 					tiled: true
@@ -117,7 +113,7 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 	{
 		return new ImageLayer({
 			source: new ImageWMS({
-				url: 'https://api.itcode.dev/geoserver/wms',
+				url: WMS_URL,
 				params: {
 					layers: 'buld_sejong'
 				},

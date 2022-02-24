@@ -6,7 +6,7 @@
  */
 
 import { Map } from 'ol';
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaRegCopy, FaRegWindowMinimize } from 'react-icons/fa';
 import { FiMaximize } from 'react-icons/fi';
 import './MapBoard.scss';
@@ -17,13 +17,13 @@ interface Props
 }
 
 /**
- * 맵 보드 ReactElement 반환 메서드
+ * 맵 보드 JSX 반환 메서드
  *
  * @param {Props} props: 프로퍼티
  *
- * @returns {ReactElement | null} ReactElement
+ * @returns {JSX.Element | null} JSX
  */
-export default function MapBoard({ map }: Props): ReactElement | null
+export default function MapBoard({ map }: Props)
 {
 	// 맵이 유효할 경우
 	if (map)

@@ -16,6 +16,10 @@ header {
 
 	z-index: 10;
 
+	a {
+		padding: 5px 10px;
+	}
+
 	img {
 		width: 32px;
 		height: 32px;
@@ -23,5 +27,7 @@ header {
 
 	h1 {
 		font-size: 1.5rem;
+
+		text-shadow: 2px 2px 3px grey;
 	}
 }

@@ -16,11 +16,11 @@ interface Props
 }
 
 /**
- * 팝업 Element 반환 메서드
+ * 팝업 JSX 반환 메서드
  *
  * @param {Props} props: 프로퍼티
  *
- * @returns {JSX.Element} Element
+ * @returns {JSX.Element} JSX
  */
 export default function Popup({ map, children }: Props)
 {

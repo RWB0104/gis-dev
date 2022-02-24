@@ -5,7 +5,7 @@
  * @since 2022.02.13 Sun 21:45:23
  */
 
-import { ReactElement, useEffect } from 'react';
+import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/header/Header';
@@ -22,11 +22,11 @@ import WFSTransactionInsert from './pages/WFSTransactionInsert';
 import './App.scss';
 
 /**
- * 애플리케이션 ReactElement 반환 메서드
+ * 애플리케이션 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-function App(): ReactElement
+export default function App()
 {
 	useEffect(() =>
 	{
@@ -56,5 +56,3 @@ function App(): ReactElement
 		</HelmetProvider>
 	);
 }
-
-export default App;

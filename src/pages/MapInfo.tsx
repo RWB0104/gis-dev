@@ -8,16 +8,16 @@
 import { Map, View } from 'ol';
 import { OSM } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
 
 /**
- * 맵 정보 페이지 ReactElement 반환 메서드
+ * 맵 정보 페이지 JSX 반환 메서드
  *
- * @returns {ReactElement} ReactElement
+ * @returns {JSX.Element} JSX
  */
-export default function MapInfo(): ReactElement
+export default function MapInfo()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
