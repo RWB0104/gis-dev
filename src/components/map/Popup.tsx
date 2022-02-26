@@ -7,12 +7,15 @@
 
 import { Map } from 'ol';
 import { GrClose } from 'react-icons/gr';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import './Popup.scss';
 
 interface Props
 {
 	map?: Map
-	children?: JSX.Element | JSX.Element[]
+	children?: JSX.Element | JSX.Element[],
+	onUpdateClick?: () => void,
+	onDeleteClick?: () => void
 }
 
 /**
@@ -22,12 +25,19 @@ interface Props
  *
  * @returns {JSX.Element} JSX
  */
-export default function Popup({ map, children }: Props)
+export default function Popup({ map, children, onUpdateClick, onDeleteClick }: Props)
 {
 	return (
 		<div className='map-popup'>
 			<div className='map-popup-header'>
-				<button onClick={() => map && map.getOverlayById('popup').setPosition(undefined)}><GrClose color='inherit' /></button>
+				<div className='map-popup-header-left'>
+					{onUpdateClick && <button data-action='update' onClick={onUpdateClick}><MdEdit color='dodgerblue' /></button>}
+					{onDeleteClick && <button data-action='delete' onClick={onDeleteClick}><MdDelete color='crimson' /></button>}
+				</div>
+
+				<div className='map-popup-header-right'>
+					<button onClick={() => map && map.getOverlayById('popup').setPosition(undefined)}><GrClose color='inherit' /></button>
+				</div>
 			</div>
 
 			<div className='map-popup-body'>

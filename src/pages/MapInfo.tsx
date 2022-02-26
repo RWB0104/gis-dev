@@ -11,6 +11,7 @@ import TileLayer from 'ol/layer/Tile';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
+import Meta from '../components/global/Meta';
 
 /**
  * 맵 정보 페이지 JSX 반환 메서드
@@ -46,6 +47,8 @@ export default function MapInfo()
 
 	return (
 		<section id='map-info' className='page'>
+			<Meta title='MapInfo' description='맵 관련 정보 예제' url='/map-info/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 

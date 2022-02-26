@@ -11,6 +11,7 @@ import TileLayer from 'ol/layer/Tile';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
+import Meta from '../components/global/Meta';
 import MapInteraction, { LocationWithMarker } from '../components/map/MapInteraction';
 
 /**
@@ -47,6 +48,8 @@ export default function Feature()
 
 	return (
 		<section id='feature' className='page'>
+			<Meta title='Feature' description='피쳐 추가 예제' url='/feature/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 

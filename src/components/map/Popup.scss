@@ -14,7 +14,8 @@
 	padding: 20px;
 
 	.map-popup-header {
-		text-align: end;
+		display: flex;
+		justify-content: space-between;
 
 		button {
 			background: transparent;

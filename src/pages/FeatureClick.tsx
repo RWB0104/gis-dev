@@ -1,8 +1,8 @@
 /**
- * WFS 페이지 컴포넌트
+ * Feature 클릭 페이지 컴포넌트
  *
  * @author RWB
- * @since 2022.02.19 Sat 01:52:32
+ * @since 2022.02.27 Sun 05:01:07
  */
 
 import { Map, View } from 'ol';
@@ -11,6 +11,8 @@ import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
+import { defaults, Select } from 'ol/interaction';
+import { click, pointerMove } from 'ol/events/condition';
 import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
@@ -22,7 +24,7 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 
 /**
- * WFS 페이지 JSX 반환 메서드
+ * Feature 클릭 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
@@ -67,6 +69,50 @@ export default function WFS()
 			zIndex: 5
 		});
 
+		const clickSelect = new Select({
+			condition: click,
+			style: (feature) => new Style({
+				stroke: new Stroke({
+					color: 'rgba(0, 0, 0, 1)',
+					width: 2
+				}),
+				fill: new Fill({
+					color: 'rgba(100, 149, 237, 1)'
+				}),
+				text: new Text({
+					font: '0.8rem sans-serif',
+					fill: new Fill({ color: 'yellow' }),
+					stroke: new Stroke({
+						color: 'rgba(0, 0, 0, 1)',
+						width: 4
+					}),
+					text: feature.get('buld_nm')
+				})
+			})
+		});
+
+		const hoverSelect = new Select({
+			condition: pointerMove,
+			style: (feature) => new Style({
+				stroke: new Stroke({
+					color: 'rgba(0, 0, 0, 1)',
+					width: 2
+				}),
+				fill: new Fill({
+					color: 'rgba(100, 149, 237, 0.6)'
+				}),
+				text: new Text({
+					font: '0.8rem sans-serif',
+					fill: new Fill({ color: 'white' }),
+					stroke: new Stroke({
+						color: 'rgba(0, 0, 0, 1)',
+						width: 4
+					}),
+					text: feature.get('buld_nm')
+				})
+			})
+		});
+
 		const map = new Map({
 			layers: [
 				wfsLayer,
@@ -81,7 +127,8 @@ export default function WFS()
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 19,
 				constrainResolution: true
-			})
+			}),
+			interactions: defaults().extend([ clickSelect, hoverSelect ])
 		});
 
 		setMapState(map);

@@ -1,11 +1,11 @@
 /**
- * WFS Transaction 삽입 페이지 컴포넌트
+ * WFS Transaction 삭제 페이지 컴포넌트
  *
  * @author RWB
- * @since 2022.02.23 Wed 01:02:51
+ * @since 2022.02.27 Sun 02:20:46
  */
 
-import { Feature, Map, Overlay, View } from 'ol';
+import { Map, Overlay, View } from 'ol';
 import { OSM, Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
@@ -15,20 +15,17 @@ import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
-import MapInteraction, { LocationWithMarker, HomeButton, AddPolygon } from '../components/map/MapInteraction';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
 import { seoulPosition } from '../common/position';
-import Geometry from 'ol/geom/Geometry';
-import Polygon from 'ol/geom/Polygon';
-import { insertTransaction } from '../common/transaction';
 import { WFS_URL } from '../common/env';
-import './WFSTransactionInsert.scss';
-import VectorSource from 'ol/source/Vector';
-import { MdClose, MdAdd } from 'react-icons/md';
+import './WFSTransactionDelete.scss';
 import Meta from '../components/global/Meta';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { featureAtom } from '../common/atom';
+import { featureIdAtom, showAtom } from '../common/atom';
+import { MdClose, MdDelete } from 'react-icons/md';
+import { deleteTransaction } from '../common/transaction';
 
 interface SubProps
 {
@@ -36,16 +33,17 @@ interface SubProps
 }
 
 /**
- * WFS Transaction 삽입 페이지 JSX 반환 메서드
+ * WFS Transaction 삭제 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function WFSTransactionInsert()
+export default function WFSTransactionDelete()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [ JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>> ];
 
-	const setFeatureState = useSetRecoilState(featureAtom);
+	const setFeatureIdState = useSetRecoilState(featureIdAtom);
+	const setShowState = useSetRecoilState(showAtom);
 
 	useEffect(() =>
 	{
@@ -146,6 +144,8 @@ export default function WFSTransactionInsert()
 								</ul>
 							));
 
+							setFeatureIdState(feature.getId());
+
 							overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
 						}
 					}
@@ -156,6 +156,8 @@ export default function WFSTransactionInsert()
 			else
 			{
 				overlay.setPosition(undefined);
+
+				setFeatureIdState(undefined);
 			}
 		});
 
@@ -163,99 +165,84 @@ export default function WFSTransactionInsert()
 	}, []);
 
 	return (
-		<section id='transaction-insert' className='page'>
-			<Meta title='WFS Transaction Insert' description='WFS 트랜잭션 추가 예제' url='/transaction-insert/' />
+		<section id='transaction-update' className='page'>
+			<Meta title='WFS Transaction Update' description='WFS 트랜잭션 갱신 예제' url='/transaction-update/' />
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
 				<MapInteraction>
-					<AddPolygon map={mapState} drawend={async (e) =>
-					{
-						const feature = e.feature as Feature<Geometry>;
-						setFeatureState(feature);
-					}} />
 					<HomeButton map={mapState} />
 					<LocationWithMarker map={mapState} />
 				</MapInteraction>
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState}>{popupState}</Popup>
+				<Popup map={mapState} onDeleteClick={() =>
+				{
+					setShowState(true);
+					mapState.getOverlayById('popup').setPosition(undefined);
+				}}>{popupState}</Popup>
 
-				<InsertForm map={mapState} />
+				<DeleteForm map={mapState} />
 			</article>
 		</section>
 	);
 }
 
 /**
- * 추가 폼 Element 반환 메서드
+ * 삭제 폼 Element 반환 메서드
  *
  * @param {SubProps} param0: 프로퍼티
  *
- * @returns {JSX.Element} JSX
+ * @returns {JSX.Element} Element
  */
-function InsertForm({ map }: SubProps)
+function DeleteForm({ map }: SubProps)
 {
-	const [ featureState, setFeatureState ] = useRecoilState(featureAtom);
+	const [ featureIdState, setFeatureIdState ] = useRecoilState(featureIdAtom);
+	const [ showState, setShowState ] = useRecoilState(showAtom);
 
 	return map ? (
-		<div className='insert-form' data-show={featureState !== undefined}>
+		<div className='delete-form' data-show={showState}>
 			<form
 				onSubmit={async (e) =>
 				{
 					e.preventDefault();
 
-					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
-					const drawSource = drawLayer.getSource() as VectorSource<Geometry>;
+					const id = featureIdState as string | number;
+					const request = await deleteTransaction({ id: id });
 
-					const feature = featureState as Feature<Geometry>;
-					const polygon = feature.getGeometry() as Polygon;
-
-					const target = e.target as HTMLFormElement;
-
-					const name = target.querySelector('[name=name]') as HTMLInputElement;
-					const address = target.querySelector('[name=address]') as HTMLInputElement;
-
-					const response = await insertTransaction({
-						body: {
-							name: name.value,
-							address: address.value
-						},
-						geom: polygon.getFlatCoordinates()
-					});
-
-					if (!response.ok)
+					// 삭제에 실패할 경우
+					if (!request.ok)
 					{
-						alert('추가 실패');
+						alert('삭제 실패');
 					}
 
-					map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource().refresh();
+					setFeatureIdState(undefined);
+					setShowState(false);
 
-					drawSource.clear();
-					setFeatureState(undefined);
+					map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource().refresh();
 				}}
 				onReset={() =>
 				{
-					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
-					const drawSource: VectorSource<Geometry> = drawLayer.getSource();
-					drawSource.clear();
-
-					setFeatureState(undefined);
+					setFeatureIdState(undefined);
+					setShowState(false);
 				}}>
 				<div className='form-row'>
-					<small>이름</small>
-					<input name='name' />
+					<h4>정말 삭제하시겠습니까?</h4>
 				</div>
 
 				<div className='form-row'>
-					<small>주소</small>
-					<input name='address' />
+					<b>{featureIdState}</b>
+				</div>
+
+				<div className='form-row'>
+					<p><small>삭제된 피쳐는 다시 복구할 수 없습니다.</small></p>
+					<p><small><del>근데 뭐 싹 다 지워도 크게 의미 없음</del></small></p>
 				</div>
 
 				<div className='form-interaction'>
-					<button type='submit'><MdAdd /> 추가</button>
+					<button type='submit'><MdDelete /> 삭제</button>
 					<button type='reset'><MdClose /> 취소</button>
 				</div>
 			</form>

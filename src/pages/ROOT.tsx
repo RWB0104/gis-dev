@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { BiCurrentLocation, BiMessageSquareDetail } from 'react-icons/bi';
 import { FaInfoCircle, FaMap, FaMapMarkedAlt, FaMapMarkerAlt, FaMinusSquare, FaPenSquare, FaPlusSquare } from 'react-icons/fa';
 import './ROOT.scss';
+import Meta from '../components/global/Meta';
 
 /**
  * 루트 페이지 JSX 반환 메서드
@@ -19,6 +20,8 @@ export default function ROOT()
 {
 	return (
 		<section id='root' className='page'>
+			<Meta title='Home' description='OpenLayers6 예제 모음' url='/' />
+
 			<video src='/gis-dev/background.mp4' muted autoPlay loop ref={(ref) =>
 			{
 				// ref가 유효할 경우
@@ -37,6 +40,7 @@ export default function ROOT()
 				<Link to='/feature' title='feature'><FaMapMarkerAlt /> Feature</Link>
 				<Link to='/wfs' title='WFS'><FaMap /> WFS</Link>
 				<Link to='/wms' title='WMS'><FaMap /> WMS</Link>
+				<Link to='/feature-click' title='Feature Click'><FaMap /> Feature Click</Link>
 				<Link to='/wfs-popup' title='WFS Popup'><BiMessageSquareDetail /> WFS Popup</Link>
 				<Link to='/wms-popup' title='WMS Popup'><BiMessageSquareDetail /> WMS Popup</Link>
 				<Link to='/transaction-insert' title='WFS Transaction Insert'><FaPlusSquare /> WFS-T Insert</Link>

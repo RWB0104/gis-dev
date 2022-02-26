@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
 import MapInteraction, { Location } from '../components/map/MapInteraction';
+import Meta from '../components/global/Meta';
 
 /**
  * 지오 로케이션 페이지 JSX 반환 메서드
@@ -47,6 +48,8 @@ export default function Geolocation()
 
 	return (
 		<section id='geolocation' className='page'>
+			<Meta title='Geolocation' description='지오 로케이션 예제' url='/geolocation/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 

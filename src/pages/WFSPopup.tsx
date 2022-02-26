@@ -20,6 +20,7 @@ import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
 import { sejongPosition } from '../common/position';
 import { WFS_URL } from '../common/env';
+import Meta from '../components/global/Meta';
 
 /**
  * WFS 팝업 페이지 JSX 반환 메서드
@@ -144,6 +145,8 @@ export default function WFSPopup()
 
 	return (
 		<section id='wfs-popup' className='page'>
+			<Meta title='WFS Popup' description='WFS 팝업 표시 예제' url='/wfs-popup/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 

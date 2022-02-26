@@ -10,6 +10,7 @@ import { OSM as OSMLayer } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import React, { useEffect } from 'react';
 import proj4 from 'proj4';
+import Meta from '../components/global/Meta';
 
 /**
  * OSM 페이지 JSX 반환 메서드
@@ -41,6 +42,8 @@ export default function OSM()
 
 	return (
 		<section id='osm' className='page'>
+			<Meta title='OSM' description='OSM 베이스 지도 예제' url='/osm/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 			</article>

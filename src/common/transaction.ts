@@ -26,6 +26,11 @@ interface UpdateProps
 	geom: number[]
 }
 
+interface DeleteProps
+{
+	id: string | number
+}
+
 /**
  * WFS Transaction Insert API 응답 결과 반환 메서드
  *
@@ -45,7 +50,13 @@ export async function insertTransaction({ body, geom }: InsertProps)
 	coord.trim();
 
 	const xml = `
-	<wfs:Transaction xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
+	<wfs:Transaction
+		xmlns:wfs="http://www.opengis.net/wfs"
+		xmlns:gml="http://www.opengis.net/gml"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		service="WFS"
+		version="1.0.0"
+		xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
 		<wfs:Insert>
 			<buld_test>
 				${body?.name && `<name>${body.name}</name>`}
@@ -70,6 +81,13 @@ export async function insertTransaction({ body, geom }: InsertProps)
 	});
 }
 
+/**
+ * WFS Transaction Update API 응답 결과 반환 메서드
+ *
+ * @param {UpdateProps} param0: 프로퍼티
+ *
+ * @returns {Promise} API 응답
+ */
 export async function updateTransaction({ id, body, geom }: UpdateProps)
 {
 	let coord = '';
@@ -82,22 +100,55 @@ export async function updateTransaction({ id, body, geom }: UpdateProps)
 	coord.trim();
 
 	const xml = `
-	<wfs:Transaction xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
-		<wfs:Insert>
-			<buld_test>
-				${body?.name && `<name>${body.name}</name>`}
-				${body?.address && `<address>${body.address}</address>`}
-				<SHAPE>
-					<gml:Polygon srsName="EPSG:3857">
-						<gml:outerBoundaryIs>
-							<gml:LinearRing>
-								<gml:coordinates>${coord}</gml:coordinates>
-							</gml:LinearRing>
-						</gml:outerBoundaryIs>
-					</gml:Polygon>
-				</SHAPE>
-			</buld_test>
-		</wfs:Insert>
+	<wfs:Transaction
+		xmlns:wfs="http://www.opengis.net/wfs"
+		xmlns:gml="http://www.opengis.net/gml"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		service="WFS"
+		version="1.0.0"
+		xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
+		<wfs:Update>
+			<wfs:Property>
+				${body?.name && '<wfs:Name>name</wfs:Name>'}
+				${body?.name && `<wfs:Value>${body.name}</wfs:Value>`}
+				${body?.address && '<wfs:Name>address</wfs:Name>'}
+				${body?.address && `<wfs:Value>${body.address}</wfs:Value>`}
+			</wfs:Property>
+			<ogc:Filter>
+				<ogc:FeatureId fid="${id}"/>
+			</ogc:Filter>
+		</wfs:Update>
+	</wfs:Transaction>
+	`;
+
+	return fetch(WFS_URL, {
+		method: 'POST',
+		body: xml
+	});
+}
+
+/**
+ * WFS Transaction Delete API 응답 결과 반환 메서드
+ *
+ * @param {DeleteProps} param0: 프로퍼티
+ *
+ * @returns {Promise} API 응답
+ */
+export async function deleteTransaction({ id }: DeleteProps)
+{
+	const xml = `
+	<wfs:Transaction
+		xmlns:wfs="http://www.opengis.net/wfs"
+		xmlns:gml="http://www.opengis.net/gml"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		service="WFS"
+		version="1.0.0"
+		xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
+		<wfs:Delete typeName="buld_test">
+			<gml:Filter>
+				<gml:FeatureId fid="${id}" />
+			</gml:Filter>
+		</wfs:Delete>
 	</wfs:Transaction>
 	`;
 

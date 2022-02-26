@@ -17,6 +17,7 @@ import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
 import './WMS.scss';
 import { sejongPosition } from '../common/position';
 import { WMS_URL } from '../common/env';
+import Meta from '../components/global/Meta';
 
 /**
  * WMS 페이지 JSX 반환 메서드
@@ -60,6 +61,8 @@ export default function WMS()
 
 	return (
 		<section id='wms' className='page'>
+			<Meta title='WMS' description='WMS 레이어 예제' url='/wms/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 

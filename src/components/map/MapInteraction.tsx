@@ -6,6 +6,7 @@
  */
 
 import { Feature, Map, View } from 'ol';
+import Geometry from 'ol/geom/Geometry';
 import Point from 'ol/geom/Point';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
@@ -13,7 +14,7 @@ import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
 import proj4 from 'proj4';
 import { BiCurrentLocation } from 'react-icons/bi';
-import { FaHome, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaHome, FaPlus } from 'react-icons/fa';
 import { seoulPosition } from '../../common/position';
 import './MapInteraction.scss';
 
@@ -202,15 +203,35 @@ export function HomeButton({ map, position = seoulPosition }: SubProps2)
 	}
 }
 
+/**
+ * 폴리곤 추가 버튼 Element 반환 메서드
+ *
+ * @param {SubProps3} param0: 프로퍼티
+ *
+ * @returns {JSX.Element} Element
+ */
 export function AddPolygon({ map, drawend }: SubProps3)
 {
 	// 맵 객체가 유효할 경우
 	if (map)
 	{
-		const drawSource = new VectorSource();
+		let drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
+
+		// 드로우 벡터 레이어가 없을 경우
+		if (!drawLayer)
+		{
+			const drawSource = new VectorSource();
+
+			drawLayer = new VectorLayer({
+				source: drawSource,
+				properties: { name: 'draw' }
+			});
+
+			map.addLayer(drawLayer);
+		}
 
 		const drawInteraction = new Draw({
-			source: drawSource,
+			source: drawLayer.getSource(),
 			type: 'Polygon'
 		});
 
@@ -223,29 +244,27 @@ export function AddPolygon({ map, drawend }: SubProps3)
 			}
 		};
 
+		document.oncontextmenu = () =>
+		{
+			map.removeInteraction(drawInteraction);
+		};
+
 		const onClick = () =>
 		{
-			// 드로우 벡터 레이어가 없을 경우
-			if (map.getAllLayers().filter(layer => layer.get('name') === 'draw').length === 0)
+			drawInteraction.on('drawstart', () =>
 			{
-				const drawLayer = new VectorLayer({
-					source: drawSource,
-					properties: { name: 'draw' }
-				});
+				const source: VectorSource<Geometry> = drawLayer.getSource();
+				source.clear();
+			});
 
-				map.addLayer(drawLayer);
-
-				drawInteraction.on('drawstart', () => drawSource.clear());
-
-				// 드로우 종료 메서드가 있을 경우
-				if (drawend)
+			// 드로우 종료 메서드가 있을 경우
+			if (drawend)
+			{
+				drawInteraction.on('drawend', (e) =>
 				{
-					drawInteraction.on('drawend', (e) =>
-					{
-						drawend(e);
-						map.removeInteraction(drawInteraction);
-					});
-				}
+					drawend(e);
+					map.removeInteraction(drawInteraction);
+				});
 			}
 
 			map.addInteraction(drawInteraction);
@@ -263,6 +282,46 @@ export function AddPolygon({ map, drawend }: SubProps3)
 	}
 }
 
+export function UpdatePolygon({ map }: SubProps)
+{
+	// 맵 객체가 유효할 경우
+	if (map)
+	{
+		map.on('singleclick', (e) =>
+		{
+			// 해당 픽셀에 객체가 있을 경우
+			if (map.hasFeatureAtPixel(e.pixel))
+			{
+				map.forEachFeatureAtPixel(e.pixel, feature =>
+				{
+					// 해당 객체의 아이디가 buld_test으로 시작할 경우
+					if (feature.getId()?.toString().startsWith('buld_test'))
+					{
+						console.dir(feature);
+					}
+				});
+			}
+		});
+
+		return (
+			<button className='update' title='건물 갱신'><FaEdit size={20} color="white" /></button>
+		);
+	}
+
+	// 아닐 경우
+	else
+	{
+		return null;
+	}
+}
+
+/**
+ * 폴리곤 삭제 버튼 Element 반환 메서드
+ *
+ * @param {SubProps3} param0: 프로퍼티
+ *
+ * @returns {JSX.Element} Element
+ */
 export function DeletePolygon({ map }: SubProps)
 {
 	// 맵 객체가 유효할 경우

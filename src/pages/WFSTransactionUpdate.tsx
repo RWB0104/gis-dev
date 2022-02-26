@@ -1,8 +1,8 @@
 /**
- * WFS Transaction 삽입 페이지 컴포넌트
+ * WFS Transaction 갱신 페이지 컴포넌트
  *
  * @author RWB
- * @since 2022.02.23 Wed 01:02:51
+ * @since 2022.02.27 Sun 02:09:40
  */
 
 import { Feature, Map, Overlay, View } from 'ol';
@@ -15,7 +15,7 @@ import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
-import MapInteraction, { LocationWithMarker, HomeButton, AddPolygon } from '../components/map/MapInteraction';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
 import { seoulPosition } from '../common/position';
@@ -27,25 +27,24 @@ import './WFSTransactionInsert.scss';
 import VectorSource from 'ol/source/Vector';
 import { MdClose, MdAdd } from 'react-icons/md';
 import Meta from '../components/global/Meta';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { featureAtom } from '../common/atom';
 
 interface SubProps
 {
-	map?: Map
+	map?: Map,
+	feature?: Feature<Geometry>,
+	setFeature: React.Dispatch<React.SetStateAction<Feature<Geometry> | undefined>>
 }
 
 /**
- * WFS Transaction 삽입 페이지 JSX 반환 메서드
+ * WFS Transaction 갱신 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function WFSTransactionInsert()
+export default function WFSTransactionUpdate()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [ JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>> ];
-
-	const setFeatureState = useSetRecoilState(featureAtom);
+	const [ featureState, setFeatureState ] = useState(undefined) as [ Feature<Geometry> | undefined, React.Dispatch<React.SetStateAction<Feature<Geometry> | undefined>> ];
 
 	useEffect(() =>
 	{
@@ -163,45 +162,36 @@ export default function WFSTransactionInsert()
 	}, []);
 
 	return (
-		<section id='transaction-insert' className='page'>
-			<Meta title='WFS Transaction Insert' description='WFS 트랜잭션 추가 예제' url='/transaction-insert/' />
+		<section id='transaction-update' className='page'>
+			<Meta title='WFS Transaction Update' description='WFS 트랜잭션 갱신 예제' url='/transaction-update/' />
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
 				<MapInteraction>
-					<AddPolygon map={mapState} drawend={async (e) =>
-					{
-						const feature = e.feature as Feature<Geometry>;
-						setFeatureState(feature);
-					}} />
 					<HomeButton map={mapState} />
 					<LocationWithMarker map={mapState} />
 				</MapInteraction>
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState}>{popupState}</Popup>
-
-				<InsertForm map={mapState} />
+				<Popup map={mapState} onUpdateClick={() => console.dir(1)}>{popupState}</Popup>
 			</article>
 		</section>
 	);
 }
 
 /**
- * 추가 폼 Element 반환 메서드
+ * 갱신 폼 Element 반환 메서드
  *
  * @param {SubProps} param0: 프로퍼티
  *
  * @returns {JSX.Element} JSX
  */
-function InsertForm({ map }: SubProps)
+function UpdateForm({ map, feature, setFeature }: SubProps)
 {
-	const [ featureState, setFeatureState ] = useRecoilState(featureAtom);
-
 	return map ? (
-		<div className='insert-form' data-show={featureState !== undefined}>
+		<div className='update-form' data-show={feature !== undefined}>
 			<form
 				onSubmit={async (e) =>
 				{
@@ -210,7 +200,7 @@ function InsertForm({ map }: SubProps)
 					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
 					const drawSource = drawLayer.getSource() as VectorSource<Geometry>;
 
-					const feature = featureState as Feature<Geometry>;
+					const feature = drawSource.getFeatures()[0];
 					const polygon = feature.getGeometry() as Polygon;
 
 					const target = e.target as HTMLFormElement;
@@ -234,7 +224,7 @@ function InsertForm({ map }: SubProps)
 					map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource().refresh();
 
 					drawSource.clear();
-					setFeatureState(undefined);
+					setFeature(undefined);
 				}}
 				onReset={() =>
 				{
@@ -242,7 +232,7 @@ function InsertForm({ map }: SubProps)
 					const drawSource: VectorSource<Geometry> = drawLayer.getSource();
 					drawSource.clear();
 
-					setFeatureState(undefined);
+					setFeature(undefined);
 				}}>
 				<div className='form-row'>
 					<small>이름</small>

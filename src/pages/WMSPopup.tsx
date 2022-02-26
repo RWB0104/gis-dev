@@ -20,6 +20,7 @@ import { GeoJSON } from 'ol/format';
 import { getCenter } from 'ol/extent';
 import { sejongPosition } from '../common/position';
 import { WMS_URL } from '../common/env';
+import Meta from '../components/global/Meta';
 
 /**
  * WMS 팝업 페이지 JSX 반환 메서드
@@ -130,7 +131,9 @@ export default function WMS()
 	}, [ type ]);
 
 	return (
-		<section id='wms' className='page'>
+		<section id='wms-popup' className='page'>
+			<Meta title='WMS Popup' description='WMS 팝업 표시 예제' url='/WMS-popup/' />
+
 			<article className='map-wrapper'>
 				<div id='map'></div>
 

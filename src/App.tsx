@@ -16,9 +16,12 @@ import Geolocation from './pages/Geolocation';
 import Feature from './pages/Feature';
 import WFS from './pages/WFS';
 import WMS from './pages/WMS';
+import FeatureClick from './pages/FeatureClick';
 import WFSPopup from './pages/WFSPopup';
 import WMSPopup from './pages/WMSPopup';
 import WFSTransactionInsert from './pages/WFSTransactionInsert';
+import WFSTransactionUpdate from './pages/WFSTransactionUpdate';
+import WFSTransactionDelete from './pages/WFSTransactionDelete';
 import './App.scss';
 
 /**
@@ -48,9 +51,12 @@ export default function App()
 					<Route path='/feature/' component={Feature} />
 					<Route path='/wfs/' component={WFS} />
 					<Route path='/wms/' component={WMS} />
+					<Route path='/feature-click/' component={FeatureClick} />
 					<Route path='/wfs-popup/' component={WFSPopup} />
 					<Route path='/wms-popup/' component={WMSPopup} />
 					<Route path='/transaction-insert/' component={WFSTransactionInsert} />
+					<Route path='/transaction-update/' component={WFSTransactionUpdate} />
+					<Route path='/transaction-delete/' component={WFSTransactionDelete} />
 				</Switch>
 			</BrowserRouter>
 		</HelmetProvider>
