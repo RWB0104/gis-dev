@@ -6,8 +6,7 @@
  */
 
 import { Map } from 'ol';
-import { GrClose } from 'react-icons/gr';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdClose, MdDelete, MdEdit } from 'react-icons/md';
 import './Popup.scss';
 
 interface Props
@@ -36,7 +35,7 @@ export default function Popup({ map, children, onUpdateClick, onDeleteClick }: P
 				</div>
 
 				<div className='map-popup-header-right'>
-					<button onClick={() => map && map.getOverlayById('popup').setPosition(undefined)}><GrClose color='inherit' /></button>
+					<button onClick={() => map && map.getOverlayById('popup').setPosition(undefined)}><MdClose color='inherit' /></button>
 				</div>
 			</div>
 

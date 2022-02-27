@@ -23,11 +23,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:windows": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "build:linux": "GENERATE_SOURCEMAP=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dist": "yarn build && react-snap",
-    "dist:windows": "yarn build && react-snap && ./windows.bat",
-    "dist:linux": "yarn build && react-snap && mv build docs"
+    "dist:windows": "yarn build:windows && react-snap && ./windows.bat",
+    "dist:linux": "yarn build:linux && react-snap && mv build docs"
   },
   "browserslist": {
     "production": [

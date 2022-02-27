@@ -11,7 +11,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
-import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
@@ -20,6 +19,7 @@ import MapBoard from '../components/map/MapBoard';
 import { sejongPosition } from '../common/position';
 import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
+import { basicStyle } from '../common/style';
 
 /**
  * WFS 페이지 JSX 반환 메서드
@@ -45,24 +45,7 @@ export default function WFS()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(100, 149, 237, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('buld_nm')
-				})
-			}),
+			style: basicStyle,
 			minZoom: 15,
 			zIndex: 5
 		});

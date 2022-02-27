@@ -11,7 +11,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
-import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
@@ -21,6 +20,9 @@ import Popup from '../components/map/Popup';
 import { sejongPosition } from '../common/position';
 import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
+import { basicStyle, clickStyle, hoverStyle } from '../common/style';
+import { click, pointerMove } from 'ol/events/condition';
+import { defaults, Select } from 'ol/interaction';
 
 /**
  * WFS 팝업 페이지 JSX 반환 메서드
@@ -47,26 +49,19 @@ export default function WFSPopup()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(100, 149, 237, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('buld_nm')
-				})
-			}),
+			style: basicStyle,
 			minZoom: 15,
 			zIndex: 5
+		});
+
+		const hoverSelect = new Select({
+			condition: pointerMove,
+			style: hoverStyle
+		});
+
+		const clickSelect = new Select({
+			condition: click,
+			style: clickStyle
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -97,7 +92,8 @@ export default function WFSPopup()
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 19,
 				constrainResolution: true
-			})
+			}),
+			interactions: defaults().extend([ hoverSelect, clickSelect ])
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');

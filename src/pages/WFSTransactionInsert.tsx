@@ -29,6 +29,9 @@ import { MdClose, MdAdd } from 'react-icons/md';
 import Meta from '../components/global/Meta';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { featureAtom } from '../common/atom';
+import { basicStyle, clickStyle, hoverStyle } from '../common/style';
+import { defaults, Select } from 'ol/interaction';
+import { click, pointerMove } from 'ol/events/condition';
 
 interface SubProps
 {
@@ -62,29 +65,22 @@ export default function WFSTransactionInsert()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(100, 149, 237, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('name')
-				})
-			}),
+			style: basicStyle,
 			properties: {
 				name: 'wfs'
 			},
 			minZoom: 15,
 			zIndex: 5
+		});
+
+		const hoverSelect = new Select({
+			condition: pointerMove,
+			style: hoverStyle
+		});
+
+		const clickSelect = new Select({
+			condition: click,
+			style: clickStyle
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -115,7 +111,8 @@ export default function WFSTransactionInsert()
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
 				constrainResolution: true
-			})
+			}),
+			interactions: defaults().extend([ hoverSelect, clickSelect ])
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');

@@ -26,6 +26,9 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { featureIdAtom, showAtom } from '../common/atom';
 import { MdClose, MdDelete } from 'react-icons/md';
 import { deleteTransaction } from '../common/transaction';
+import { basicStyle, clickStyle, hoverStyle } from '../common/style';
+import { defaults, Select } from 'ol/interaction';
+import { click, pointerMove } from 'ol/events/condition';
 
 interface SubProps
 {
@@ -60,29 +63,22 @@ export default function WFSTransactionDelete()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(100, 149, 237, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('name')
-				})
-			}),
+			style: basicStyle,
 			properties: {
 				name: 'wfs'
 			},
 			minZoom: 15,
 			zIndex: 5
+		});
+
+		const hoverSelect = new Select({
+			condition: pointerMove,
+			style: hoverStyle
+		});
+
+		const clickSelect = new Select({
+			condition: click,
+			style: clickStyle
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -113,7 +109,8 @@ export default function WFSTransactionDelete()
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
 				constrainResolution: true
-			})
+			}),
+			interactions: defaults().extend([ hoverSelect, clickSelect ])
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');

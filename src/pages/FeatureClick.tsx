@@ -13,7 +13,6 @@ import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
-import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
@@ -22,6 +21,7 @@ import MapBoard from '../components/map/MapBoard';
 import { sejongPosition } from '../common/position';
 import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
+import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 
 /**
  * Feature 클릭 페이지 JSX 반환 메서드
@@ -47,70 +47,19 @@ export default function WFS()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(100, 149, 237, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('buld_nm')
-				})
-			}),
+			style: basicStyle,
 			minZoom: 15,
 			zIndex: 5
 		});
 
-		const clickSelect = new Select({
-			condition: click,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(0, 0, 0, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 1)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'yellow' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('buld_nm')
-				})
-			})
-		});
-
 		const hoverSelect = new Select({
 			condition: pointerMove,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(0, 0, 0, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('buld_nm')
-				})
-			})
+			style: hoverStyle
+		});
+
+		const clickSelect = new Select({
+			condition: click,
+			style: clickStyle
 		});
 
 		const map = new Map({
