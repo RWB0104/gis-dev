@@ -47,13 +47,13 @@ export default function OSM()
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
-			</article>
 
-			<SpeedWagon>
-				<p>이 페이지는 베이스 레이어를 <span>Open Street Map(OSM)</span>으로 표현한 예제 페이지지!</p>
-				<p>OpenLayers는 기본적으로 OSM 객체를 제공해주기 때문에, <span>세계지도를 쉽게 구현</span>할 수 있어.</p>
-				<p>직접 지도를 조작해 보도록!</p>
-			</SpeedWagon>
+				<SpeedWagon>
+					<p>이 페이지는 베이스 레이어를 <span>Open Street Map(OSM)</span>으로 표현한 예제 페이지지!</p>
+					<p>OpenLayers는 기본적으로 OSM 객체를 제공해주기 때문에, <span>세계지도를 쉽게 구현</span>할 수 있어.</p>
+					<p>직접 지도를 조작해 보도록!</p>
+				</SpeedWagon>
+			</article>
 		</section>
 	);
 }

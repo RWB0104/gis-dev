@@ -7,10 +7,10 @@
 
 import { Link } from 'react-router-dom';
 import { BiCurrentLocation, BiMessageSquareDetail } from 'react-icons/bi';
-import { FaInfoCircle, FaMap, FaMapMarkedAlt, FaMapMarkerAlt, FaMinusSquare, FaPenSquare, FaPlusSquare } from 'react-icons/fa';
+import { FaInfoCircle, FaMap, FaMapMarkedAlt, FaMapMarkerAlt, FaMinusSquare, FaPenSquare, FaPlusSquare, FaTemperatureHigh } from 'react-icons/fa';
 import './ROOT.scss';
 import Meta from '../components/global/Meta';
-import { MdAdsClick } from 'react-icons/md';
+import { MdAdsClick, MdOutlineGroupWork } from 'react-icons/md';
 
 /**
  * 루트 페이지 JSX 반환 메서드
@@ -44,7 +44,8 @@ export default function ROOT()
 				<Link to='/transaction-insert' title='WFS Transaction Insert'><FaPlusSquare /> WFS-T Insert</Link>
 				<Link to='/transaction-update' title='WFS Transaction Update'><FaPenSquare /> WFS-T Update</Link>
 				<Link to='/transaction-delete' title='WFS Transaction Delete'><FaMinusSquare /> WFS-T Delete</Link>
-				<Link to='/advanced' title='Advanced Map'><FaMinusSquare /> Advanced Map</Link>
+				<Link to='/cluster-map' title='Cluster Map'><MdOutlineGroupWork /> Cluster Map</Link>
+				<Link to='/heat-map' title='Heat Map'><FaTemperatureHigh /> Heat Map</Link>
 			</article>
 		</section>
 	);

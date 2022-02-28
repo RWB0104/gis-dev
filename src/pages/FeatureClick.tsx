@@ -97,16 +97,16 @@ export default function WFS()
 				</MapInteraction>
 
 				<MapBoard map={mapState} />
+
+				<SpeedWagon>
+					<p>내가 이전에 Feature는 상호작용이 가능하다고 얘기했던가?</p>
+					<p>WFS는 Feature로 표현하기 때문에 지도에 UX를 적용할 수 있다!</p>
+					<br />
+
+					<p><span>Select</span> 객체를 통해 <span>상호작용에 따라 Feature의 스타일</span>을 바꿀 수 있지.</p>
+					<p><span>마우스 호버</span>, <span>클릭</span>에 대한 상호작용이 구현되어 있으니 한 번 해보도록!</p>
+				</SpeedWagon>
 			</article>
-
-			<SpeedWagon>
-				<p>내가 이전에 Feature는 상호작용이 가능하다고 얘기했던가?</p>
-				<p>WFS는 Feature로 표현하기 때문에 지도에 UX를 적용할 수 있다!</p>
-				<br />
-
-				<p><span>Select</span> 객체를 통해 <span>상호작용에 따라 Feature의 스타일</span>을 바꿀 수 있지.</p>
-				<p><span>마우스 호버</span>, <span>클릭</span>에 대한 상호작용이 구현되어 있으니 한 번 해보도록!</p>
-			</SpeedWagon>
 		</section>
 	);
 }

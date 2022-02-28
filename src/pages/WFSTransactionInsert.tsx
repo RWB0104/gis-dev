@@ -75,11 +75,13 @@ export default function WFSTransactionInsert()
 
 		const hoverSelect = new Select({
 			condition: pointerMove,
+			filter: feature => feature.getId() !== undefined,
 			style: feature => hoverStyle(feature, 'name')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
+			filter: feature => feature.getId() !== undefined,
 			style: feature => clickStyle(feature, 'name')
 		});
 
@@ -167,10 +169,11 @@ export default function WFSTransactionInsert()
 				<div id='map'></div>
 
 				<MapInteraction>
-					<AddPolygon map={mapState} drawend={async (e) =>
+					<AddPolygon map={mapState} drawend={(e) =>
 					{
 						const feature = e.feature as Feature<Geometry>;
-						setFeatureState(feature);
+
+						setFeatureState(feature.clone());
 					}} />
 					<HomeButton map={mapState} />
 					<LocationWithMarker map={mapState} />
@@ -181,20 +184,20 @@ export default function WFSTransactionInsert()
 				<Popup map={mapState}>{popupState}</Popup>
 
 				<InsertForm map={mapState} />
+
+				<SpeedWagon>
+					<p><span>Transaction</span>이란 놈들은 지금껏 봐왔던 예제들과는 수준이 좀 다를거야..</p>
+					<p>지금까지는 단순한 조회에 불과했다면, 이 놈은 트랜잭션이라는 이름에 걸맞게 <span>CUD를 수행</span>할 수 있는 녀석이다!</p>
+					<br />
+
+					<p>그 중 <span>WFS-T Insert는 지도에 피쳐를 추가</span>할 수 있지.</p>
+					<p>좌측 하단의 <MdAdd /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보게.</p>
+					<p>네가 만든 도형이 추가되는 것을 직접 볼 수 있을거야.</p>
+					<br />
+
+					<p>만약 그리는 걸 취소하고 싶다면 <span>ESC</span> 혹은 <span>마우스 오른쪽 버튼</span>을 클릭하도록!</p>
+				</SpeedWagon>
 			</article>
-
-			<SpeedWagon>
-				<p><span>Transaction</span>이란 놈들은 지금껏 봐왔던 예제들과는 수준이 좀 다를거야..</p>
-				<p>지금까지는 단순한 조회에 불과했다면, 이 놈은 트랜잭션이라는 이름에 걸맞게 <span>CUD를 수행</span>할 수 있는 녀석이다!</p>
-				<br />
-
-				<p>그 중 <span>WFS-T Insert는 지도에 피쳐를 추가</span>할 수 있지.</p>
-				<p>좌측 하단의 <MdAdd /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보게.</p>
-				<p>네가 만든 도형이 추가되는 것을 직접 볼 수 있을거야.</p>
-				<br />
-
-				<p>이 놈의 잠재력이 보이나?</p>
-			</SpeedWagon>
 		</section>
 	);
 }

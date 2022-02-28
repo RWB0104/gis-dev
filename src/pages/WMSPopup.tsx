@@ -151,16 +151,16 @@ export default function WMS()
 				<MapBoard map={mapState} />
 
 				<Popup map={mapState}>{popupState}</Popup>
+
+				<SpeedWagon>
+					<p>WMS도 마찬가지로 팝업을 구현할 수 있다네.</p>
+					<p>물론 Feature가 아닌 순수 이미지인 탓에, 방식은 조금 다르다는 것을 기억해야하네.</p>
+					<p>OGC 표준의 <span>GetFeatureInfo</span>를 통해 현재 지도 상의 Feature 데이터를 호출할 수 있지.</p>
+					<br />
+
+					<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값</span>을 별도로 불러온다는 차이를 반드시 알아두게!</p>
+				</SpeedWagon>
 			</article>
-
-			<SpeedWagon>
-				<p>WMS도 마찬가지로 팝업을 구현할 수 있다네.</p>
-				<p>물론 Feature가 아닌 순수 이미지인 탓에, 방식은 조금 다르다는 것을 기억해야하네.</p>
-				<p>OGC 표준의 <span>GetFeatureInfo</span>를 통해 현재 지도 상의 Feature 데이터를 호출할 수 있지.</p>
-				<br />
-
-				<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값</span>을 별도로 불러온다는 차이를 반드시 알아두게!</p>
-			</SpeedWagon>
 		</section>
 	);
 }

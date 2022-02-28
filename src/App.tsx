@@ -22,6 +22,8 @@ import WMSPopup from './pages/WMSPopup';
 import WFSTransactionInsert from './pages/WFSTransactionInsert';
 import WFSTransactionUpdate from './pages/WFSTransactionUpdate';
 import WFSTransactionDelete from './pages/WFSTransactionDelete';
+import ClusterMap from './pages/ClusterMap';
+import HeatMap from './pages/HeatMap';
 import './App.scss';
 
 /**
@@ -57,6 +59,8 @@ export default function App()
 					<Route path='/transaction-insert/' component={WFSTransactionInsert} />
 					<Route path='/transaction-update/' component={WFSTransactionUpdate} />
 					<Route path='/transaction-delete/' component={WFSTransactionDelete} />
+					<Route path='/cluster-map/' component={ClusterMap} />
+					<Route path='/heat-map/' component={HeatMap} />
 				</Switch>
 			</BrowserRouter>
 		</HelmetProvider>

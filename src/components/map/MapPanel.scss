@@ -1,0 +1,56 @@
+.map-panel {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+
+	padding: 10px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	background-color: white;
+	border: 1px solid gainsboro;
+	border-radius: 10px;
+
+	box-shadow: 3px 3px 10px grey;
+	box-sizing: border-box;
+
+	width: 270px;
+	height: 170px;
+
+	overflow: hidden;
+
+	transition: width 0.3s, height 0.3s;
+
+	.item {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+
+		&[data-name=header] {
+			display: block;
+
+			button {
+				padding: 5px;
+				box-sizing: border-box;
+
+				border: transparent;
+				background-color: transparent;
+
+				cursor: pointer;
+			}
+		}
+	}
+
+	&[data-show=false] {
+		width: 30px;
+		height: 30px;
+
+		padding: 2px;
+
+		border-radius: 4px;
+
+		transition: width 0.3s, height 0.3s;
+	}
+}

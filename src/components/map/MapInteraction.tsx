@@ -262,8 +262,8 @@ export function AddPolygon({ map, drawend }: SubProps3)
 			{
 				drawInteraction.on('drawend', (e) =>
 				{
-					drawend(e);
 					map.removeInteraction(drawInteraction);
+					drawend(e);
 				});
 			}
 

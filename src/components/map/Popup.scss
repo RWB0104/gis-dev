@@ -28,6 +28,31 @@
 	}
 
 	.map-popup-body {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+
+		.thumbnail {
+			position: relative;
+
+			width: 100%;
+			overflow: hidden;
+
+			padding-bottom: 100%;
+
+			img {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+
+				object-fit: cover;
+				object-position: center;
+
+				border: 1px solid gainsboro;
+				border-radius: 10px;
+			}
+		}
+
 		ul {
 			margin-left: 20px;
 
@@ -41,6 +66,10 @@
 				a {
 					color: cornflowerblue;
 					text-decoration: underline;
+
+					&[data-tel=true] {
+						color: green;
+					}
 				}
 			}
 		}

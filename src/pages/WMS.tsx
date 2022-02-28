@@ -78,25 +78,25 @@ export default function WMS()
 				</MapInteraction>
 
 				<MapBoard map={mapState} />
+
+				<SpeedWagon>
+					<p><span>WMS</span>란 놈은 WFS랑 비슷하지만, 실상은 전혀 다르네.</p>
+					<p>WMS는 데이터를 지도 상에 Feature가 아닌 <span>온전한 그림으로 표시</span>한다.</p>
+					<p>즉, 컴퓨터 입장에선 지도와 동일한 완전한 이미지기 때문에 <span>상호작용이 불가능</span>하다네!</p>
+					<p>사용하는 API 형식은 OGC표준의 <span>GetImage</span>다!</p>
+					<br />
+
+					<p><span>Tile</span>과 <span>Image</span> 방식이 존재한다.</p>
+
+					<ul>
+						<li><b>Tile</b>: 이미지를 <span>여러 타일</span>로 배치한다. 한 화면의 지도에 여러 데이터를 잘게 불러오므로 용량이 작아서 빠르지만, 요청 횟수가 많아진다.</li>
+						<li><b>Image</b>: 이미지를 <span>하나의 큰 통짜 이미지</span>로 배치한다. 한꺼번에 불러오므로 용량이 커서 굼뜨지만, 요청 횟수를 줄일 수 있다.</li>
+					</ul>
+
+					<p>좌측 상단에서 레이어의 종류를 선택해보도록!</p>
+					<p>스타일은 코드 상이 아닌 GeoServer에서 SLD 형태로 미리 지정해둔다.</p>
+				</SpeedWagon>
 			</article>
-
-			<SpeedWagon>
-				<p><span>WMS</span>란 놈은 WFS랑 비슷하지만, 실상은 전혀 다르네.</p>
-				<p>WMS는 데이터를 지도 상에 Feature가 아닌 <span>온전한 그림으로 표시</span>한다.</p>
-				<p>즉, 컴퓨터 입장에선 지도와 동일한 완전한 이미지기 때문에 <span>상호작용이 불가능</span>하다네!</p>
-				<p>사용하는 API 형식은 OGC표준의 <span>GetImage</span>다!</p>
-				<br />
-
-				<p><span>Tile</span>과 <span>Image</span> 방식이 존재한다.</p>
-
-				<ul>
-					<li><b>Tile</b>: 이미지를 <span>여러 타일</span>로 배치한다. 한 화면의 지도에 여러 데이터를 잘게 불러오므로 용량이 작아서 빠르지만, 요청 횟수가 많아진다.</li>
-					<li><b>Image</b>: 이미지를 <span>하나의 큰 통짜 이미지</span>로 배치한다. 한꺼번에 불러오므로 용량이 커서 굼뜨지만, 요청 횟수를 줄일 수 있다.</li>
-				</ul>
-
-				<p>좌측 상단에서 레이어의 종류를 선택해보도록!</p>
-				<p>스타일은 코드 상이 아닌 GeoServer에서 SLD 형태로 미리 지정해둔다.</p>
-			</SpeedWagon>
 		</section>
 	);
 }

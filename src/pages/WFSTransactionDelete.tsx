@@ -182,15 +182,15 @@ export default function WFSTransactionDelete()
 				}}>{popupState}</Popup>
 
 				<DeleteForm map={mapState} />
+
+				<SpeedWagon>
+					<p>이 놈은 <span>지도 상의 도형을 삭제</span>할 수 있다네.</p>
+					<p>Feature를 클릭하고 <MdDelete /> 버튼을 눌러 Feature를 삭제해보라고.</p>
+					<br />
+
+					<p>이 페이지는 하나만 삭제할 수 있도록 구성되어있지만, 네가 구성하기에 따라 조건에 맞는 여러 Feature를 동시에 삭제할 수도 있다는 걸 알아두도록.</p>
+				</SpeedWagon>
 			</article>
-
-			<SpeedWagon>
-				<p>이 놈은 <span>지도 상의 도형을 삭제</span>할 수 있다네.</p>
-				<p>Feature를 클릭하고 <MdDelete /> 버튼을 눌러 Feature를 삭제해보라고.</p>
-				<br />
-
-				<p>이 페이지는 하나만 삭제할 수 있도록 구성되어있지만, 네가 구성하기에 따라 조건에 맞는 여러 Feature를 동시에 삭제할 수도 있다는 걸 알아두도록.</p>
-			</SpeedWagon>
 		</section>
 	);
 }

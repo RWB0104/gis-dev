@@ -30,13 +30,11 @@ import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
 import { useSetRecoilState } from 'recoil';
-import { featureIdAtom, showAtom } from '../common/atom';
+import { featureAtom, featureIdAtom, showAtom } from '../common/atom';
 
 interface SubProps
 {
-	map?: Map,
-	feature?: Feature<Geometry>,
-	setFeature: React.Dispatch<React.SetStateAction<Feature<Geometry> | undefined>>
+	map?: Map
 }
 
 /**
@@ -49,7 +47,7 @@ export default function WFSTransactionUpdate()
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [ JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>> ];
 
-	const setFeatureIdState = useSetRecoilState(featureIdAtom);
+	const setFeatureState = useSetRecoilState(featureAtom);
 	const setShowState = useSetRecoilState(showAtom);
 
 	useEffect(() =>
@@ -145,9 +143,9 @@ export default function WFSTransactionUpdate()
 								</ul>
 							));
 
-							setFeatureIdState(feature.getId());
-
 							overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
+
+							setFeatureState(feature);
 						}
 					}
 				});
@@ -158,7 +156,7 @@ export default function WFSTransactionUpdate()
 			{
 				overlay.setPosition(undefined);
 
-				setFeatureIdState(undefined);
+				setFeatureState(undefined);
 			}
 		});
 
@@ -179,11 +177,13 @@ export default function WFSTransactionUpdate()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState} onDeleteClick={() =>
+				<Popup map={mapState} onUpdateClick={() =>
 				{
 					setShowState(true);
 					mapState.getOverlayById('popup').setPosition(undefined);
 				}}>{popupState}</Popup>
+
+				<UpdateForm map={mapState} />
 			</article>
 		</section>
 	);
@@ -196,51 +196,14 @@ export default function WFSTransactionUpdate()
  *
  * @returns {JSX.Element} JSX
  */
-function UpdateForm({ map, feature, setFeature }: SubProps)
+function UpdateForm({ map }: SubProps)
 {
 	return map ? (
-		<div className='update-form' data-show={feature !== undefined}>
+		<div className='update-form' data-show={false}>
 			<form
 				onSubmit={async (e) =>
 				{
 					e.preventDefault();
-
-					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
-					const drawSource = drawLayer.getSource() as VectorSource<Geometry>;
-
-					const feature = drawSource.getFeatures()[0];
-					const polygon = feature.getGeometry() as Polygon;
-
-					const target = e.target as HTMLFormElement;
-
-					const name = target.querySelector('[name=name]') as HTMLInputElement;
-					const address = target.querySelector('[name=address]') as HTMLInputElement;
-
-					const response = await insertTransaction({
-						body: {
-							name: name.value,
-							address: address.value
-						},
-						geom: polygon.getFlatCoordinates()
-					});
-
-					if (!response.ok)
-					{
-						alert('추가 실패');
-					}
-
-					map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource().refresh();
-
-					drawSource.clear();
-					setFeature(undefined);
-				}}
-				onReset={() =>
-				{
-					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
-					const drawSource: VectorSource<Geometry> = drawLayer.getSource();
-					drawSource.clear();
-
-					setFeature(undefined);
 				}}>
 				<div className='form-row'>
 					<small>이름</small>
