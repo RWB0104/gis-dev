@@ -11,7 +11,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
-import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
@@ -29,6 +28,7 @@ import { deleteTransaction } from '../common/transaction';
 import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 interface SubProps
 {
@@ -63,7 +63,7 @@ export default function WFSTransactionDelete()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: basicStyle,
+			style: feature => basicStyle(feature, 'name'),
 			properties: {
 				name: 'wfs'
 			},
@@ -73,12 +73,12 @@ export default function WFSTransactionDelete()
 
 		const hoverSelect = new Select({
 			condition: pointerMove,
-			style: hoverStyle
+			style: feature => hoverStyle(feature, 'name')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
-			style: clickStyle
+			style: feature => clickStyle(feature, 'name')
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -162,8 +162,8 @@ export default function WFSTransactionDelete()
 	}, []);
 
 	return (
-		<section id='transaction-update' className='page'>
-			<Meta title='WFS Transaction Update' description='WFS 트랜잭션 갱신 예제' url='/transaction-update/' />
+		<section id='transaction-delete' className='page'>
+			<Meta title='WFS Transaction Delete' description='WFS 트랜잭션 삭제 예제' url='/transaction-delete/' />
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
@@ -183,6 +183,14 @@ export default function WFSTransactionDelete()
 
 				<DeleteForm map={mapState} />
 			</article>
+
+			<SpeedWagon>
+				<p>이 놈은 <span>지도 상의 도형을 삭제</span>할 수 있다네.</p>
+				<p>Feature를 클릭하고 <MdDelete /> 버튼을 눌러 Feature를 삭제해보라고.</p>
+				<br />
+
+				<p>이 페이지는 하나만 삭제할 수 있도록 구성되어있지만, 네가 구성하기에 따라 조건에 맞는 여러 Feature를 동시에 삭제할 수도 있다는 걸 알아두도록.</p>
+			</SpeedWagon>
 		</section>
 	);
 }

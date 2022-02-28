@@ -11,7 +11,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
-import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
@@ -32,6 +31,7 @@ import { featureAtom } from '../common/atom';
 import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 interface SubProps
 {
@@ -65,7 +65,7 @@ export default function WFSTransactionInsert()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: basicStyle,
+			style: feature => basicStyle(feature, 'name'),
 			properties: {
 				name: 'wfs'
 			},
@@ -75,12 +75,12 @@ export default function WFSTransactionInsert()
 
 		const hoverSelect = new Select({
 			condition: pointerMove,
-			style: hoverStyle
+			style: feature => hoverStyle(feature, 'name')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
-			style: clickStyle
+			style: feature => clickStyle(feature, 'name')
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -182,6 +182,19 @@ export default function WFSTransactionInsert()
 
 				<InsertForm map={mapState} />
 			</article>
+
+			<SpeedWagon>
+				<p><span>Transaction</span>이란 놈들은 지금껏 봐왔던 예제들과는 수준이 좀 다를거야..</p>
+				<p>지금까지는 단순한 조회에 불과했다면, 이 놈은 트랜잭션이라는 이름에 걸맞게 <span>CUD를 수행</span>할 수 있는 녀석이다!</p>
+				<br />
+
+				<p>그 중 <span>WFS-T Insert는 지도에 피쳐를 추가</span>할 수 있지.</p>
+				<p>좌측 하단의 <MdAdd /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보게.</p>
+				<p>네가 만든 도형이 추가되는 것을 직접 볼 수 있을거야.</p>
+				<br />
+
+				<p>이 놈의 잠재력이 보이나?</p>
+			</SpeedWagon>
 		</section>
 	);
 }

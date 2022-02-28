@@ -11,7 +11,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
-import { Style, Stroke, Fill, Text } from 'ol/style';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import { EPSG5179, EPSG5181 } from '../common/proj';
@@ -27,6 +26,11 @@ import './WFSTransactionInsert.scss';
 import VectorSource from 'ol/source/Vector';
 import { MdClose, MdAdd } from 'react-icons/md';
 import Meta from '../components/global/Meta';
+import { basicStyle, clickStyle, hoverStyle } from '../common/style';
+import { defaults, Select } from 'ol/interaction';
+import { click, pointerMove } from 'ol/events/condition';
+import { useSetRecoilState } from 'recoil';
+import { featureIdAtom, showAtom } from '../common/atom';
 
 interface SubProps
 {
@@ -44,7 +48,9 @@ export default function WFSTransactionUpdate()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [ JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>> ];
-	const [ featureState, setFeatureState ] = useState(undefined) as [ Feature<Geometry> | undefined, React.Dispatch<React.SetStateAction<Feature<Geometry> | undefined>> ];
+
+	const setFeatureIdState = useSetRecoilState(featureIdAtom);
+	const setShowState = useSetRecoilState(showAtom);
 
 	useEffect(() =>
 	{
@@ -61,29 +67,22 @@ export default function WFSTransactionUpdate()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: (feature) => new Style({
-				stroke: new Stroke({
-					color: 'rgba(100, 149, 237, 1)',
-					width: 2
-				}),
-				fill: new Fill({
-					color: 'rgba(100, 149, 237, 0.6)'
-				}),
-				text: new Text({
-					font: '0.8rem sans-serif',
-					fill: new Fill({ color: 'white' }),
-					stroke: new Stroke({
-						color: 'rgba(0, 0, 0, 1)',
-						width: 4
-					}),
-					text: feature.get('name')
-				})
-			}),
+			style: feature => basicStyle(feature, 'name'),
 			properties: {
 				name: 'wfs'
 			},
 			minZoom: 15,
 			zIndex: 5
+		});
+
+		const hoverSelect = new Select({
+			condition: pointerMove,
+			style: feature => hoverStyle(feature, 'name')
+		});
+
+		const clickSelect = new Select({
+			condition: click,
+			style: feature => clickStyle(feature, 'name')
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -114,7 +113,8 @@ export default function WFSTransactionUpdate()
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
 				constrainResolution: true
-			})
+			}),
+			interactions: defaults().extend([ hoverSelect, clickSelect ])
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
@@ -145,6 +145,8 @@ export default function WFSTransactionUpdate()
 								</ul>
 							));
 
+							setFeatureIdState(feature.getId());
+
 							overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
 						}
 					}
@@ -155,6 +157,8 @@ export default function WFSTransactionUpdate()
 			else
 			{
 				overlay.setPosition(undefined);
+
+				setFeatureIdState(undefined);
 			}
 		});
 
@@ -175,7 +179,11 @@ export default function WFSTransactionUpdate()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState} onUpdateClick={() => console.dir(1)}>{popupState}</Popup>
+				<Popup map={mapState} onDeleteClick={() =>
+				{
+					setShowState(true);
+					mapState.getOverlayById('popup').setPosition(undefined);
+				}}>{popupState}</Popup>
 			</article>
 		</section>
 	);

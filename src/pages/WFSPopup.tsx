@@ -23,6 +23,7 @@ import Meta from '../components/global/Meta';
 import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { click, pointerMove } from 'ol/events/condition';
 import { defaults, Select } from 'ol/interaction';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 /**
  * WFS 팝업 페이지 JSX 반환 메서드
@@ -49,19 +50,19 @@ export default function WFSPopup()
 
 		const wfsLayer = new VectorLayer({
 			source: wfs,
-			style: basicStyle,
+			style: feature => basicStyle(feature, 'buld_nm'),
 			minZoom: 15,
 			zIndex: 5
 		});
 
 		const hoverSelect = new Select({
 			condition: pointerMove,
-			style: hoverStyle
+			style: feature => hoverStyle(feature, 'buld_nm')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
-			style: clickStyle
+			style: feature => clickStyle(feature, 'buld_nm')
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -155,6 +156,16 @@ export default function WFSPopup()
 
 				<Popup map={mapState}>{popupState}</Popup>
 			</article>
+
+			<SpeedWagon>
+				<p>이전에 지도를 사용해봤다면, 지도의 요소 데이터를 보여주는 팝업을 본 적이 있겠지?</p>
+				<p>이 페이지에선 WFS를 통해 <span>호출한 Feature의 팝업</span>을 구현한다!</p>
+				<br />
+
+				<p>이미 WFS를 통해 지도에 표시되는 Feature의 정보를 가지고 있으므로, 클릭 시 해당 Feature를 계산하여 값을 보여주기만 하면 된다.</p>
+				<p>팝업은 미리 HTML 태그를 작성해두고, OL의 <span>Overlay</span>로 사용하는 방식이야.</p>
+				<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 유심있게 봐도록 하라고.</p>
+			</SpeedWagon>
 		</section>
 	);
 }

@@ -17,10 +17,11 @@ import Text from 'ol/style/Text';
  * 기본 스타일 반환 메서드
  *
  * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
  *
  * @returns {Style} 스타일
  */
-export function basicStyle(feature: RenderFeature | Feature<Geometry>)
+export function basicStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
 		stroke: new Stroke({
@@ -37,7 +38,7 @@ export function basicStyle(feature: RenderFeature | Feature<Geometry>)
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
 			}),
-			text: feature.get('buld_nm')
+			text: feature.get(labelColumn)
 		})
 	});
 }
@@ -46,10 +47,11 @@ export function basicStyle(feature: RenderFeature | Feature<Geometry>)
  * 호버 스타일 반환 메서드
  *
  * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
  *
  * @returns {Style} 스타일
  */
-export function hoverStyle(feature: RenderFeature | Feature<Geometry>)
+export function hoverStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
 		stroke: new Stroke({
@@ -66,7 +68,7 @@ export function hoverStyle(feature: RenderFeature | Feature<Geometry>)
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
 			}),
-			text: feature.get('buld_nm')
+			text: feature.get(labelColumn)
 		})
 	});
 }
@@ -75,10 +77,11 @@ export function hoverStyle(feature: RenderFeature | Feature<Geometry>)
  * 클릭 스타일 반환 메서드
  *
  * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
  *
  * @returns {Style} 스타일
  */
-export function clickStyle(feature: RenderFeature | Feature<Geometry>)
+export function clickStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
 		stroke: new Stroke({
@@ -95,7 +98,7 @@ export function clickStyle(feature: RenderFeature | Feature<Geometry>)
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
 			}),
-			text: feature.get('buld_nm')
+			text: feature.get(labelColumn)
 		})
 	});
 }
