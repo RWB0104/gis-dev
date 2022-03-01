@@ -6,14 +6,12 @@
  */
 
 import { Feature, Map, Overlay, View } from 'ol';
-import { OSM, Vector } from 'ol/source';
+import { Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton, AddPolygon } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
@@ -22,7 +20,6 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import { insertTransaction } from '../common/transaction';
 import { WFS_URL } from '../common/env';
-import './WFSTransactionInsert.scss';
 import VectorSource from 'ol/source/Vector';
 import { MdClose, MdAdd } from 'react-icons/md';
 import Meta from '../components/global/Meta';
@@ -32,6 +29,8 @@ import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import './WFSTransactionInsert.scss';
 
 interface SubProps
 {
@@ -54,9 +53,6 @@ export default function WFSTransactionInsert()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
-
 		const wfs = new Vector({
 			format: new GeoJSON(),
 			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_test&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
@@ -66,11 +62,9 @@ export default function WFSTransactionInsert()
 		const wfsLayer = new VectorLayer({
 			source: wfs,
 			style: feature => basicStyle(feature, 'name'),
-			properties: {
-				name: 'wfs'
-			},
 			minZoom: 15,
-			zIndex: 5
+			zIndex: 5,
+			properties: { name: 'wfs' }
 		});
 
 		const hoverSelect = new Select({
@@ -99,22 +93,18 @@ export default function WFSTransactionInsert()
 		});
 
 		const map = new Map({
-			layers: [
-				wfsLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
+			interactions: defaults().extend([ hoverSelect, clickSelect ]),
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 19,
-				constrainResolution: true
-			}),
-			interactions: defaults().extend([ hoverSelect, clickSelect ])
+				zoom: 18,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
+			})
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
@@ -191,7 +181,7 @@ export default function WFSTransactionInsert()
 					<br />
 
 					<p>그 중 <span>WFS-T Insert는 지도에 피쳐를 추가</span>할 수 있지.</p>
-					<p>좌측 하단의 <MdAdd /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보게.</p>
+					<p>좌측 하단의 <MdAdd color='crimson' /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보게.</p>
 					<p>네가 만든 도형이 추가되는 것을 직접 볼 수 있을거야.</p>
 					<br />
 

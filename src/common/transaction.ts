@@ -103,20 +103,37 @@ export async function updateTransaction({ id, body, geom }: UpdateProps)
 	<wfs:Transaction
 		xmlns:wfs="http://www.opengis.net/wfs"
 		xmlns:gml="http://www.opengis.net/gml"
+		xmlns:ogc="http://www.opengis.net/ogc"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		service="WFS"
 		version="1.0.0"
 		xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
-		<wfs:Update>
-			<wfs:Property>
-				${body?.name && '<wfs:Name>name</wfs:Name>'}
-				${body?.name && `<wfs:Value>${body.name}</wfs:Value>`}
-				${body?.address && '<wfs:Name>address</wfs:Name>'}
-				${body?.address && `<wfs:Value>${body.address}</wfs:Value>`}
-			</wfs:Property>
-			<ogc:Filter>
-				<ogc:FeatureId fid="${id}"/>
-			</ogc:Filter>
+		<wfs:Update typeName="buld_test">
+			${body?.name && `<wfs:Property>
+				<wfs:Name>name</wfs:Name>
+				<wfs:Value>${body.name}</wfs:Value>
+			</wfs:Property>`}
+
+			${body?.address && `<wfs:Property>
+				<wfs:Name>address</wfs:Name>
+				<wfs:Value>${body.address}</wfs:Value>
+			</wfs:Property>`}
+
+			${body?.address && `<wfs:Property>
+				<wfs:Name>SHAPE</wfs:Name>
+				<wfs:Value>
+					<gml:Polygon srsName="EPSG:3857">
+						<gml:outerBoundaryIs>
+							<gml:LinearRing>
+								<gml:coordinates>${coord}</gml:coordinates>
+							</gml:LinearRing>
+						</gml:outerBoundaryIs>
+					</gml:Polygon>
+				</wfs:Value>
+			</wfs:Property>`}
+			<gml:Filter>
+				<gml:FeatureId fid="${id}" />
+			</gml:Filter>
 		</wfs:Update>
 	</wfs:Transaction>
 	`;

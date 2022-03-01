@@ -11,6 +11,7 @@ import { FaInfoCircle, FaMap, FaMapMarkedAlt, FaMapMarkerAlt, FaMinusSquare, FaP
 import './ROOT.scss';
 import Meta from '../components/global/Meta';
 import { MdAdsClick, MdOutlineGroupWork } from 'react-icons/md';
+import { GiSouthKorea } from 'react-icons/gi';
 
 /**
  * 루트 페이지 JSX 반환 메서드
@@ -33,7 +34,7 @@ export default function ROOT()
 			<article>
 				<h3>List</h3>
 				<Link to='/osm' title='OSM'><FaMapMarkedAlt /> OSM</Link>
-				<Link to='/vworld' title='VWorld'><FaInfoCircle /> VWorld</Link>
+				<Link to='/vworld' title='VWorld'><GiSouthKorea /> VWorld</Link>
 				<Link to='/map-info' title='MapInfo'><FaInfoCircle /> MapInfo</Link>
 				<Link to='/geolocation' title='Geolocation'><BiCurrentLocation /> Geolocation</Link>
 				<Link to='/feature' title='feature'><FaMapMarkerAlt /> Feature</Link>

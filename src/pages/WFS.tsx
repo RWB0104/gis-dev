@@ -6,14 +6,12 @@
  */
 
 import { Map, View } from 'ol';
-import { OSM, Vector } from 'ol/source';
+import { Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { sejongPosition } from '../common/position';
@@ -21,6 +19,8 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import { basicStyle } from '../common/style';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { FaHome } from 'react-icons/fa';
 
 /**
  * WFS 페이지 JSX 반환 메서드
@@ -35,9 +35,6 @@ export default function WFS()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
-
 		const wfs = new Vector({
 			format: new GeoJSON(),
 			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
@@ -48,23 +45,20 @@ export default function WFS()
 			source: wfs,
 			style: feature => basicStyle(feature, 'buld_nm'),
 			minZoom: 15,
-			zIndex: 5
+			zIndex: 5,
+			properties: { name: 'wfs' }
 		});
 
 		const map = new Map({
-			layers: [
-				wfsLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 19,
-				constrainResolution: true
+				zoom: 17,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
 			})
 		});
 
@@ -98,6 +92,9 @@ export default function WFS()
 					<p>여기 세종시의 건물 데이터를 준비했으니, 한 번 확인해보도록!</p>
 					<p>건물의 <span>스타일은 코드 상에서 얼마든지 구현이 가능</span>하다.</p>
 					<p><span>건물 데이터의 값에 따라 디자인을 다르게 표현</span>하는 것도 가능하다걸 알아두는 것도 좋겠지.</p>
+					<br />
+
+					<p>아, 갑자기 생긴 <FaHome color='dodgerblue' />는 맵의 초기 위치로 가는 버튼이야. 크게 중요한 건 아니니 알아만 둬.</p>
 				</SpeedWagon>
 			</article>
 		</section>

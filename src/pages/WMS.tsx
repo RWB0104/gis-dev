@@ -6,7 +6,7 @@
  */
 
 import { Map, View } from 'ol';
-import { ImageWMS, OSM, TileWMS } from 'ol/source';
+import { ImageWMS, TileWMS } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
@@ -14,11 +14,13 @@ import ImageLayer from 'ol/layer/Image';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
-import './WMS.scss';
 import { sejongPosition } from '../common/position';
 import { WMS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import MapPanel from '../components/map/MapPanel';
+import './WMS.scss';
 
 /**
  * WMS 페이지 JSX 반환 메서드
@@ -35,19 +37,15 @@ export default function WMS()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				}),
-				getLayer(type)
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, getLayer(type) ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 19,
-				constrainResolution: true
+				zoom: 17,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
 			})
 		});
 
@@ -56,7 +54,7 @@ export default function WMS()
 
 	useEffect(() =>
 	{
-		mapState.getAllLayers().filter(layer => layer.get('id') === 'wms').forEach(layer => mapState.removeLayer(layer));
+		mapState.getAllLayers().filter(layer => layer.get('name') === 'wms').forEach(layer => mapState.removeLayer(layer));
 		mapState.addLayer(getLayer(type));
 	}, [ type ]);
 
@@ -67,10 +65,12 @@ export default function WMS()
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
-				<div className='wms-board'>
-					<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
-					<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
-				</div>
+				<MapPanel map={mapState} width={230} height={85}>
+					<div className='item'>
+						<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
+						<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
+					</div>
+				</MapPanel>
 
 				<MapInteraction>
 					<HomeButton map={mapState} position={sejongPosition} />
@@ -124,9 +124,8 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 				serverType: 'geoserver'
 			}),
 			minZoom: 15,
-			properties: {
-				id: 'wms'
-			}
+			properties: { name: 'wms' },
+			zIndex: 5
 		});
 	}
 
@@ -142,9 +141,8 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 				serverType: 'geoserver'
 			}),
 			minZoom: 15,
-			properties: {
-				id: 'wms'
-			}
+			properties: { name: 'wms' },
+			zIndex: 5
 		});
 	}
 }

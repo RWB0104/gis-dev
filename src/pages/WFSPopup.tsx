@@ -6,14 +6,12 @@
  */
 
 import { Map, Overlay, View } from 'ol';
-import { OSM, Vector } from 'ol/source';
+import { Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
@@ -24,6 +22,7 @@ import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { click, pointerMove } from 'ol/events/condition';
 import { defaults, Select } from 'ol/interaction';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * WFS 팝업 페이지 JSX 반환 메서드
@@ -39,9 +38,6 @@ export default function WFSPopup()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
-
 		const wfs = new Vector({
 			format: new GeoJSON(),
 			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
@@ -52,7 +48,8 @@ export default function WFSPopup()
 			source: wfs,
 			style: feature => basicStyle(feature, 'buld_nm'),
 			minZoom: 15,
-			zIndex: 5
+			zIndex: 5,
+			properties: { name: 'wfs' }
 		});
 
 		const hoverSelect = new Select({
@@ -79,22 +76,18 @@ export default function WFSPopup()
 		});
 
 		const map = new Map({
-			layers: [
-				wfsLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
+			interactions: defaults().extend([ clickSelect, hoverSelect ]),
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 19,
-				constrainResolution: true
-			}),
-			interactions: defaults().extend([ hoverSelect, clickSelect ])
+				zoom: 17,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
+			})
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
@@ -161,9 +154,9 @@ export default function WFSPopup()
 					<p>이 페이지에선 WFS를 통해 <span>호출한 Feature의 팝업</span>을 구현한다!</p>
 					<br />
 
-					<p>이미 WFS를 통해 지도에 표시되는 Feature의 정보를 가지고 있으므로, 클릭 시 해당 Feature를 계산하여 값을 보여주기만 하면 된다.</p>
+					<p>이미 WFS를 통해 지도에 표시되는 Feature의 정보를 가지고 있으므로, 클릭 시 해당 Feature가 가진 값을 보여주기만 하면 된다.</p>
 					<p>팝업은 미리 HTML 태그를 작성해두고, OL의 <span>Overlay</span>로 사용하는 방식이야.</p>
-					<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 유심있게 봐도록 하라고.</p>
+					<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 유심있게 보도록 하라고.</p>
 				</SpeedWagon>
 			</article>
 		</section>

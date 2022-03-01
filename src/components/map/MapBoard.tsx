@@ -32,7 +32,7 @@ export default function MapBoard({ map }: Props)
 		const [ show, setShow ] = useState(true);
 		const [ epsg, setEpsg ] = useState('');
 
-		const [ layerState, setLayerState ] = useState('vworld-base');
+		const [ layerState, setLayerState ] = useState('base-vworld-base');
 		const [ extState, setExtState ] = useState(true);
 
 		const showZoom = () =>
@@ -56,24 +56,28 @@ export default function MapBoard({ map }: Props)
 
 		useEffect(() =>
 		{
-			map.getAllLayers().filter(layer => layer.get('name') === 'base' && layer.get('id') !== 'vworld-hybrid').forEach(layer => map.removeLayer(layer));
+			map.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('base-vworld')).forEach(layer => map.removeLayer(layer));
 
 			switch (layerState)
 			{
-				case 'vworld-gray':
+				case 'base-vworld-base':
+					map.addLayer(vworldBaseLayer);
+					break;
+
+				case 'base-vworld-gray':
 					map.addLayer(vworldGrayLayer);
 					break;
 
-				case 'vworld-midnight':
+				case 'base-vworld-midnight':
 					map.addLayer(vworldMidnightLayer);
 					break;
 
-				case 'vworld-satellite':
+				case 'base-vworld-satellite':
 					map.addLayer(vworldSatelliteLayer);
 					break;
 
 				default:
-					map.addLayer(vworldBaseLayer);
+					setExtState(false);
 					break;
 			}
 		}, [ layerState ]);
@@ -89,7 +93,7 @@ export default function MapBoard({ map }: Props)
 			// 확장 레이어를 삭제할 경우
 			else
 			{
-				map.getAllLayers().filter(layer => layer.get('id') === 'vworld-hybrid').forEach(layer => map.removeLayer(layer));
+				map.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('ext')).forEach(layer => map.removeLayer(layer));
 			}
 		}, [ extState ]);
 
@@ -158,11 +162,11 @@ export default function MapBoard({ map }: Props)
 						<small>layer</small>
 
 						<select value={layerState} onChange={(e) => setLayerState(e.target.value)}>
-							<option value='osm'>OSM</option>
-							<option value='vworld-base'>VWorld 기본</option>
-							<option value='vworld-gray'>VWorld 흑백</option>
-							<option value='vworld-midnight'>VWorld 야간</option>
-							<option value='vworld-satellite'>VWorld 위성</option>
+							<option value='base-osm'>OSM</option>
+							<option value='base-vworld-base'>VWorld 기본</option>
+							<option value='base-vworld-gray'>VWorld 흑백</option>
+							<option value='base-vworld-midnight'>VWorld 야간</option>
+							<option value='base-vworld-satellite'>VWorld 위성</option>
 						</select>
 					</div>
 

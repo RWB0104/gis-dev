@@ -12,8 +12,8 @@ import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
 import { vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer } from '../common/layers';
 import MapPanel from '../components/map/MapPanel';
-import './VWorld.scss';
 import { seoulPosition } from '../common/position';
+import './VWorld.scss';
 
 /**
  * VWorld 페이지 JSX 반환 메서드
@@ -23,7 +23,7 @@ import { seoulPosition } from '../common/position';
 export default function VWorld()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
-	const [ layerState, setLayerState ] = useState('vworld-base');
+	const [ layerState, setLayerState ] = useState('base-vworld-base');
 	const [ extState, setExtState ] = useState(true);
 
 	useEffect(() =>
@@ -50,19 +50,19 @@ export default function VWorld()
 
 	useEffect(() =>
 	{
-		mapState.getAllLayers().filter(layer => layer.get('name') === 'base' && layer.get('id') !== 'vworld-hybrid').forEach(layer => mapState.removeLayer(layer));
+		mapState.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('base-vworld')).forEach(layer => mapState.removeLayer(layer));
 
 		switch (layerState)
 		{
-			case 'vworld-gray':
+			case 'base-vworld-gray':
 				mapState.addLayer(vworldGrayLayer);
 				break;
 
-			case 'vworld-midnight':
+			case 'base-vworld-midnight':
 				mapState.addLayer(vworldMidnightLayer);
 				break;
 
-			case 'vworld-satellite':
+			case 'base-vworld-satellite':
 				mapState.addLayer(vworldSatelliteLayer);
 				break;
 
@@ -83,7 +83,7 @@ export default function VWorld()
 		// 확장 레이어를 삭제할 경우
 		else
 		{
-			mapState.getAllLayers().filter(layer => layer.get('id') === 'vworld-hybrid').forEach(layer => mapState.removeLayer(layer));
+			mapState.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('ext')).forEach(layer => mapState.removeLayer(layer));
 		}
 	}, [ extState ]);
 
@@ -112,7 +112,7 @@ export default function VWorld()
 
 					<div className='item'>
 						<div className='label'>
-							<small>확장 레이어</small>
+							<small>확장</small>
 						</div>
 
 						<div className='body'>

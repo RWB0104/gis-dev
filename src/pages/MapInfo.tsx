@@ -33,7 +33,7 @@ export default function MapInfo()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 19,
+				zoom: 17,
 				constrainResolution: true,
 				smoothResolutionConstraint: true,
 				smoothExtentConstraint: true
@@ -60,12 +60,15 @@ export default function MapInfo()
 					<p>우측 하단의 정보창을 주목해라! 너를 위해 도움이 될 만한 것을 챙겨왔다.</p>
 
 					<ul>
+						<li>베이스 맵 종류</li>
+						<li>베이스 확장 맵 활성화 여부</li>
 						<li>좌표계</li>
 						<li>줌 레벨</li>
 						<li>현재 영역</li>
 						<li>마우스 위치</li>
 					</ul>
 
+					<p>메뉴 간소화를 위해 VWorld 페이지 좌측 상단의 메뉴를 통합했으니 당황하지 말라구.</p>
 					<p>View 객체와 이벤트를 적절히 활용하면 <span>현재 맵의 정보를 실시간으로 표현</span>이 가능하단걸 기억하도록!</p>
 				</SpeedWagon>
 			</article>

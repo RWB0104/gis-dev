@@ -316,46 +316,6 @@ export function UpdatePolygon({ map }: SubProps)
 }
 
 /**
- * 폴리곤 삭제 버튼 Element 반환 메서드
- *
- * @param {SubProps3} param0: 프로퍼티
- *
- * @returns {JSX.Element} Element
- */
-export function DeletePolygon({ map }: SubProps)
-{
-	// 맵 객체가 유효할 경우
-	if (map)
-	{
-		map.on('singleclick', (e) =>
-		{
-			// 해당 픽셀에 객체가 있을 경우
-			if (map.hasFeatureAtPixel(e.pixel))
-			{
-				map.forEachFeatureAtPixel(e.pixel, feature =>
-				{
-					// 해당 객체의 아이디가 buld_test으로 시작할 경우
-					if (feature.getId()?.toString().startsWith('buld_test'))
-					{
-						console.dir(feature);
-					}
-				});
-			}
-		});
-
-		return (
-			<button className='delete' title='건물 삭제'><FaPlus size={20} color="white" /></button>
-		);
-	}
-
-	// 아닐 경우
-	else
-	{
-		return null;
-	}
-}
-
-/**
  * 비행 애니메이션 메서드
  *
  * @param {View} view: 뷰 객체

@@ -5,32 +5,33 @@
  * @since 2022.02.27 Sun 02:09:40
  */
 
-import { Feature, Map, Overlay, View } from 'ol';
-import { OSM, Vector } from 'ol/source';
+import { Collection, Feature, Map, Overlay, View } from 'ol';
+import { Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
 import { seoulPosition } from '../common/position';
-import Geometry from 'ol/geom/Geometry';
-import Polygon from 'ol/geom/Polygon';
-import { insertTransaction } from '../common/transaction';
 import { WFS_URL } from '../common/env';
 import './WFSTransactionInsert.scss';
-import VectorSource from 'ol/source/Vector';
-import { MdClose, MdAdd } from 'react-icons/md';
+import { MdClose, MdAdd, MdEdit } from 'react-icons/md';
 import Meta from '../components/global/Meta';
 import { basicStyle, clickStyle, hoverStyle } from '../common/style';
-import { defaults, Select } from 'ol/interaction';
+import { defaults, Modify, Select, Snap } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
-import { useSetRecoilState } from 'recoil';
-import { featureAtom, featureIdAtom, showAtom } from '../common/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { featureIdAtom, showAtom } from '../common/atom';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import Geometry from 'ol/geom/Geometry';
+import './WFSTransactionUpdate.scss';
+import VectorSource from 'ol/source/Vector';
+import Polygon from 'ol/geom/Polygon';
+import { updateTransaction } from '../common/transaction';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 interface SubProps
 {
@@ -47,15 +48,12 @@ export default function WFSTransactionUpdate()
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [ JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>> ];
 
-	const setFeatureState = useSetRecoilState(featureAtom);
+	const [ featureIdState, setFeatureIdState ] = useRecoilState(featureIdAtom);
 	const setShowState = useSetRecoilState(showAtom);
 
 	useEffect(() =>
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
-
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
@@ -66,21 +64,25 @@ export default function WFSTransactionUpdate()
 		const wfsLayer = new VectorLayer({
 			source: wfs,
 			style: feature => basicStyle(feature, 'name'),
-			properties: {
-				name: 'wfs'
-			},
 			minZoom: 15,
-			zIndex: 5
+			zIndex: 5,
+			properties: { name: 'wfs' }
 		});
 
 		const hoverSelect = new Select({
 			condition: pointerMove,
+			filter: feature => feature.getId() !== undefined,
 			style: feature => hoverStyle(feature, 'name')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
+			filter: feature => feature.getId() !== undefined,
 			style: feature => clickStyle(feature, 'name')
+		});
+
+		const snap = new Snap({
+			source: wfs
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -97,22 +99,18 @@ export default function WFSTransactionUpdate()
 		});
 
 		const map = new Map({
-			layers: [
-				wfsLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
+			interactions: defaults().extend([ hoverSelect, clickSelect, snap ]),
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 19,
-				constrainResolution: true
-			}),
-			interactions: defaults().extend([ hoverSelect, clickSelect ])
+				zoom: 18,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
+			})
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
@@ -143,9 +141,15 @@ export default function WFSTransactionUpdate()
 								</ul>
 							));
 
+							const name = document.querySelector('[name=name]') as HTMLInputElement;
+							const address = document.querySelector('[name=address]') as HTMLInputElement;
+
+							name.value = feature.get('name');
+							address.value = feature.get('address');
+
 							overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
 
-							setFeatureState(feature);
+							setFeatureIdState(feature.getId());
 						}
 					}
 				});
@@ -156,7 +160,7 @@ export default function WFSTransactionUpdate()
 			{
 				overlay.setPosition(undefined);
 
-				setFeatureState(undefined);
+				setFeatureIdState(undefined);
 			}
 		});
 
@@ -179,11 +183,48 @@ export default function WFSTransactionUpdate()
 
 				<Popup map={mapState} onUpdateClick={() =>
 				{
-					setShowState(true);
+					const source: VectorSource<Geometry> = mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource();
+
+					const features = new Collection<Feature<Geometry>>();
+					features.push(source.getFeatures().filter(e => e.getId() === featureIdState)[0]);
+
+					const modify = new Modify({
+						source: mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource()
+					});
+
+					document.oncontextmenu = () =>
+					{
+						mapState.removeInteraction(modify);
+
+						setShowState(true);
+					};
+
+					document.onkeyup = (e) =>
+					{
+						// ESC를 눌렀을 경우
+						if (e.key.toLowerCase() === 'escape')
+						{
+							mapState.removeInteraction(modify);
+
+							setShowState(true);
+						}
+					};
+
+					mapState.addInteraction(modify);
+
 					mapState.getOverlayById('popup').setPosition(undefined);
 				}}>{popupState}</Popup>
 
 				<UpdateForm map={mapState} />
+
+				<SpeedWagon>
+					<p><span>Transaction Update</span>를 통해 데이터를 수정할 수도 있다!</p>
+					<p>팝업의 <MdEdit color='dodgerblue' />를 클릭해서 도형이나 데이터를 수정할 수 있다네.</p>
+					<br />
+
+					<p>도형을 수정하고 오른쪽 마우스 혹은 ESC를 클릭해서 도형 수정을 종료할 수 있지.</p>
+					<p>이후 변경하려는 데이터의 값을 입력하면 끝일세!</p>
+				</SpeedWagon>
 			</article>
 		</section>
 	);
@@ -198,12 +239,54 @@ export default function WFSTransactionUpdate()
  */
 function UpdateForm({ map }: SubProps)
 {
+	const [ showState, setShowState ] = useRecoilState(showAtom);
+	const [ featureIdState, setFeatureIdState ] = useRecoilState(featureIdAtom);
+
 	return map ? (
-		<div className='update-form' data-show={false}>
+		<div className='update-form' data-show={showState}>
 			<form
 				onSubmit={async (e) =>
 				{
 					e.preventDefault();
+
+					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0];
+					const drawSource = drawLayer.getSource() as VectorSource<Geometry>;
+
+					const feature = drawSource.getFeatureById(featureIdState as string);
+					const polygon = feature.getGeometry() as Polygon;
+
+					const target = e.target as HTMLFormElement;
+
+					const name = target.querySelector('[name=name]') as HTMLInputElement;
+					const address = target.querySelector('[name=address]') as HTMLInputElement;
+
+					const response = await updateTransaction({
+						id: feature.getId() as string,
+						body: {
+							name: name.value,
+							address: address.value
+						},
+						geom: polygon.getFlatCoordinates()
+					});
+
+					if (!response.ok)
+					{
+						alert('추가 실패');
+					}
+
+					map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource().refresh();
+
+					setShowState(false);
+					setFeatureIdState(undefined);
+				}}
+				onReset={() =>
+				{
+					const drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0];
+					const drawSource: VectorSource<Geometry> = drawLayer.getSource();
+					drawSource.refresh();
+
+					setShowState(false);
+					setFeatureIdState(undefined);
 				}}>
 				<div className='form-row'>
 					<small>이름</small>

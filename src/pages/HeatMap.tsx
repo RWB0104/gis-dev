@@ -6,14 +6,12 @@
  */
 
 import { Map, View } from 'ol';
-import { OSM, Vector } from 'ol/source';
+import { Vector } from 'ol/source';
 import { Heatmap } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { sejongPosition, seoulPosition } from '../common/position';
@@ -21,6 +19,7 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
 import MapPanel from '../components/map/MapPanel';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import './ClusterMap.scss';
 
 /**
@@ -41,9 +40,6 @@ export default function HeatMap()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
-
 		const wfs = new Vector({
 			format: new GeoJSON(),
 			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:point_starbucks&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
@@ -59,19 +55,15 @@ export default function HeatMap()
 		});
 
 		const map = new Map({
-			layers: [
-				heatLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, heatLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 13,
-				constrainResolution: true
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
 			})
 		});
 
@@ -103,13 +95,13 @@ export default function HeatMap()
 	}, [ radiusState ]);
 
 	return (
-		<section id='cluster-map' className='page'>
-			<Meta title='Cluster Map' description='클러스터 맵 예제' url='/cluster-map/' />
+		<section id='heat-map' className='page'>
+			<Meta title='Heat Map' description='히트 맵 예제' url='/heat-map/' />
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
-				<MapPanel map={mapState}>
+				<MapPanel map={mapState} width={220} height={155}>
 					<div className='item'>
 						<div className='head'>
 							<small>블러 (blur)</small>
@@ -147,20 +139,18 @@ export default function HeatMap()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>여기 대한민국의 스타벅스 위치 데이터를 가져왔다!</p>
-					<p>정말 많은 지점이 있지만, 이 모든 지점을 한 눈에 보기는 네놈도 어려울거다.</p>
+					<p>때론 나무 보단 숲을 볼 때가 더욱 중요한 때가 있지.</p>
+					<p>Feature를 하나하나 보는 것도 좋지만, 데이터의 분포나 패턴을 분석하는 게 훨씬 유의미할 때가 있다!</p>
 					<br />
 
-					<p>이 때 <span>Cluster Map</span>을 활용하면 지점을 효과적으로 그룹화하여 표시할 수 있지!</p>
-					<p>다행히 구현하는 방법도 그리 어렵지 않을거다!</p>
+					<p><span>Heat Map은 지도 상의 데이터를 열 분포 형태로 표현</span>해준다.</p>
+					<p>각 Feature 하나하나를 파악하기 어렵지만, Feature의 전체적인 흐름을 볼 수 있다!</p>
+					<p>Cluster Map과 마찬가지로 구현 난이도도 그리 어렵지 않다.</p>
 					<br />
 
-					<p>우측 상단 패널에서 그룹화할 <span>Feature의 기준 거리를 조절</span>할 수 있다.</p>
-					<p>데이터가 많아도 그룹화로 인해 Feature의 수가 줄어들어 <span>동작이 빨라진다</span>는 점을 알아두도록!</p>
-					<br />
-
-					<p>하지만 스타일링을 구현하는 덴 조금 신경을 써줘야 할걸세.</p>
-					<p>Feature를 그룹화하는 것 이외엔 나머지와 다를 바 없으니 너무 겁먹지들 말라고.</p>
+					<p>예를 들어, 스타벅스는 강원도, 특히 강원도 아랫지방엔 거의 입점하지 않고 있다는 걸 파악할 수 있지.</p>
+					<p>반면 서울, 특히 강남과 시청 지역은 그 수가 매우 많은 것이 보이나?</p>
+					<p>같은 데이터도 관점에 따라 얻을 수 있는 정보가 달라질 수 있다는 걸 기억하도록!</p>
 				</SpeedWagon>
 			</article>
 		</section>

@@ -6,16 +6,14 @@
  */
 
 import { Map, View } from 'ol';
-import { OSM, Vector } from 'ol/source';
+import { Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import { EPSG5179, EPSG5181 } from '../common/proj';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import { sejongPosition } from '../common/position';
@@ -23,6 +21,7 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * Feature 클릭 페이지 JSX 반환 메서드
@@ -37,9 +36,6 @@ export default function WFS()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		proj4.defs(EPSG5179.name, EPSG5179.proj);
-		proj4.defs(EPSG5181.name, EPSG5181.proj);
-
 		const wfs = new Vector({
 			format: new GeoJSON(),
 			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
@@ -50,7 +46,8 @@ export default function WFS()
 			source: wfs,
 			style: feature => basicStyle(feature, 'buld_nm'),
 			minZoom: 15,
-			zIndex: 5
+			zIndex: 5,
+			properties: { name: 'wfs' }
 		});
 
 		const hoverSelect = new Select({
@@ -64,21 +61,17 @@ export default function WFS()
 		});
 
 		const map = new Map({
-			layers: [
-				wfsLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			target: 'map',
+			interactions: defaults().extend([ clickSelect, hoverSelect ]),
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 19,
-				constrainResolution: true
-			}),
-			interactions: defaults().extend([ clickSelect, hoverSelect ])
+				zoom: 17,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
+			})
 		});
 
 		setMapState(map);

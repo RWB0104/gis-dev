@@ -6,7 +6,7 @@
  */
 
 import { Map, Overlay, View } from 'ol';
-import { ImageWMS, OSM, TileWMS, Vector } from 'ol/source';
+import { ImageWMS, TileWMS, Vector } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
@@ -15,13 +15,15 @@ import MapInteraction, { LocationWithMarker, HomeButton } from '../components/ma
 import MapBoard from '../components/map/MapBoard';
 import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
 import Popup from '../components/map/Popup';
-import './WMS.scss';
+import './WMSPopup.scss';
 import { GeoJSON } from 'ol/format';
 import { getCenter } from 'ol/extent';
 import { sejongPosition } from '../common/position';
 import { WMS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import MapPanel from '../components/map/MapPanel';
 
 /**
  * WMS 팝업 페이지 JSX 반환 메서드
@@ -52,20 +54,16 @@ export default function WMS()
 		});
 
 		const map = new Map({
-			layers: [
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				}),
-				getLayer(type)
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, getLayer(type) ],
 			overlays: [ overlay ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 19,
-				constrainResolution: true
+				zoom: 17,
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
 			})
 		});
 
@@ -127,7 +125,7 @@ export default function WMS()
 
 	useEffect(() =>
 	{
-		mapState.getAllLayers().filter(layer => layer.get('id') === 'wms').forEach(layer => mapState.removeLayer(layer));
+		mapState.getAllLayers().filter(layer => layer.get('name') === 'wms').forEach(layer => mapState.removeLayer(layer));
 		mapState.addLayer(getLayer(type));
 	}, [ type ]);
 
@@ -138,10 +136,12 @@ export default function WMS()
 			<article className='map-wrapper'>
 				<div id='map'></div>
 
-				<div className='wms-board'>
-					<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
-					<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
-				</div>
+				<MapPanel map={mapState} width={230} height={85}>
+					<div className='item'>
+						<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
+						<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
+					</div>
+				</MapPanel>
 
 				<MapInteraction>
 					<HomeButton map={mapState} position={sejongPosition} />
@@ -158,7 +158,7 @@ export default function WMS()
 					<p>OGC 표준의 <span>GetFeatureInfo</span>를 통해 현재 지도 상의 Feature 데이터를 호출할 수 있지.</p>
 					<br />
 
-					<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값</span>을 별도로 불러온다는 차이를 반드시 알아두게!</p>
+					<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값을 별도로 불러오는 과정</span>이 있다는 걸 반드시 알아두게!</p>
 				</SpeedWagon>
 			</article>
 		</section>
@@ -188,9 +188,8 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 				serverType: 'geoserver'
 			}),
 			minZoom: 15,
-			properties: {
-				id: 'wms'
-			}
+			properties: { name: 'wms' },
+			zIndex: 5
 		});
 	}
 
@@ -206,9 +205,8 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 				serverType: 'geoserver'
 			}),
 			minZoom: 15,
-			properties: {
-				id: 'wms'
-			}
+			properties: { name: 'wms' },
+			zIndex: 5
 		});
 	}
 }
