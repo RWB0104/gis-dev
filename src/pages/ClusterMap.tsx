@@ -6,10 +6,8 @@
  */
 
 import { Map, Overlay, View } from 'ol';
-import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
-import { Cluster, OSM, Vector } from 'ol/source';
+import { Cluster, Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import TileLayer from 'ol/layer/Tile';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
 import React, { useEffect, useState } from 'react';
@@ -20,13 +18,14 @@ import MapBoard from '../components/map/MapBoard';
 import { sejongPosition, seoulPosition } from '../common/position';
 import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
-import { poiBasicStyle, poiClickStyle, poiHoverStyle } from '../common/style';
+import { clusterBasicStyle, starbucksBasicStyle, starbucksClickStyle, starbucksHoverStyle } from '../common/style';
 import SpeedWagon from '../components/map/SpeedWagon';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
 import Popup from '../components/map/Popup';
 import MapPanel from '../components/map/MapPanel';
 import './ClusterMap.scss';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * 클러스터 맵 페이지 JSX 반환 메서드
@@ -60,9 +59,9 @@ export default function ClusterMap()
 			distance: defaultDistance
 		});
 
-		const wfsLayer = new AnimatedCluster({
+		const wfsLayer = new VectorLayer({
 			source: clusterSource,
-			style: feature => poiBasicStyle(feature, 'name'),
+			style: feature => feature.get('features').length > 1 ? clusterBasicStyle(feature) : starbucksBasicStyle(feature, 'name'),
 			zIndex: 5,
 			properties: { name: 'wfs' }
 		});
@@ -70,13 +69,13 @@ export default function ClusterMap()
 		const hoverSelect = new Select({
 			condition: pointerMove,
 			filter: feature => feature.get('features').length === 1,
-			style: feature => poiHoverStyle(feature, 'name')
+			style: feature => starbucksHoverStyle(feature, 'name')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
 			filter: feature => feature.get('features').length === 1,
-			style: feature => poiClickStyle(feature, 'name')
+			style: feature => starbucksClickStyle(feature, 'name')
 		});
 
 		const popup = document.querySelector('.map-popup') as HTMLElement | null;
@@ -94,13 +93,7 @@ export default function ClusterMap()
 		});
 
 		const map = new Map({
-			layers: [
-				wfsLayer,
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
 			view: new View({

@@ -33,6 +33,7 @@ export default function ROOT()
 			<article>
 				<h3>List</h3>
 				<Link to='/osm' title='OSM'><FaMapMarkedAlt /> OSM</Link>
+				<Link to='/vworld' title='VWorld'><FaInfoCircle /> VWorld</Link>
 				<Link to='/map-info' title='MapInfo'><FaInfoCircle /> MapInfo</Link>
 				<Link to='/geolocation' title='Geolocation'><BiCurrentLocation /> Geolocation</Link>
 				<Link to='/feature' title='feature'><FaMapMarkerAlt /> Feature</Link>

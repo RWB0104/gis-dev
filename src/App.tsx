@@ -11,6 +11,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/header/Header';
 import ROOT from './pages/ROOT';
 import OSM from './pages/OSM';
+import VWorld from './pages/VWorld';
 import MapInfo from './pages/MapInfo';
 import Geolocation from './pages/Geolocation';
 import Feature from './pages/Feature';
@@ -48,6 +49,7 @@ export default function App()
 				<Switch>
 					<Route exact path='/' component={ROOT} />
 					<Route path='/osm/' component={OSM} />
+					<Route path='/vworld/' component={VWorld} />
 					<Route path='/map-info/' component={MapInfo} />
 					<Route path='/geolocation/' component={Geolocation} />
 					<Route path='/feature/' component={Feature} />

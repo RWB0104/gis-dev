@@ -6,12 +6,12 @@
  */
 
 import { Map, View } from 'ol';
-import { OSM as OSMLayer } from 'ol/source';
-import TileLayer from 'ol/layer/Tile';
 import React, { useEffect } from 'react';
 import proj4 from 'proj4';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer } from '../common/layers';
+import { seoulPosition } from '../common/position';
 
 /**
  * OSM 페이지 JSX 반환 메서드
@@ -25,18 +25,15 @@ export default function OSM()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		new Map({
-			layers: [
-				new TileLayer({
-					source: new OSMLayer({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
-				center: proj4('EPSG:4326', 'EPSG:3857', [ 126.9779495953371, 37.566340091156945 ]),
+				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
-				constrainResolution: true
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
 			})
 		});
 	}, []);
@@ -50,7 +47,7 @@ export default function OSM()
 
 				<SpeedWagon>
 					<p>이 페이지는 베이스 레이어를 <span>Open Street Map(OSM)</span>으로 표현한 예제 페이지지!</p>
-					<p>OpenLayers는 기본적으로 OSM 객체를 제공해주기 때문에, <span>세계지도를 쉽게 구현</span>할 수 있어.</p>
+					<p>OpenLayers는 기본적으로 OSM 객체를 제공해주기 때문에, <span>세계지도를 쉽게 구현</span>할 수 있다.</p>
 					<p>직접 지도를 조작해 보도록!</p>
 				</SpeedWagon>
 			</article>

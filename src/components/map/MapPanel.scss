@@ -16,36 +16,25 @@
 	box-shadow: 3px 3px 10px grey;
 	box-sizing: border-box;
 
-	width: 270px;
-	height: 170px;
-
 	overflow: hidden;
 
 	transition: width 0.3s, height 0.3s;
 
-	.item {
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
+	.header {
+		button {
+			padding: 5px;
+			box-sizing: border-box;
 
-		&[data-name=header] {
-			display: block;
+			border: transparent;
+			background-color: transparent;
 
-			button {
-				padding: 5px;
-				box-sizing: border-box;
-
-				border: transparent;
-				background-color: transparent;
-
-				cursor: pointer;
-			}
+			cursor: pointer;
 		}
 	}
 
 	&[data-show=false] {
-		width: 30px;
-		height: 30px;
+		width: 30px !important;
+		height: 30px !important;
 
 		padding: 2px;
 

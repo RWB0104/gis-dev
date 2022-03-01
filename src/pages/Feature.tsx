@@ -15,6 +15,7 @@ import Meta from '../components/global/Meta';
 import MapInteraction, { LocationWithMarker } from '../components/map/MapInteraction';
 import SpeedWagon from '../components/map/SpeedWagon';
 import { BiCurrentLocation } from 'react-icons/bi';
+import { seoulPosition } from '../common/position';
 
 /**
  * 피쳐 페이지 JSX 반환 메서드
@@ -39,7 +40,7 @@ export default function Feature()
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
-				center: proj4('EPSG:4326', 'EPSG:3857', [ 126.9779495953371, 37.566340091156945 ]),
+				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
 				constrainResolution: true
 			})

@@ -8,6 +8,7 @@
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
+import { Icon } from 'ol/style';
 import Circle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
@@ -104,9 +105,29 @@ export function clickStyle(feature: RenderFeature | Feature<Geometry>, labelColu
 	});
 }
 
-export function poiBasicStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
+export function starbucksBasicStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
-	const poiStyle = new Style({
+	return new Style({
+		image: new Icon({
+			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F',
+			scale: 0.05
+		}),
+		text: new Text({
+			font: '0.8rem sans-serif',
+			fill: new Fill({ color: 'white' }),
+			stroke: new Stroke({
+				color: 'rgba(0, 0, 0, 1)',
+				width: 4
+			}),
+			text: feature.get('features')[0].get(labelColumn),
+			offsetY: 30
+		})
+	});
+}
+
+export function clusterBasicStyle(feature: RenderFeature | Feature<Geometry>)
+{
+	return new Style({
 		image: new Circle({
 			stroke: new Stroke({
 				color: 'rgba(3, 102, 53, 1)',
@@ -127,17 +148,14 @@ export function poiBasicStyle(feature: RenderFeature | Feature<Geometry>, labelC
 			text: feature.get('features').length.toString()
 		})
 	});
+}
 
-	const featureStyle = new Style({
-		image: new Circle({
-			stroke: new Stroke({
-				color: 'rgba(3, 102, 53, 1)',
-				width: 2
-			}),
-			fill: new Fill({
-				color: 'rgba(3, 102, 53, 0.6)'
-			}),
-			radius: 10
+export function starbucksHoverStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
+{
+	return new Style({
+		image: new Icon({
+			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F',
+			scale: 0.07
 		}),
 		text: new Text({
 			font: '0.8rem sans-serif',
@@ -147,51 +165,17 @@ export function poiBasicStyle(feature: RenderFeature | Feature<Geometry>, labelC
 				width: 4
 			}),
 			text: feature.get('features')[0].get(labelColumn),
-			offsetY: 25
-		})
-	});
-
-	return feature.get('features').length > 1 ? poiStyle : featureStyle;
-}
-
-export function poiHoverStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
-{
-	return new Style({
-		image: new Circle({
-			stroke: new Stroke({
-				color: 'rgba(0, 0, 0, 1)',
-				width: 4
-			}),
-			fill: new Fill({
-				color: 'rgba(3, 102, 53, 0.6)'
-			}),
-			radius: 10
-		}),
-		text: new Text({
-			font: '0.8rem sans-serif',
-			fill: new Fill({ color: 'white' }),
-			stroke: new Stroke({
-				color: 'rgba(0, 0, 0, 1)',
-				width: 4
-			}),
-			text: feature.get('features')[0].get(labelColumn),
-			offsetY: 25
+			offsetY: 35
 		})
 	});
 }
 
-export function poiClickStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
+export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
-		image: new Circle({
-			stroke: new Stroke({
-				color: 'rgba(0, 0, 0, 1)',
-				width: 2
-			}),
-			fill: new Fill({
-				color: 'rgba(3, 102, 53, 1)'
-			}),
-			radius: 10
+		image: new Icon({
+			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F',
+			scale: 0.07
 		}),
 		text: new Text({
 			font: '0.8rem sans-serif',
@@ -201,7 +185,7 @@ export function poiClickStyle(feature: RenderFeature | Feature<Geometry>, labelC
 				width: 4
 			}),
 			text: feature.get('features')[0].get(labelColumn),
-			offsetY: 25
+			offsetY: 35
 		})
 	});
 }

@@ -9,6 +9,7 @@ import { Map } from 'ol';
 import { useEffect, useState } from 'react';
 import { FaRegCopy, FaRegWindowMinimize } from 'react-icons/fa';
 import { FiMaximize } from 'react-icons/fi';
+import { vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer } from '../../common/layers';
 import './MapBoard.scss';
 
 interface Props
@@ -31,6 +32,9 @@ export default function MapBoard({ map }: Props)
 		const [ show, setShow ] = useState(true);
 		const [ epsg, setEpsg ] = useState('');
 
+		const [ layerState, setLayerState ] = useState('vworld-base');
+		const [ extState, setExtState ] = useState(true);
+
 		const showZoom = () =>
 		{
 			const meta = document.querySelector('.map-board > [data-name=meta]');
@@ -49,6 +53,45 @@ export default function MapBoard({ map }: Props)
 
 			setEpsg(map.getView().getProjection().getCode());
 		}, [ map ]);
+
+		useEffect(() =>
+		{
+			map.getAllLayers().filter(layer => layer.get('name') === 'base' && layer.get('id') !== 'vworld-hybrid').forEach(layer => map.removeLayer(layer));
+
+			switch (layerState)
+			{
+				case 'vworld-gray':
+					map.addLayer(vworldGrayLayer);
+					break;
+
+				case 'vworld-midnight':
+					map.addLayer(vworldMidnightLayer);
+					break;
+
+				case 'vworld-satellite':
+					map.addLayer(vworldSatelliteLayer);
+					break;
+
+				default:
+					map.addLayer(vworldBaseLayer);
+					break;
+			}
+		}, [ layerState ]);
+
+		useEffect(() =>
+		{
+			// 확장 레이어를 추가할 경우
+			if (extState)
+			{
+				map.addLayer(vworldHybridLayer);
+			}
+
+			// 확장 레이어를 삭제할 경우
+			else
+			{
+				map.getAllLayers().filter(layer => layer.get('id') === 'vworld-hybrid').forEach(layer => map.removeLayer(layer));
+			}
+		}, [ extState ]);
 
 		map.on('pointermove', (e) =>
 		{
@@ -108,6 +151,25 @@ export default function MapBoard({ map }: Props)
 			<div className='map-board' data-show={show}>
 				<div className='item' data-name='header'>
 					<button onClick={sizeClick}>{show ? <FaRegWindowMinimize /> : <FiMaximize />}</button>
+				</div>
+
+				<div className='item' data-name='layer'>
+					<div>
+						<small>layer</small>
+
+						<select value={layerState} onChange={(e) => setLayerState(e.target.value)}>
+							<option value='osm'>OSM</option>
+							<option value='vworld-base'>VWorld 기본</option>
+							<option value='vworld-gray'>VWorld 흑백</option>
+							<option value='vworld-midnight'>VWorld 야간</option>
+							<option value='vworld-satellite'>VWorld 위성</option>
+						</select>
+					</div>
+
+					<div>
+						<small>ext</small>
+						<input type='checkbox' name='ext' checked={extState} onChange={(e) => setExtState(e.target.checked)} />
+					</div>
 				</div>
 
 				<div className='item' data-name='meta'>

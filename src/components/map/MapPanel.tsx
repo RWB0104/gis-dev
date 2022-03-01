@@ -14,10 +14,12 @@ import './MapPanel.scss';
 interface Props
 {
 	map?: Map,
+	width?: number,
+	height?: number,
 	children?: JSX.Element | JSX.Element[]
 }
 
-export default function MapPanel({ map, children }: Props)
+export default function MapPanel({ map, width = 200, height = 200, children }: Props)
 {
 	const [ show, setShow ] = useState(true);
 
@@ -27,8 +29,8 @@ export default function MapPanel({ map, children }: Props)
 	};
 
 	return map ? (
-		<div className='map-panel' data-show={show}>
-			<div className='item' data-name='header'>
+		<div className='map-panel' data-show={show} style={{ width: width, height: height }}>
+			<div className='header'>
 				<button onClick={sizeClick}>{show ? <FaRegWindowMinimize /> : <FiMaximize />}</button>
 			</div>
 

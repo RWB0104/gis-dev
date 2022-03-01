@@ -6,13 +6,13 @@
  */
 
 import { Map, View } from 'ol';
-import { OSM } from 'ol/source';
-import TileLayer from 'ol/layer/Tile';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapBoard from '../components/map/MapBoard';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { seoulPosition } from '../common/position';
 
 /**
  * 맵 정보 페이지 JSX 반환 메서드
@@ -28,18 +28,15 @@ export default function MapInfo()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [
-				new TileLayer({
-					source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-					properties: { name: 'base' }
-				})
-			],
+			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
-				center: proj4('EPSG:4326', 'EPSG:3857', [ 126.9779495953371, 37.566340091156945 ]),
+				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 19,
-				constrainResolution: true
+				constrainResolution: true,
+				smoothResolutionConstraint: true,
+				smoothExtentConstraint: true
 			})
 		});
 

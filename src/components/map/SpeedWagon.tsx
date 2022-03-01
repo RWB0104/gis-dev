@@ -25,7 +25,7 @@ export default function SpeedWagon({ children }: Props)
 		<div className='speed-wagon' data-show='true'>
 			<div className='wrap'>
 				<div className='help'>
-					<h3>도와줘요! 스피드웨건!</h3>
+					<h3>도와줘요! 스피드왜건!</h3>
 				</div>
 
 				<div className='he-said'>
