@@ -6,6 +6,7 @@
  */
 
 import { Map, Overlay, View } from 'ol';
+import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
 import { Cluster, OSM, Vector } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/Tile';
@@ -59,7 +60,7 @@ export default function ClusterMap()
 			distance: defaultDistance
 		});
 
-		const wfsLayer = new VectorLayer({
+		const wfsLayer = new AnimatedCluster({
 			source: clusterSource,
 			style: feature => poiBasicStyle(feature, 'name'),
 			zIndex: 5,
