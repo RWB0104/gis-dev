@@ -19,8 +19,8 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
 import MapPanel from '../components/map/MapPanel';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
-import './ClusterMap.scss';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import './HeatMap.scss';
 
 /**
  * 히트 맵 페이지 JSX 반환 메서드
@@ -55,15 +55,13 @@ export default function HeatMap()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, heatLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, heatLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 13,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

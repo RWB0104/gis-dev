@@ -27,7 +27,7 @@ import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
 import SpeedWagon from '../components/map/SpeedWagon';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 interface SubProps
 {
@@ -89,7 +89,7 @@ export default function WFSTransactionDelete()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
 			interactions: defaults().extend([ hoverSelect, clickSelect ]),
@@ -97,9 +97,7 @@ export default function WFSTransactionDelete()
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 18,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 
 		});

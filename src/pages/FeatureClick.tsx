@@ -21,7 +21,7 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import { basicStyle, clickStyle, hoverStyle } from '../common/style';
 import SpeedWagon from '../components/map/SpeedWagon';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * Feature 클릭 페이지 JSX 반환 메서드
@@ -61,16 +61,14 @@ export default function WFS()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			target: 'map',
 			interactions: defaults().extend([ clickSelect, hoverSelect ]),
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 17,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

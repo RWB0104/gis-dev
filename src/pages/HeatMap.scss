@@ -1,0 +1,43 @@
+#heat-map {
+	.map-panel {
+		.item {
+			.head {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 5px;
+
+				input {
+					width: 35px;
+					height: 100%;
+
+					padding: 5px;
+
+					border: 1px solid gainsboro;
+					border-radius: 4px;
+					box-sizing: border-box;
+
+					font-size: 12px;
+
+					text-align: center;
+
+					&:focus {
+						outline-color: dodgerblue;
+						outline-width: 0.1px;
+						outline-style: inset;
+					}
+				}
+			}
+
+			.body {
+				display: flex;
+
+				gap: 10px;
+
+				input[type=range] {
+					flex: 1;
+				}
+			}
+		}
+	}
+}

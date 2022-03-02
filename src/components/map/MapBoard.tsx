@@ -9,7 +9,7 @@ import { Map } from 'ol';
 import { useEffect, useState } from 'react';
 import { FaRegCopy, FaRegWindowMinimize } from 'react-icons/fa';
 import { FiMaximize } from 'react-icons/fi';
-import { vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer } from '../../common/layers';
+import { osmLayer, vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer } from '../../common/layers';
 import './MapBoard.scss';
 
 interface Props
@@ -56,7 +56,7 @@ export default function MapBoard({ map }: Props)
 
 		useEffect(() =>
 		{
-			map.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('base-vworld')).forEach(layer => map.removeLayer(layer));
+			map.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('base')).forEach(layer => map.removeLayer(layer));
 
 			switch (layerState)
 			{
@@ -77,6 +77,7 @@ export default function MapBoard({ map }: Props)
 					break;
 
 				default:
+					map.addLayer(osmLayer);
 					setExtState(false);
 					break;
 			}

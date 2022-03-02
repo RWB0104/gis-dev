@@ -19,7 +19,7 @@ import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import { basicStyle } from '../common/style';
 import SpeedWagon from '../components/map/SpeedWagon';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import { FaHome } from 'react-icons/fa';
 
 /**
@@ -50,15 +50,13 @@ export default function WFS()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 17,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

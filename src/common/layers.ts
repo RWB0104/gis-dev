@@ -9,8 +9,9 @@ import TileLayer from 'ol/layer/Tile';
 import { OSM, XYZ } from 'ol/source';
 
 export const osmLayer = new TileLayer({
-	source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
-	properties: { name: 'base-osm' }
+	source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>', cacheSize: 0 }),
+	properties: { name: 'base-osm' },
+	zIndex: 1
 });
 
 export const vworldBaseLayer = new TileLayer({

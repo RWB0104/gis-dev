@@ -22,7 +22,7 @@ import { sejongPosition } from '../common/position';
 import { WMS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import MapPanel from '../components/map/MapPanel';
 
 /**
@@ -54,22 +54,20 @@ export default function WMS()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, getLayer(type) ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, getLayer(type) ],
 			overlays: [ overlay ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
 				zoom: 17,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 
 		map.on('singleclick', async (e) =>
 		{
-			const wmsLayer = map.getAllLayers().filter(layer => layer.get('id') === 'wms')[0];
+			const wmsLayer = map.getAllLayers().filter(layer => layer.get('name') === 'wms')[0];
 
 			const source: TileWMS | ImageWMS = wmsLayer.getSource();
 

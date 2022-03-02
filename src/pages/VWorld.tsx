@@ -39,9 +39,7 @@ export default function VWorld()
 				zoom: 17,
 				minZoom: 6,
 				maxZoom: 18,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

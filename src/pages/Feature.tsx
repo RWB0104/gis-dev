@@ -14,7 +14,7 @@ import MapInteraction, { LocationWithMarker } from '../components/map/MapInterac
 import SpeedWagon from '../components/map/SpeedWagon';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { seoulPosition } from '../common/position';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * 피쳐 페이지 JSX 반환 메서드
@@ -30,15 +30,13 @@ export default function Feature()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 17,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

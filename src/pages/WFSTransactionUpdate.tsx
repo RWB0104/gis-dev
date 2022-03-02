@@ -25,7 +25,7 @@ import { defaults, Modify, Select, Snap } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { featureIdAtom, showAtom } from '../common/atom';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import Geometry from 'ol/geom/Geometry';
 import './WFSTransactionUpdate.scss';
 import VectorSource from 'ol/source/Vector';
@@ -99,7 +99,7 @@ export default function WFSTransactionUpdate()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
 			interactions: defaults().extend([ hoverSelect, clickSelect, snap ]),
@@ -107,9 +107,7 @@ export default function WFSTransactionUpdate()
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 18,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

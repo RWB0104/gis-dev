@@ -13,7 +13,7 @@ import MapInteraction, { Location } from '../components/map/MapInteraction';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
 import { BiCurrentLocation } from 'react-icons/bi';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import { seoulPosition } from '../common/position';
 
 /**
@@ -30,15 +30,13 @@ export default function Geolocation()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 17,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 

@@ -24,7 +24,7 @@ import { click, pointerMove } from 'ol/events/condition';
 import Popup from '../components/map/Popup';
 import MapPanel from '../components/map/MapPanel';
 import './ClusterMap.scss';
-import { osmLayer, vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * 클러스터 맵 페이지 JSX 반환 메서드
@@ -89,7 +89,7 @@ export default function ClusterMap()
 		});
 
 		const map = new Map({
-			layers: [ osmLayer, vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
 			interactions: defaults().extend([ hoverSelect, clickSelect ]),
@@ -97,9 +97,7 @@ export default function ClusterMap()
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 13,
-				constrainResolution: true,
-				smoothResolutionConstraint: true,
-				smoothExtentConstraint: true
+				constrainResolution: true
 			})
 		});
 
@@ -165,6 +163,7 @@ export default function ClusterMap()
 		{
 			const cluster = layer.getSource() as Cluster;
 			cluster.setDistance(distanceState);
+			console.dir(mapState.getAllLayers());
 		}
 	}, [ distanceState ]);
 
