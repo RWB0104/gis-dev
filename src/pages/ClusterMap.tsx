@@ -74,7 +74,7 @@ export default function ClusterMap()
 			style: feature => starbucksClickStyle(feature, 'name')
 		});
 
-		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
 			id: 'popup',
