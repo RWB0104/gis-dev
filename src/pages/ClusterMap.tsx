@@ -197,8 +197,6 @@ export default function ClusterMap()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState}>{popupState}</Popup>
-
 				<SpeedWagon>
 					<p>커피 좋아하나?</p>
 					<p>여기 너를 위해 대한민국의 스타벅스 위치 데이터를 가져왔다!</p>
@@ -216,6 +214,8 @@ export default function ClusterMap()
 					<p>하지만 스타일링을 구현하는 덴 조금 신경을 써줘야 할걸세.</p>
 					<p>Feature가 배열로 그룹화된 것 이외엔 나머지와 다를 바 없으니 너무 겁먹지들 말라고.</p>
 				</SpeedWagon>
+
+				<Popup map={mapState}>{popupState}</Popup>
 			</article>
 		</section>
 	);
