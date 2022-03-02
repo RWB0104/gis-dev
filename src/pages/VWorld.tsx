@@ -100,10 +100,10 @@ export default function VWorld()
 
 						<div className='body'>
 							<select value={layerState} onChange={(e) => setLayerState(e.target.value)}>
-								<option value='vworld-base'>VWorld 기본</option>
-								<option value='vworld-gray'>VWorld 흑백</option>
-								<option value='vworld-midnight'>VWorld 야간</option>
-								<option value='vworld-satellite'>VWorld 위성</option>
+								<option value='base-vworld-base'>VWorld 기본</option>
+								<option value='base-vworld-gray'>VWorld 흑백</option>
+								<option value='base-vworld-midnight'>VWorld 야간</option>
+								<option value='base-vworld-satellite'>VWorld 위성</option>
 							</select>
 						</div>
 					</div>
