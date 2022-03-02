@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/gis-dev/static/css/main.b2b84f56.css",
-    "main.js": "/gis-dev/static/js/main.b7923cc1.js",
+    "main.css": "/gis-dev/static/css/main.15b76438.css",
+    "main.js": "/gis-dev/static/js/main.d2689f73.js",
     "index.html": "/gis-dev/index.html"
   },
   "entrypoints": [
-    "static/css/main.b2b84f56.css",
-    "static/js/main.b7923cc1.js"
+    "static/css/main.15b76438.css",
+    "static/js/main.d2689f73.js"
   ]
 }

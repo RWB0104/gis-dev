@@ -27,7 +27,7 @@ interface Props
 export default function Popup({ map, children, onUpdateClick, onDeleteClick }: Props)
 {
 	return (
-		<div className='map-popup'>
+		<div id='map-popup'>
 			<div className='map-popup-header'>
 				<div className='map-popup-header-left'>
 					{onUpdateClick && <button data-action='update' onClick={onUpdateClick}><MdEdit color='dodgerblue' /></button>}

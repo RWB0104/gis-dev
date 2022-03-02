@@ -22,7 +22,7 @@ interface Props
 export default function SpeedWagon({ children }: Props)
 {
 	return (
-		<div className='speed-wagon' data-show='true'>
+		<div id='speed-wagon' data-show='true'>
 			<div className='wrap'>
 				<div className='help'>
 					<h3>도와줘요! 스피드왜건!</h3>

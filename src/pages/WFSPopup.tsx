@@ -62,7 +62,7 @@ export default function WFSPopup()
 			style: feature => clickStyle(feature, 'buld_nm')
 		});
 
-		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
 			id: 'popup',

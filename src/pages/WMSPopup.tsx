@@ -40,7 +40,7 @@ export default function WMS()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
 			id: 'popup',
