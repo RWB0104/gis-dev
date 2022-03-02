@@ -148,8 +148,6 @@ export default function WMS()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState}>{popupState}</Popup>
-
 				<SpeedWagon>
 					<p>WMS도 마찬가지로 팝업을 구현할 수 있다네.</p>
 					<p>물론 Feature가 아닌 순수 이미지인 탓에, 방식은 조금 다르다는 것을 기억해야하네.</p>
@@ -158,6 +156,8 @@ export default function WMS()
 
 					<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값을 별도로 불러오는 과정</span>이 있다는 걸 반드시 알아두게!</p>
 				</SpeedWagon>
+
+				<Popup map={mapState}>{popupState}</Popup>
 			</article>
 		</section>
 	);

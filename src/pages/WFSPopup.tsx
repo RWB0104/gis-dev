@@ -145,8 +145,6 @@ export default function WFSPopup()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState}>{popupState}</Popup>
-
 				<SpeedWagon>
 					<p>이전에 지도를 사용해봤다면, 지도의 요소 데이터를 보여주는 팝업을 본 적이 있겠지?</p>
 					<p>이 페이지에선 WFS를 통해 <span>호출한 Feature의 팝업</span>을 구현한다!</p>
@@ -156,6 +154,8 @@ export default function WFSPopup()
 					<p>팝업은 미리 HTML 태그를 작성해두고, OL의 <span>Overlay</span>로 사용하는 방식이야.</p>
 					<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 유심있게 보도록 하라고.</p>
 				</SpeedWagon>
+
+				<Popup map={mapState}>{popupState}</Popup>
 			</article>
 		</section>
 	);

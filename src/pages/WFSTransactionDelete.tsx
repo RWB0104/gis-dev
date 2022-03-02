@@ -75,7 +75,7 @@ export default function WFSTransactionDelete()
 			style: feature => clickStyle(feature, 'name')
 		});
 
-		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
 			id: 'popup',
@@ -164,12 +164,6 @@ export default function WFSTransactionDelete()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState} onDeleteClick={() =>
-				{
-					setShowState(true);
-					mapState.getOverlayById('popup').setPosition(undefined);
-				}}>{popupState}</Popup>
-
 				<DeleteForm map={mapState} />
 
 				<SpeedWagon>
@@ -179,6 +173,12 @@ export default function WFSTransactionDelete()
 
 					<p>이 페이지는 하나만 삭제할 수 있도록 구성되어있지만, 네가 구성하기에 따라 조건에 맞는 여러 Feature를 동시에 삭제할 수도 있다는 걸 알아두도록.</p>
 				</SpeedWagon>
+
+				<Popup map={mapState} onDeleteClick={() =>
+				{
+					setShowState(true);
+					mapState.getOverlayById('popup').setPosition(undefined);
+				}}>{popupState}</Popup>
 			</article>
 		</section>
 	);

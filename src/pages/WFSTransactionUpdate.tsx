@@ -85,7 +85,7 @@ export default function WFSTransactionUpdate()
 			source: wfs
 		});
 
-		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
 			id: 'popup',
@@ -179,6 +179,17 @@ export default function WFSTransactionUpdate()
 
 				<MapBoard map={mapState} />
 
+				<UpdateForm map={mapState} />
+
+				<SpeedWagon>
+					<p><span>Transaction Update</span>를 통해 데이터를 수정할 수도 있다!</p>
+					<p>팝업의 <MdEdit color='dodgerblue' />를 클릭해서 도형이나 데이터를 수정할 수 있다네.</p>
+					<br />
+
+					<p>도형을 수정하고 오른쪽 마우스 혹은 ESC를 클릭해서 도형 수정을 종료할 수 있지.</p>
+					<p>이후 변경하려는 데이터의 값을 입력하면 끝일세!</p>
+				</SpeedWagon>
+
 				<Popup map={mapState} onUpdateClick={() =>
 				{
 					const source: VectorSource<Geometry> = mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0].getSource();
@@ -212,17 +223,6 @@ export default function WFSTransactionUpdate()
 
 					mapState.getOverlayById('popup').setPosition(undefined);
 				}}>{popupState}</Popup>
-
-				<UpdateForm map={mapState} />
-
-				<SpeedWagon>
-					<p><span>Transaction Update</span>를 통해 데이터를 수정할 수도 있다!</p>
-					<p>팝업의 <MdEdit color='dodgerblue' />를 클릭해서 도형이나 데이터를 수정할 수 있다네.</p>
-					<br />
-
-					<p>도형을 수정하고 오른쪽 마우스 혹은 ESC를 클릭해서 도형 수정을 종료할 수 있지.</p>
-					<p>이후 변경하려는 데이터의 값을 입력하면 끝일세!</p>
-				</SpeedWagon>
 			</article>
 		</section>
 	);

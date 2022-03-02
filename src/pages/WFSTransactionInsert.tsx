@@ -79,7 +79,7 @@ export default function WFSTransactionInsert()
 			style: feature => clickStyle(feature, 'name')
 		});
 
-		const popup = document.querySelector('.map-popup') as HTMLElement | null;
+		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
 			id: 'popup',
@@ -169,8 +169,6 @@ export default function WFSTransactionInsert()
 
 				<MapBoard map={mapState} />
 
-				<Popup map={mapState}>{popupState}</Popup>
-
 				<InsertForm map={mapState} />
 
 				<SpeedWagon>
@@ -185,6 +183,8 @@ export default function WFSTransactionInsert()
 
 					<p>만약 그리는 걸 취소하고 싶다면 <span>ESC</span> 혹은 <span>마우스 오른쪽 버튼</span>을 클릭하도록!</p>
 				</SpeedWagon>
+
+				<Popup map={mapState}>{popupState}</Popup>
 			</article>
 		</section>
 	);
