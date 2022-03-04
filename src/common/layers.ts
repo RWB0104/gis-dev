@@ -15,7 +15,7 @@ export const osmLayer = new TileLayer({
 });
 
 export const vworldBaseLayer = new TileLayer({
-	source: new XYZ({ url: 'http://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/Base/{z}/{y}/{x}.png' }),
+	source: new XYZ({ url: 'https://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/Base/{z}/{y}/{x}.png' }),
 	properties: { name: 'base-vworld-base' },
 	minZoom: 5,
 	maxZoom: 19,
@@ -23,7 +23,7 @@ export const vworldBaseLayer = new TileLayer({
 });
 
 export const vworldGrayLayer = new TileLayer({
-	source: new XYZ({ url: 'http://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/gray/{z}/{y}/{x}.png' }),
+	source: new XYZ({ url: 'https://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/gray/{z}/{y}/{x}.png' }),
 	properties: { name: 'base-vworld-gray' },
 	minZoom: 5,
 	maxZoom: 18,
@@ -31,7 +31,7 @@ export const vworldGrayLayer = new TileLayer({
 });
 
 export const vworldMidnightLayer = new TileLayer({
-	source: new XYZ({ url: 'http://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/midnight/{z}/{y}/{x}.png' }),
+	source: new XYZ({ url: 'https://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/midnight/{z}/{y}/{x}.png' }),
 	properties: { name: 'base-vworld-midnight' },
 	minZoom: 5,
 	maxZoom: 18,
@@ -39,7 +39,7 @@ export const vworldMidnightLayer = new TileLayer({
 });
 
 export const vworldHybridLayer = new TileLayer({
-	source: new XYZ({ url: 'http://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/Hybrid/{z}/{y}/{x}.png' }),
+	source: new XYZ({ url: 'https://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/Hybrid/{z}/{y}/{x}.png' }),
 	properties: { name: 'ext-vworld-hybrid' },
 	minZoom: 5,
 	maxZoom: 19,
@@ -47,7 +47,7 @@ export const vworldHybridLayer = new TileLayer({
 });
 
 export const vworldSatelliteLayer = new TileLayer({
-	source: new XYZ({ url: 'http://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/Satellite/{z}/{y}/{x}.jpeg' }),
+	source: new XYZ({ url: 'https://api.vworld.kr/req/wmts/1.0.0/2AAC4DD9-4F6F-3844-A740-E2DB6BDC8CEF/Satellite/{z}/{y}/{x}.jpeg' }),
 	properties: { name: 'base-vworld-satellite' },
 	minZoom: 5,
 	maxZoom: 19,
