@@ -11,7 +11,8 @@ import { OSM, XYZ } from 'ol/source';
 export const osmLayer = new TileLayer({
 	source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>', cacheSize: 0 }),
 	properties: { name: 'base-osm' },
-	zIndex: 1
+	zIndex: 1,
+	preload: Infinity
 });
 
 export const vworldBaseLayer = new TileLayer({
@@ -19,7 +20,8 @@ export const vworldBaseLayer = new TileLayer({
 	properties: { name: 'base-vworld-base' },
 	minZoom: 5,
 	maxZoom: 19,
-	zIndex: 2
+	zIndex: 2,
+	preload: Infinity
 });
 
 export const vworldGrayLayer = new TileLayer({
@@ -27,7 +29,8 @@ export const vworldGrayLayer = new TileLayer({
 	properties: { name: 'base-vworld-gray' },
 	minZoom: 5,
 	maxZoom: 18,
-	zIndex: 2
+	zIndex: 2,
+	preload: Infinity
 });
 
 export const vworldMidnightLayer = new TileLayer({
@@ -35,7 +38,8 @@ export const vworldMidnightLayer = new TileLayer({
 	properties: { name: 'base-vworld-midnight' },
 	minZoom: 5,
 	maxZoom: 18,
-	zIndex: 2
+	zIndex: 2,
+	preload: Infinity
 });
 
 export const vworldHybridLayer = new TileLayer({
@@ -43,7 +47,8 @@ export const vworldHybridLayer = new TileLayer({
 	properties: { name: 'ext-vworld-hybrid' },
 	minZoom: 5,
 	maxZoom: 19,
-	zIndex: 3
+	zIndex: 3,
+	preload: Infinity
 });
 
 export const vworldSatelliteLayer = new TileLayer({
@@ -51,5 +56,6 @@ export const vworldSatelliteLayer = new TileLayer({
 	properties: { name: 'base-vworld-satellite' },
 	minZoom: 5,
 	maxZoom: 19,
-	zIndex: 2
+	zIndex: 2,
+	preload: Infinity
 });

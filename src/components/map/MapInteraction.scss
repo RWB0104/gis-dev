@@ -26,6 +26,10 @@
 
 		&.location {
 			background-color: limegreen;
+
+			&.loading {
+				background-color: red;
+			}
 		}
 
 		&.sejong {

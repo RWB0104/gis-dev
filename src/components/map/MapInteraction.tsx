@@ -131,7 +131,8 @@ export function LocationWithMarker({ map }: SubProps)
 						src: 'https://tsauerwein.github.io/ol3/animation-flights/examples/data/icon.png'
 					})
 				}),
-				minZoom: 15
+				minZoom: 15,
+				zIndex: 10
 			}));
 		}
 
@@ -140,6 +141,9 @@ export function LocationWithMarker({ map }: SubProps)
 			// 지오로케이션 사용이 가능할 경우
 			if ('geolocation' in navigator)
 			{
+				const tag = document.querySelector('button.location') as HTMLButtonElement;
+				tag.classList.add('loading');
+
 				navigator.geolocation.getCurrentPosition(position =>
 				{
 					const { latitude, longitude } = position.coords;
@@ -152,6 +156,8 @@ export function LocationWithMarker({ map }: SubProps)
 					map.getAllLayers().filter(layer => layer.get('name') === 'location')[0].getSource().addFeature(new Feature({
 						geometry: new Point(coord)
 					}));
+
+					tag.classList.remove('loading');
 				}, () => alert('실패'), { enableHighAccuracy: true });
 			}
 
