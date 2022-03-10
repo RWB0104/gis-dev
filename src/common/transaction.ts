@@ -102,6 +102,7 @@ export async function updateTransaction({ id, body, geom }: UpdateProps)
 	const xml = `
 	<wfs:Transaction
 		xmlns:wfs="http://www.opengis.net/wfs"
+		xmlns:gml="http://www.opengis.net/gml"
 		xmlns:ogc="http://www.opengis.net/ogc"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		service="WFS"
