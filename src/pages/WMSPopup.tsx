@@ -180,7 +180,7 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 				url: WMS_URL,
 				params: {
 					layers: 'buld_sejong',
-					tiled: true
+					exceptions: 'application/json'
 				},
 				transition: 0.3,
 				serverType: 'geoserver'
@@ -198,7 +198,8 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 			source: new ImageWMS({
 				url: WMS_URL,
 				params: {
-					layers: 'buld_sejong'
+					layers: 'buld_sejong',
+					exceptions: 'application/json'
 				},
 				serverType: 'geoserver'
 			}),

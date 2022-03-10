@@ -21,6 +21,7 @@ import SpeedWagon from '../components/map/SpeedWagon';
 import MapPanel from '../components/map/MapPanel';
 import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import './HeatMap.scss';
+import { urlBuilder } from '../common/util';
 
 /**
  * 히트 맵 페이지 JSX 반환 메서드
@@ -42,7 +43,17 @@ export default function HeatMap()
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
-			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:point_starbucks&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			// url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:point_starbucks&srsName=EPSG:3857&outputFormat=application/json&exceptions=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			url: (extent) => urlBuilder(WFS_URL, {
+				service: 'WFS',
+				version: '2.0.0',
+				request: 'GetFeature',
+				typename: 'TEST:point_starbucks',
+				srsName: 'EPSG:3857',
+				outputFormat: 'application/json',
+				exceptions: 'application/json',
+				bbox: `${extent.join(',')},EPSG:3857`
+			}),
 			strategy: bbox
 		});
 

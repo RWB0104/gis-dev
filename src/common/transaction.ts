@@ -102,7 +102,6 @@ export async function updateTransaction({ id, body, geom }: UpdateProps)
 	const xml = `
 	<wfs:Transaction
 		xmlns:wfs="http://www.opengis.net/wfs"
-		xmlns:gml="http://www.opengis.net/gml"
 		xmlns:ogc="http://www.opengis.net/ogc"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		service="WFS"
@@ -131,9 +130,9 @@ export async function updateTransaction({ id, body, geom }: UpdateProps)
 					</gml:Polygon>
 				</wfs:Value>
 			</wfs:Property>`}
-			<gml:Filter>
-				<gml:FeatureId fid="${id}" />
-			</gml:Filter>
+			<ogc:Filter>
+				<ogc:FeatureId fid="${id}" />
+			</ogc:Filter>
 		</wfs:Update>
 	</wfs:Transaction>
 	`;
@@ -156,15 +155,15 @@ export async function deleteTransaction({ id }: DeleteProps)
 	const xml = `
 	<wfs:Transaction
 		xmlns:wfs="http://www.opengis.net/wfs"
-		xmlns:gml="http://www.opengis.net/gml"
+		xmlns:ogc="http://www.opengis.net/ogc"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		service="WFS"
 		version="1.0.0"
 		xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd">
 		<wfs:Delete typeName="buld_test">
-			<gml:Filter>
-				<gml:FeatureId fid="${id}" />
-			</gml:Filter>
+			<ogc:Filter>
+				<ogc:FeatureId fid="${id}" />
+			</ogc:Filter>
 		</wfs:Delete>
 	</wfs:Transaction>
 	`;

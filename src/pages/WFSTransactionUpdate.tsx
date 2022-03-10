@@ -32,6 +32,7 @@ import VectorSource from 'ol/source/Vector';
 import Polygon from 'ol/geom/Polygon';
 import { updateTransaction } from '../common/transaction';
 import SpeedWagon from '../components/map/SpeedWagon';
+import { urlBuilder } from '../common/util';
 
 interface SubProps
 {
@@ -57,7 +58,16 @@ export default function WFSTransactionUpdate()
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
-			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_test&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			url: (extent) => urlBuilder(WFS_URL, {
+				service: 'WFS',
+				version: '2.0.0',
+				request: 'GetFeature',
+				typename: 'TEST:buld_test',
+				srsName: 'EPSG:3857',
+				outputFormat: 'application/json',
+				exceptions: 'application/json',
+				bbox: `${extent.join(',')},EPSG:3857`
+			}),
 			strategy: bbox
 		});
 

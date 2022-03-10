@@ -23,6 +23,7 @@ import { click, pointerMove } from 'ol/events/condition';
 import { defaults, Select } from 'ol/interaction';
 import SpeedWagon from '../components/map/SpeedWagon';
 import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import { urlBuilder } from '../common/util';
 
 /**
  * WFS 팝업 페이지 JSX 반환 메서드
@@ -40,7 +41,16 @@ export default function WFSPopup()
 
 		const wfs = new Vector({
 			format: new GeoJSON(),
-			url: (extent) => `${WFS_URL}?service=WFS&version=2.0.0&request=GetFeature&typename=TEST:buld_sejong&srsName=EPSG:3857&outputFormat=application/json&bbox=${extent.join(',')},EPSG:3857`,
+			url: (extent) => urlBuilder(WFS_URL, {
+				service: 'WFS',
+				version: '2.0.0',
+				request: 'GetFeature',
+				typename: 'TEST:buld_sejong',
+				srsName: 'EPSG:3857',
+				outputFormat: 'application/json',
+				exceptions: 'application/json',
+				bbox: `${extent.join(',')},EPSG:3857`
+			}),
 			strategy: bbox
 		});
 
