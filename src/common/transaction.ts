@@ -78,7 +78,7 @@ export async function insertTransaction({ body, geom }: InsertProps)
 	return fetch(WFS_URL, {
 		method: 'POST',
 		body: xml
-	});
+	}).catch(e => alert(e.message));
 }
 
 /**
@@ -141,7 +141,7 @@ export async function updateTransaction({ id, body, geom }: UpdateProps)
 	return fetch(WFS_URL, {
 		method: 'POST',
 		body: xml
-	});
+	}).catch(e => alert(e.message));
 }
 
 /**
@@ -172,5 +172,5 @@ export async function deleteTransaction({ id }: DeleteProps)
 	return fetch(WFS_URL, {
 		method: 'POST',
 		body: xml
-	});
+	}).catch(e => alert(e.message));
 }

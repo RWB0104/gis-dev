@@ -217,7 +217,7 @@ function DeleteForm({ map }: SubProps)
 					const request = await deleteTransaction({ id: id });
 
 					// 삭제에 실패할 경우
-					if (!request.ok)
+					if (request && !request.ok)
 					{
 						alert('삭제 실패');
 					}

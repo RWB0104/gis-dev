@@ -237,7 +237,7 @@ function InsertForm({ map }: SubProps)
 						geom: polygon.getFlatCoordinates()
 					});
 
-					if (!response.ok)
+					if (response && !response.ok)
 					{
 						alert('추가 실패');
 					}

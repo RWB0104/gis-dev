@@ -79,41 +79,45 @@ export default function WMS()
 			// GetFeatureInfo URL이 유효할 경우
 			if (url)
 			{
-				const request = await fetch(url.toString(), { method: 'GET' });
+				const request = await fetch(url.toString(), { method: 'GET' }).catch(e => alert(e.message));
 
-				// 응답이 정상일 경우
-				if (request.ok)
+				// 응답이 유효할 경우
+				if (request)
 				{
-					const json = await request.json();
-
-					// 객체가 하나도 없을 경우
-					if (json.features.length === 0)
+					// 응답이 정상일 경우
+					if (request.ok)
 					{
-						overlay.setPosition(undefined);
+						const json = await request.json();
+
+						// 객체가 하나도 없을 경우
+						if (json.features.length === 0)
+						{
+							overlay.setPosition(undefined);
+						}
+
+						// 객체가 있을 경우
+						else
+						{
+							const feature = new GeoJSON().readFeature(json.features[0]);
+							const vector = new Vector({ features: [ feature ] });
+
+							setPopupState(
+								<ul>
+									<li>{feature.getId() || ''}</li>
+									<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
+									<li>{feature.get('bul_man_no')}</li>
+								</ul>
+							);
+
+							overlay.setPosition(getCenter(vector.getExtent()));
+						}
 					}
 
-					// 객체가 있을 경우
+					// 아닐 경우
 					else
 					{
-						const feature = new GeoJSON().readFeature(json.features[0]);
-						const vector = new Vector({ features: [ feature ] });
-
-						setPopupState(
-							<ul>
-								<li>{feature.getId() || ''}</li>
-								<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
-								<li>{feature.get('bul_man_no')}</li>
-							</ul>
-						);
-
-						overlay.setPosition(getCenter(vector.getExtent()));
+						alert(request.status);
 					}
-				}
-
-				// 아닐 경우
-				else
-				{
-					alert(request.status);
 				}
 			}
 		});
