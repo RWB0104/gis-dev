@@ -51,7 +51,7 @@ export default function ROOT()
 				<Link to='/cluster-map' title='Cluster Map'><MdOutlineGroupWork /> Cluster Map</Link>
 				<Link to='/heat-map' title='Heat Map'><FaTemperatureHigh /> Heat Map</Link>
 				<Link to='/webgl' title='WebGL'><FiZap /> WebGL</Link>
-				<Link to='/nonwebgl' title='Non-WebGL'><FiZapOff /> Non-WebGL</Link>
+				<Link to='/non-webgl' title='Non-WebGL'><FiZapOff /> Non WebGL</Link>
 			</article>
 		</section>
 	);

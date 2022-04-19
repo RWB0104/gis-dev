@@ -141,8 +141,8 @@ export default function WebGL()
 	}, []);
 
 	return (
-		<section id='wfs-popup' className='page'>
-			<Meta title='WFS Popup' description='WFS 팝업 표시 예제' url='/wfs-popup/' />
+		<section id='webgl' className='page'>
+			<Meta title='WebGL' description='WebGL 적용 예제' url='/webgl/' />
 
 			<article className='map-wrapper'>
 				<div id='map'></div>

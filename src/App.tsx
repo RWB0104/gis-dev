@@ -65,7 +65,7 @@ export default function App()
 					<Route path='/transaction-delete/' component={WFSTransactionDelete} />
 					<Route path='/cluster-map/' component={ClusterMap} />
 					<Route path='/heat-map/' component={HeatMap} />
-					<Route path='/nonwebgl/' component={NonWebGL} />
+					<Route path='/non-webgl/' component={NonWebGL} />
 					<Route path='/webgl/' component={WebGL} />
 				</Switch>
 			</BrowserRouter>

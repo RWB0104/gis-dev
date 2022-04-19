@@ -139,8 +139,8 @@ export default function NonWebGL()
 	}, []);
 
 	return (
-		<section id='wfs-popup' className='page'>
-			<Meta title='WFS Popup' description='WFS 팝업 표시 예제' url='/wfs-popup/' />
+		<section id='non-webgl' className='page'>
+			<Meta title='Non WebGL' description='WebGL 미적용 비교군 예제' url='/wfs-popup/' />
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
