@@ -44,9 +44,11 @@ export default function OSM()
 				<div id='map'></div>
 
 				<SpeedWagon>
-					<p>이 페이지는 베이스 레이어를 <span>Open Street Map(OSM)</span>으로 표현한 예제 페이지지!</p>
-					<p>OpenLayers는 기본적으로 OSM 객체를 제공해주기 때문에, <span>세계지도를 쉽게 구현</span>할 수 있다.</p>
-					<p>직접 지도를 조작해 보도록!</p>
+					<p>이 페이지는 베이스 레이어를 <span>Open Street Map(OSM)</span>으로 표현한 예제 페이지입니다.</p>
+					<p>OpenLayers는 기본적으로 OSM 객체를 제공해주기 때문에, <span>세계지도를 쉽게 구현</span>할 수 있습니다.</p>
+					<p>직접 지도를 조작해 보세요.</p>
+
+					<p>자세한 내용은 <a target='_blank' href='https://blog.itcode.dev/posts/2022/03/19/gis-guide-for-programmer-10'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

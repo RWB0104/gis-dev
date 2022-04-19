@@ -192,12 +192,12 @@ export default function WFSTransactionUpdate()
 				<UpdateForm map={mapState} />
 
 				<SpeedWagon>
-					<p><span>Transaction Update</span>를 통해 데이터를 수정할 수도 있다!</p>
-					<p>팝업의 <MdEdit color='dodgerblue' />를 클릭해서 도형이나 데이터를 수정할 수 있다네.</p>
+					<p><span>Transaction Update</span>를 통해 데이터를 수정할 수도 있습니다.</p>
+					<p>팝업의 <MdEdit color='dodgerblue' />를 클릭해서 도형이나 데이터를 수정해보세요.</p>
 					<br />
 
-					<p>도형을 수정하고 오른쪽 마우스 혹은 ESC를 클릭해서 도형 수정을 종료할 수 있지.</p>
-					<p>이후 변경하려는 데이터의 값을 입력하면 끝일세!</p>
+					<p>도형을 수정하고 오른쪽 마우스 혹은 ESC를 클릭해서 도형 수정을 종료할 수 있습니다.</p>
+					<p>이후 변경하려는 데이터의 값을 입력해보세요.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState} onUpdateClick={() =>

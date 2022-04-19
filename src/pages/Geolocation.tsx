@@ -57,13 +57,13 @@ export default function Geolocation()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>웹이나 모바일의 GPS 정보를 활용하여 자신의 위치 정보를 얻는 것을 <span>지오로케이션</span>이라고 한다!</p>
-					<p>아래 <BiCurrentLocation color='limegreen' /> 버튼을 클릭해서 자신의 위치를 확인해봐라.</p>
-					<p>네 인터넷 제공자의 구조에 따라 실제 네 위치가 아닌 다른 위치가 뜰 수도 있으니 놀라지 말라고.</p>
+					<p>웹이나 모바일의 GPS 정보를 활용하여 자신의 위치 정보를 얻는 것을 <span>지오로케이션</span>이라고 합니다.</p>
+					<p>아래 <BiCurrentLocation color='limegreen' /> 버튼을 클릭해서 자신의 위치를 확인해보세요.</p>
+					<p>인터넷 제공 업체의 인프라 구조에 따라, 자신의 위치가 아닌 엉뚱한 위치(실제 인터넷 중계 서버의 위치 등)가 표시될 수 있습니다.</p>
 					<br />
 
-					<p>보안 상의 이유로 <span>localhost</span> 혹은 <span>https</span> 환경에서만 사용 가능함을 반드시 기억하도록!</p>
-					<p>왜인지 Mac은 브라우저의 지오로케이션 API가 좀 느린 것 같으니 참고하라고.</p>
+					<p>보안 상의 이유로 <span>localhost</span> 혹은 <span>https</span> 환경에서만 사용이 가능합니다.</p>
+					<p>왜인지 모르겠지만, Mac에서의 순수 지오로케이션은 느리니 사용에 참고하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

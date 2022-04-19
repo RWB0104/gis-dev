@@ -1,75 +1,75 @@
 /**
- * WFS 팝업 페이지 컴포넌트
+ * WebGL 페이지 컴포넌트
  *
  * @author RWB
- * @since 2022.02.19 Sat 10:17:24
+ * @since 2022.04.19 Tue 15:44:37
  */
 
-import { Map, Overlay, View } from 'ol';
-import { Vector } from 'ol/source';
-import { Vector as VectorLayer } from 'ol/layer';
-import { GeoJSON } from 'ol/format';
-import { bbox } from 'ol/loadingstrategy';
+import { Feature, Map, Overlay, View } from 'ol';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
 import Popup from '../components/map/Popup';
 import { sejongPosition } from '../common/position';
-import { WFS_URL } from '../common/env';
 import Meta from '../components/global/Meta';
-import { basicStyle, clickStyle, hoverStyle } from '../common/style';
-import { click, pointerMove } from 'ol/events/condition';
-import { defaults, Select } from 'ol/interaction';
 import SpeedWagon from '../components/map/SpeedWagon';
 import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
-import { urlBuilder } from '../common/util';
+import Geometry from 'ol/geom/Geometry';
+import Point from 'ol/geom/Point';
+import VectorSource from 'ol/source/Vector';
+import WebGLPointsLayer from 'ol/layer/WebGLPoints';
+import { webGLStyle } from '../common/style';
 
 /**
- * WFS 팝업 페이지 JSX 반환 메서드
+ * WebGL 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function WFSPopup()
+export default function WebGL()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>>];
+
+	const features: Feature<Geometry>[] = [];
+
+	let x = 14192766;
+	let y = 4353014;
+
+	for (let i = 0; i < 300000; i++)
+	{
+		x += 100;
+
+		// 500건마다 뒤로 내림
+		if (i % 500 === 0)
+		{
+			y += 100;
+
+			x -= 50000;
+		}
+
+		const point = new Point([ x, y ]);
+
+		const feature = new Feature<Geometry>({
+			geometry: point
+		});
+
+		features.push(feature);
+	}
 
 	useEffect(() =>
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		const wfs = new Vector({
-			format: new GeoJSON(),
-			url: (extent) => urlBuilder(WFS_URL, {
-				service: 'WFS',
-				version: '2.0.0',
-				request: 'GetFeature',
-				typename: 'TEST:buld_sejong',
-				srsName: 'EPSG:3857',
-				outputFormat: 'application/json',
-				exceptions: 'application/json',
-				bbox: `${extent.join(',')},EPSG:3857`
-			}),
-			strategy: bbox
+		const vectorSource = new VectorSource({
+			features: features
 		});
 
-		const wfsLayer = new VectorLayer({
-			source: wfs,
-			style: feature => basicStyle(feature, 'buld_nm'),
-			minZoom: 15,
+		const webglLayer = new WebGLPointsLayer({
+			source: vectorSource,
+			style: webGLStyle(),
 			zIndex: 5,
 			properties: { name: 'wfs' }
-		});
-
-		const hoverSelect = new Select({
-			condition: pointerMove,
-			style: feature => hoverStyle(feature, 'buld_nm')
-		});
-
-		const clickSelect = new Select({
-			condition: click,
-			style: feature => clickStyle(feature, 'buld_nm')
 		});
 
 		const popup = document.getElementById('map-popup') as HTMLElement | null;
@@ -86,10 +86,9 @@ export default function WFSPopup()
 		});
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, webglLayer ],
 			overlays: [ overlay ],
 			target: 'map',
-			interactions: defaults().extend([ clickSelect, hoverSelect ]),
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
@@ -156,13 +155,16 @@ export default function WFSPopup()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>이전에 지도를 사용해봤다면, 지도의 요소 데이터를 보여주는 팝업을 본 적이 있을겁니다.</p>
-					<p>이 페이지에선 WFS를 통해 <span>호출한 Feature의 팝업</span>을 구현합니다.</p>
+					<p>다량의 데이터를 표현할 수 있는 방법이 정말 없을까요?</p>
+					<p>다행히 꼭 그렇지만은 않습니다. <span>WebGL을 사용하면 많은 양의 데이터도 무리없이 표현이 가능</span>합니다.</p>
 					<br />
 
-					<p>이미 WFS를 통해 지도에 표시되는 Feature의 정보를 가지고 있으므로, 클릭 시 해당 Feature가 가진 값을 보여주기만 하면 됩니다.</p>
-					<p>팝업은 미리 HTML 태그를 작성해두고, OL의 <span>Overlay</span>로 사용하는 방식입니다.</p>
-					<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 자세히 봐두는 것도 도움이 될 것입니다.</p>
+					<p>이 지도는 임의의 Feature 30만 개를 코드 상에서 생성하여 지도에 표시해줍니다.</p>
+					<p>일반적인 Renderer와 달리, WebGL은 엄청나게 많은 양의 데이터를 무리없이 소화할 수 있습니다.</p>
+					<br />
+
+					<p>단, OpenLayers에서 제공하는 기능은 <span>Point 객체만을 지원</span>합니다.</p>
+					<p>WebGL을 적용하지 않으면서, 동일한 데이터를 표현하는 지도도 있으니, 직접 비교해보세요.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState}>{popupState}</Popup>

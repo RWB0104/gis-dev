@@ -88,21 +88,21 @@ export default function WFS()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>너만의 공간 데이터를 지도에 표현할 수 있다면 멋지지 않겠나?</p>
-					<p>그렇다면 <span>WFS</span>를 잘 기억하도록.</p>
+					<p>너만의 공간 데이터를 지도에 표현할 수 있다면 멋지지 않을까요?</p>
+					<p>그렇다면 <span>WFS</span>를 기억해두세요.</p>
 					<br />
 
-					<p>GeoServer라는 GIS엔진을 활용하여 API 형태로 너만의 <span>데이터를 지도에 표현</span>할 수 있다.</p>
-					<p>표현되는 데이터들은 <span>Feature 형태</span>로 지도에 표현된다.</p>
-					<p>사용하는 API 형식은 OGC표준의 <span>GetFeature</span>다!</p>
+					<p>GeoServer라는 GIS엔진을 활용하여 API 형태로 당신만의 <span>데이터를 지도에 표현</span>할 수 있습니다.</p>
+					<p>표현되는 데이터들은 <span>Feature 형태</span>로 지도에 표현됩니다.</p>
+					<p>사용하는 API 형식은 OGC표준의 <span>GetFeature</span>입니다.</p>
 					<br />
 
-					<p>여기 세종시의 건물 데이터를 준비했으니, 한 번 확인해보도록!</p>
-					<p>건물의 <span>스타일은 코드 상에서 얼마든지 구현이 가능</span>하다.</p>
-					<p><span>건물 데이터의 값에 따라 디자인을 다르게 표현</span>하는 것도 가능하다걸 알아두는 것도 좋겠지.</p>
+					<p>여기 세종시의 건물 데이터를 준비했으니, 한 번 확인해보세요.</p>
+					<p>건물의 <span>스타일은 코드 상에서 얼마든지 구현이 가능</span>합니다.</p>
+					<p><span>건물 데이터의 값에 따라 디자인을 다르게 표현</span>하는 것도 가능합니다.</p>
 					<br />
 
-					<p>아, 갑자기 생긴 <FaHome color='dodgerblue' />는 맵의 초기 위치로 가는 버튼이야. 크게 중요한 건 아니니 알아만 둬.</p>
+					<p>이 지도부터 생긴 <FaHome color='dodgerblue' /> 버튼은 맵의 초기 위치로 가는 버튼입니다.</p>
 				</SpeedWagon>
 			</article>
 		</section>

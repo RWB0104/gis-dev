@@ -26,6 +26,8 @@ import WFSTransactionDelete from './pages/WFSTransactionDelete';
 import ClusterMap from './pages/ClusterMap';
 import HeatMap from './pages/HeatMap';
 import './App.scss';
+import WebGL from './pages/WebGL';
+import NonWebGL from './pages/NonWebGL';
 
 /**
  * 애플리케이션 JSX 반환 메서드
@@ -63,6 +65,8 @@ export default function App()
 					<Route path='/transaction-delete/' component={WFSTransactionDelete} />
 					<Route path='/cluster-map/' component={ClusterMap} />
 					<Route path='/heat-map/' component={HeatMap} />
+					<Route path='/nonwebgl/' component={NonWebGL} />
+					<Route path='/webgl/' component={WebGL} />
 				</Switch>
 			</BrowserRouter>
 		</HelmetProvider>

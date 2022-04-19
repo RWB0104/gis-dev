@@ -11,6 +11,7 @@ import RenderFeature from 'ol/render/Feature';
 import { Icon } from 'ol/style';
 import Circle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
+import { LiteralStyle } from 'ol/style/literal';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import Text from 'ol/style/Text';
@@ -105,6 +106,14 @@ export function clickStyle(feature: RenderFeature | Feature<Geometry>, labelColu
 	});
 }
 
+/**
+ * 스타벅스 기본 스타일 반환 메서드
+ *
+ * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
+ *
+ * @returns {Style} 스타일
+ */
 export function starbucksBasicStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
@@ -125,6 +134,14 @@ export function starbucksBasicStyle(feature: RenderFeature | Feature<Geometry>, 
 	});
 }
 
+/**
+ * 클러스터 기본 스타일 반환 메서드
+ *
+ * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
+ *
+ * @returns {Style} 스타일
+ */
 export function clusterBasicStyle(feature: RenderFeature | Feature<Geometry>)
 {
 	return new Style({
@@ -150,6 +167,14 @@ export function clusterBasicStyle(feature: RenderFeature | Feature<Geometry>)
 	});
 }
 
+/**
+ * 스타벅스 호버 스타일 반환 메서드
+ *
+ * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
+ *
+ * @returns {Style} 스타일
+ */
 export function starbucksHoverStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
@@ -170,6 +195,14 @@ export function starbucksHoverStyle(feature: RenderFeature | Feature<Geometry>, 
 	});
 }
 
+/**
+ * 스타벅스 클릭 스타일 반환 메서드
+ *
+ * @param {RenderFeature | Feature<Geometry>} feature: Feature
+ * @param {string} labelColumn: 라벨 컬럼
+ *
+ * @returns {Style} 스타일
+ */
 export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
@@ -188,4 +221,21 @@ export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, 
 			offsetY: 35
 		})
 	});
+}
+
+/**
+ * WebGL 스타일 반환 메서드
+ *
+ * @returns {LiteralStyle} 스타일
+ */
+export function webGLStyle(): LiteralStyle
+{
+	return {
+		symbol: {
+			symbolType: 'circle',
+			size: 14,
+			color: 'red',
+			opacity: 0.6
+		}
+	};
 }

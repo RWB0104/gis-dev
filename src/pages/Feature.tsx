@@ -57,17 +57,17 @@ export default function Feature()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>자신의 위치로 이동하는 것 이상으로, 직접 지도에 표시해보고 싶단 생각이 들지 않나?</p>
-					<p>그런 너를 위해, 이 페이지에선 <span>자신의 위치 정보를 직접 지도 상에 표시</span>해줄 것이다.</p>
+					<p>자신의 위치를 알았으니, 이를 직접 지도에 표시할 수도 있지 않을까요?</p>
 					<br />
 
-					<p>아까와 같이 <BiCurrentLocation color='limegreen' />을 눌러봐라.</p>
-					<p>마커를 표시할 VectorLayer를 하나 생성해서, 네 위치에 마커를 동적으로 찍어줄 것이다.</p>
-					<p>Geolocation API에서 <span>사용자의 좌표를 EPSG:4326으로 전달</span>해주니, 위치를 표시할 수 있지!</p>
+					<p>이 페이지는 지오로케이션을 통해 얻은 당신의 위치를 Feature로 만들어 지도에 표시할 것입니다.</p>
+
+					<p>아까와 같이 <BiCurrentLocation color='limegreen' /> 버튼을 눌러보세요.</p>
+					<p>현재 당신의 위치가 지도 상에 표시될 것입니다.</p>
 					<br />
 
-					<p>이렇게 지도에 표현되는 <span>Vector</span> 요소를 <span>Feature</span>라 부른다.</p>
-					<p>이 놈들은 지도 상의 객체이므로 <span>상호작용이 가능</span>하다는 점을 기억해라. 훗날 도움이 될 것이네.</p>
+					<p>이렇게 지도에 표현되는 <span>Vector</span> 요소를 <span>Feature</span>라 부릅니다.</p>
+					<p>이 Feature들은 지도 상의 객체이므로 <span>상호작용도 가능</span>합니다.</p>
 				</SpeedWagon>
 			</article>
 		</section>

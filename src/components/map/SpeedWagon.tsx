@@ -29,13 +29,7 @@ export default function SpeedWagon({ children }: Props)
 				</div>
 
 				<div className='he-said'>
-					<p><b>그럼 설명해주지!!!</b></p>
-					<br />
-
 					{children}
-
-					<br />
-					<p><b>그럼 이만 쿨하게 떠나주지!</b></p>
 				</div>
 
 				<div className='i-said'>
