@@ -12,7 +12,7 @@ import './ROOT.scss';
 import Meta from '../components/global/Meta';
 import { MdAdsClick, MdOutlineGroupWork } from 'react-icons/md';
 import { GiSouthKorea } from 'react-icons/gi';
-import { FiZap, FiZapOff } from 'react-icons/fi';
+import { FiZap } from 'react-icons/fi';
 
 /**
  * 루트 페이지 JSX 반환 메서드
@@ -51,7 +51,6 @@ export default function ROOT()
 				<Link to='/cluster-map' title='Cluster Map'><MdOutlineGroupWork /> Cluster Map</Link>
 				<Link to='/heat-map' title='Heat Map'><FaTemperatureHigh /> Heat Map</Link>
 				<Link to='/webgl' title='WebGL'><FiZap /> WebGL</Link>
-				<Link to='/non-webgl' title='Non-WebGL'><FiZapOff /> Non WebGL</Link>
 			</article>
 		</section>
 	);

@@ -24,12 +24,13 @@
 			opacity: 0.5;
 		}
 
+		&:disabled {
+			opacity: 0.5;
+			cursor: initial;
+		}
+
 		&.location {
 			background-color: limegreen;
-
-			&.loading {
-				background-color: red;
-			}
 		}
 
 		&.sejong {

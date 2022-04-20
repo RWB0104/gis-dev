@@ -11,8 +11,9 @@ import Point from 'ol/geom/Point';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Icon, Style } from 'ol/style';
+import { Circle, Fill, Stroke, Style } from 'ol/style';
 import proj4 from 'proj4';
+import { SyntheticEvent } from 'react';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { FaEdit, FaHome, FaPlus } from 'react-icons/fa';
 import { seoulPosition } from '../../common/position';
@@ -68,18 +69,28 @@ export function Location({ map }: SubProps)
 	// 맵 객체가 유효할 경우
 	if (map)
 	{
-		const onClick = () =>
+		const onClick = (e: SyntheticEvent) =>
 		{
+			const button = e.currentTarget as HTMLButtonElement;
+
 			// 지오로케이션 사용이 가능할 경우
 			if ('geolocation' in navigator)
 			{
+				button.setAttribute('disabled', '');
+
 				navigator.geolocation.getCurrentPosition(position =>
 				{
 					const { latitude, longitude } = position.coords;
 					const baseEPSG = map.getView().getProjection().getCode();
 
 					flyTo(map.getView(), proj4('EPSG:4326', baseEPSG, [ longitude, latitude ]));
-				}, () => alert('실패'), { enableHighAccuracy: true });
+
+					button.removeAttribute('disabled');
+				}, () =>
+				{
+					alert('실패');
+					button.removeAttribute('disabled');
+				}, { enableHighAccuracy: true });
 			}
 
 			// 아닐 경우
@@ -127,8 +138,15 @@ export function LocationWithMarker({ map }: SubProps)
 					name: 'location'
 				},
 				style: new Style({
-					image: new Icon({
-						src: 'https://tsauerwein.github.io/ol3/animation-flights/examples/data/icon.png'
+					image: new Circle({
+						fill: new Fill({
+							color: 'dodgerblue'
+						}),
+						stroke: new Stroke({
+							color: 'white',
+							width: 3
+						}),
+						radius: 10
 					})
 				}),
 				minZoom: 15,
@@ -136,13 +154,14 @@ export function LocationWithMarker({ map }: SubProps)
 			}));
 		}
 
-		const onClick = () =>
+		const onClick = (e: SyntheticEvent) =>
 		{
 			// 지오로케이션 사용이 가능할 경우
 			if ('geolocation' in navigator)
 			{
-				const tag = document.querySelector('button.location') as HTMLButtonElement;
-				tag.classList.add('loading');
+				const button = e.currentTarget as HTMLButtonElement;
+
+				button.setAttribute('disabled', '');
 
 				navigator.geolocation.getCurrentPosition(position =>
 				{
@@ -157,8 +176,12 @@ export function LocationWithMarker({ map }: SubProps)
 						geometry: new Point(coord)
 					}));
 
-					tag.classList.remove('loading');
-				}, () => alert('실패'), { enableHighAccuracy: true });
+					button.removeAttribute('disabled');
+				}, () =>
+				{
+					alert('실패');
+					button.removeAttribute('disabled');
+				}, { enableHighAccuracy: true });
 			}
 
 			// 아닐 경우

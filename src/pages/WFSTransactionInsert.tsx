@@ -110,8 +110,7 @@ export default function WFSTransactionInsert()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 18,
-				constrainResolution: true
+				zoom: 18
 			})
 		});
 

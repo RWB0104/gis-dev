@@ -93,8 +93,7 @@ export default function WFSPopup()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 17,
-				constrainResolution: true
+				zoom: 17
 			})
 		});
 

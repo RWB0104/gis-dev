@@ -106,8 +106,7 @@ export default function ClusterMap()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 13,
-				constrainResolution: true
+				zoom: 13
 			})
 		});
 

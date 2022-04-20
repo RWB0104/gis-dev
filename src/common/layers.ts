@@ -59,3 +59,45 @@ export const vworldSatelliteLayer = new TileLayer({
 	zIndex: 2,
 	preload: Infinity
 });
+
+export const googleRoadLayer = new TileLayer({
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' }),
+	properties: { name: 'base-google-road' },
+	zIndex: 2,
+	preload: Infinity
+});
+
+export const googleTerrainLayer = new TileLayer({
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=p&x={x}&y={y}&z={z}' }),
+	properties: { name: 'base-google-terrain' },
+	zIndex: 2,
+	preload: Infinity
+});
+
+export const googleAlterLayer = new TileLayer({
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=r&x={x}&y={y}&z={z}' }),
+	properties: { name: 'base-google-alter' },
+	zIndex: 2,
+	preload: Infinity
+});
+
+export const googleSatelliteLayer = new TileLayer({
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}' }),
+	properties: { name: 'base-google-satellite' },
+	zIndex: 2,
+	preload: Infinity
+});
+
+export const googleOnlyTerrainLayer = new TileLayer({
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=t&x={x}&y={y}&z={z}' }),
+	properties: { name: 'base-google-only-terrain' },
+	zIndex: 2,
+	preload: Infinity
+});
+
+export const googleHybridyLayer = new TileLayer({
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' }),
+	properties: { name: 'base-google-hybrid' },
+	zIndex: 2,
+	preload: Infinity
+});

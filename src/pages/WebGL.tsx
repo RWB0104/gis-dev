@@ -5,12 +5,11 @@
  * @since 2022.04.19 Tue 15:44:37
  */
 
-import { Feature, Map, Overlay, View } from 'ol';
+import { Feature, Map, View } from 'ol';
 import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
 import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
 import MapBoard from '../components/map/MapBoard';
-import Popup from '../components/map/Popup';
 import { sejongPosition } from '../common/position';
 import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
@@ -20,6 +19,10 @@ import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
 import WebGLPointsLayer from 'ol/layer/WebGLPoints';
 import { webGLStyle } from '../common/style';
+import MapPanel from '../components/map/MapPanel';
+import { FiZap, FiZapOff } from 'react-icons/fi';
+import VectorLayer from 'ol/layer/Vector';
+import './WebGL.scss';
 
 /**
  * WebGL 페이지 JSX 반환 메서드
@@ -29,116 +32,65 @@ import { webGLStyle } from '../common/style';
 export default function WebGL()
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
-	const [ popupState, setPopupState ] = useState() as [JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>>];
-
-	const features: Feature<Geometry>[] = [];
-
-	let x = 14192766;
-	let y = 4353014;
-
-	for (let i = 0; i < 300000; i++)
-	{
-		x += 100;
-
-		// 500건마다 뒤로 내림
-		if (i % 500 === 0)
-		{
-			y += 100;
-
-			x -= 50000;
-		}
-
-		const point = new Point([ x, y ]);
-
-		const feature = new Feature<Geometry>({
-			geometry: point
-		});
-
-		features.push(feature);
-	}
+	const [ type, setType ] = useState(true);
+	const [ source, setSource ] = useState(new VectorSource())  as [ VectorSource<Geometry>, React.Dispatch<React.SetStateAction<VectorSource<Geometry>>> ];
 
 	useEffect(() =>
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
+		const features: Feature<Geometry>[] = [];
+
+		let x = 14333482;
+		let y = 4304950;
+
+		for (let i = 0; i < 300000; i++)
+		{
+			x += 500;
+
+			// 500건마다 뒤로 내림
+			if (i % 500 === 0)
+			{
+				y += 500;
+
+				x -= 250000;
+			}
+
+			const point = new Point([ x, y ]);
+
+			const feature = new Feature<Geometry>({
+				geometry: point
+			});
+
+			features.push(feature);
+		}
+
 		const vectorSource = new VectorSource({
 			features: features
 		});
 
-		const webglLayer = new WebGLPointsLayer({
-			source: vectorSource,
-			style: webGLStyle(),
-			zIndex: 5,
-			properties: { name: 'wfs' }
-		});
-
-		const popup = document.getElementById('map-popup') as HTMLElement | null;
-
-		const overlay = new Overlay({
-			id: 'popup',
-			element: popup || undefined,
-			positioning: 'center-center',
-			autoPan: {
-				animation: {
-					duration: 250
-				}
-			}
-		});
+		setSource(vectorSource);
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, webglLayer ],
-			overlays: [ overlay ],
+			layers: [ vworldBaseLayer, vworldHybridLayer, getLayer(type, vectorSource) ],
 			target: 'map',
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 17,
-				constrainResolution: true
+				zoom: 17
 			})
 		});
 
 		map.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
 
-		map.on('singleclick', (e) =>
-		{
-			// 해당 픽셀에 객체가 있을 경우
-			if (map.hasFeatureAtPixel(e.pixel))
-			{
-				map.forEachFeatureAtPixel(e.pixel, feature =>
-				{
-					// 해당 객체의 아이디가 buld_sejong으로 시작할 경우
-					if (feature.getId()?.toString().startsWith('buld_sejong'))
-					{
-						const geom = feature.getGeometry();
-
-						// 공간정보가 유효할 경우
-						if (geom)
-						{
-							const [ minX, minY, maxX, maxY ] = geom.getExtent();
-
-							setPopupState((
-								<ul>
-									<li>{feature.getId() || ''}</li>
-									<li>{feature.get('buld_nm') || <span>이름 없음</span>}</li>
-									<li>{feature.get('bul_man_no')}</li>
-								</ul>
-							));
-
-							overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
-						}
-					}
-				});
-			}
-
-			// 없을 경우
-			else
-			{
-				overlay.setPosition(undefined);
-			}
-		});
-
 		setMapState(map);
 	}, []);
+
+	useEffect(() =>
+	{
+		mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs').forEach(layer => mapState.removeLayer(layer));
+		mapState.addLayer(getLayer(type, source));
+	}, [ type ]);
 
 	return (
 		<section id='webgl' className='page'>
@@ -146,6 +98,13 @@ export default function WebGL()
 
 			<article className='map-wrapper'>
 				<div id='map'></div>
+
+				<MapPanel map={mapState} width={300} height={85}>
+					<div className='item'>
+						<button onClick={() => setType(true)} data-selected={type}><FiZap /> WebGL</button>
+						<button onClick={() => setType(false)} data-selected={!type}><FiZapOff /> Non WebGL</button>
+					</div>
+				</MapPanel>
 
 				<MapInteraction>
 					<HomeButton map={mapState} position={sejongPosition} />
@@ -155,6 +114,9 @@ export default function WebGL()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
+					<p><b><span>30만개의 Feature를 동적으로 생성하므로, 약간의 초기 지연시간이 존재합니다!</span></b></p>
+					<br />
+
 					<p>다량의 데이터를 표현할 수 있는 방법이 정말 없을까요?</p>
 					<p>다행히 꼭 그렇지만은 않습니다. <span>WebGL을 사용하면 많은 양의 데이터도 무리없이 표현이 가능</span>합니다.</p>
 					<br />
@@ -164,11 +126,42 @@ export default function WebGL()
 					<br />
 
 					<p>단, OpenLayers에서 제공하는 기능은 <span>Point 객체만을 지원</span>합니다.</p>
-					<p>WebGL을 적용하지 않으면서, 동일한 데이터를 표현하는 지도도 있으니, 직접 비교해보세요.</p>
+					<p>우측 상단 패널에서, WebGL의 유무에 따른 속도 차이를 비교해보세요!</p>
+					<p>지도를 많이 축소한 상태에서 <span>Non WebGL</span>을 사용하게 되면 페이지가 멈출 가능성이 높습니다.</p>
 				</SpeedWagon>
-
-				<Popup map={mapState}>{popupState}</Popup>
 			</article>
 		</section>
 	);
+}
+
+/**
+ * 레이어 반환 메서드
+ *
+ * @param {boolean} type: 레이어 타입
+ * @param {VectorSource<Geometry>} 벡터 소스
+ *
+ * @returns {WebGLPointsLayer<VectorSource<Geometry>> | VectorLayer<VectorSource<Geometry>>} 레이어
+ */
+function getLayer(type: boolean, source: VectorSource<Geometry>): WebGLPointsLayer<VectorSource<Geometry>> | VectorLayer<VectorSource<Geometry>>
+{
+	// Tile 레이어일 경우
+	if (type)
+	{
+		return new WebGLPointsLayer({
+			source: source,
+			style: webGLStyle(),
+			zIndex: 5,
+			properties: { name: 'wfs' }
+		});
+	}
+
+	// Image 레이어일 경우
+	else
+	{
+		return new VectorLayer({
+			source: source,
+			zIndex: 5,
+			properties: { name: 'wfs' }
+		});
+	}
 }

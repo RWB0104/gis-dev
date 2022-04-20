@@ -38,8 +38,7 @@ export default function VWorld()
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 17,
 				minZoom: 6,
-				maxZoom: 18,
-				constrainResolution: true
+				maxZoom: 18
 			})
 		});
 
