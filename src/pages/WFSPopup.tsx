@@ -93,8 +93,7 @@ export default function WFSPopup()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 17,
-				constrainResolution: true
+				zoom: 17
 			})
 		});
 
@@ -156,13 +155,13 @@ export default function WFSPopup()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>이전에 지도를 사용해봤다면, 지도의 요소 데이터를 보여주는 팝업을 본 적이 있겠지?</p>
-					<p>이 페이지에선 WFS를 통해 <span>호출한 Feature의 팝업</span>을 구현한다!</p>
+					<p>이전에 지도를 사용해봤다면, 지도의 요소 데이터를 보여주는 팝업을 본 적이 있을겁니다.</p>
+					<p>이 페이지에선 WFS를 통해 <span>호출한 Feature의 팝업</span>을 구현합니다.</p>
 					<br />
 
-					<p>이미 WFS를 통해 지도에 표시되는 Feature의 정보를 가지고 있으므로, 클릭 시 해당 Feature가 가진 값을 보여주기만 하면 된다.</p>
-					<p>팝업은 미리 HTML 태그를 작성해두고, OL의 <span>Overlay</span>로 사용하는 방식이야.</p>
-					<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 유심있게 보도록 하라고.</p>
+					<p>이미 WFS를 통해 지도에 표시되는 Feature의 정보를 가지고 있으므로, 클릭 시 해당 Feature가 가진 값을 보여주기만 하면 됩니다.</p>
+					<p>팝업은 미리 HTML 태그를 작성해두고, OL의 <span>Overlay</span>로 사용하는 방식입니다.</p>
+					<p>클릭한 Feature를 지도상에 연계하여 표시하는 게 생각보다 귀찮으니 코드를 자세히 봐두는 것도 도움이 될 것입니다.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState}>{popupState}</Popup>

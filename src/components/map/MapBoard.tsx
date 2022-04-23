@@ -9,7 +9,7 @@ import { Map } from 'ol';
 import { useEffect, useState } from 'react';
 import { FaRegCopy, FaRegWindowMinimize } from 'react-icons/fa';
 import { FiMaximize } from 'react-icons/fi';
-import { osmLayer, vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer } from '../../common/layers';
+import { osmLayer, vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer, googleRoadLayer, googleTerrainLayer, googleAlterLayer, googleSatelliteLayer, googleOnlyTerrainLayer, googleHybridyLayer } from '../../common/layers';
 import './MapBoard.scss';
 
 interface Props
@@ -57,11 +57,37 @@ export default function MapBoard({ map }: Props)
 					map.addLayer(vworldSatelliteLayer);
 					break;
 
+				case 'base-google-road':
+					map.addLayer(googleRoadLayer);
+					break;
+
+				case 'base-google-terrain':
+					map.addLayer(googleTerrainLayer);
+					break;
+
+				case 'base-google-alter':
+					map.addLayer(googleAlterLayer);
+					break;
+
+				case 'base-google-satellite':
+					map.addLayer(googleSatelliteLayer);
+					break;
+
+				case 'base-google-only-terrain':
+					map.addLayer(googleOnlyTerrainLayer);
+					break;
+
+				case 'base-google-hybrid':
+					map.addLayer(googleHybridyLayer);
+					break;
+
 				default:
 					map.addLayer(osmLayer);
 					setExtState(false);
 					break;
 			}
+
+			!layerState.startsWith('base-vworld') && setExtState(false);
 		}, [ layerState ]);
 
 		useEffect(() =>
@@ -118,12 +144,18 @@ export default function MapBoard({ map }: Props)
 							<option value='base-vworld-gray'>VWorld 흑백</option>
 							<option value='base-vworld-midnight'>VWorld 야간</option>
 							<option value='base-vworld-satellite'>VWorld 위성</option>
+							<option value='base-google-road'>Google 로드맵</option>
+							<option value='base-google-terrain'>Google 지형도</option>
+							<option value='base-google-alter'>Google 변경된 로드맵</option>
+							<option value='base-google-satellite'>Google 위성</option>
+							<option value='base-google-only-terrain'>Google 지형 전용도</option>
+							<option value='base-google-hybrid'>Google 하이브리드</option>
 						</select>
 					</div>
 
 					<div>
 						<small>ext</small>
-						<input type='checkbox' name='ext' checked={extState} disabled={layerState === 'base-osm'} onChange={(e) => setExtState(e.target.checked)} />
+						<input type='checkbox' name='ext' checked={extState} onChange={(e) => setExtState(e.target.checked)} disabled={!layerState.startsWith('base-vworld')} />
 					</div>
 				</div>
 

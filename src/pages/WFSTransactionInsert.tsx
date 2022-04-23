@@ -110,8 +110,7 @@ export default function WFSTransactionInsert()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 18,
-				constrainResolution: true
+				zoom: 18
 			})
 		});
 
@@ -182,16 +181,16 @@ export default function WFSTransactionInsert()
 				<InsertForm map={mapState} />
 
 				<SpeedWagon>
-					<p><span>Transaction</span>이란 놈들은 지금껏 봐왔던 예제들과는 수준이 좀 다를거야..</p>
-					<p>지금까지는 단순한 조회에 불과했다면, 이 놈은 트랜잭션이라는 이름에 걸맞게 <span>CUD를 수행</span>할 수 있는 녀석이다!</p>
+					<p><span>Transaction</span>이란 놈들은 지금껏 봐왔던 예제들과는 수준이 좀 다릅니다.</p>
+					<p>지금까지는 단순한 조회에 불과했다면, 이 기능은 트랜잭션이라는 이름에 걸맞게 <span>CUD를 수행</span>할 수 있습니다.</p>
 					<br />
 
-					<p>그 중 <span>WFS-T Insert는 지도에 피쳐를 추가</span>할 수 있지.</p>
-					<p>좌측 하단의 <MdAdd color='crimson' /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보게.</p>
-					<p>네가 만든 도형이 추가되는 것을 직접 볼 수 있을거야.</p>
+					<p>그 중 <span>WFS-T Insert는 지도에 Feature를 추가</span>해줍니다.</p>
+					<p>좌측 하단의 <MdAdd color='crimson' /> 버튼을 클릭해서 요소를 그리고, 요소의 값을 입력해보세요.</p>
+					<p>네가 만든 도형이 추가되는 것을 직접 확인할 수 있을겁니다.</p>
 					<br />
 
-					<p>만약 그리는 걸 취소하고 싶다면 <span>ESC</span> 혹은 <span>마우스 오른쪽 버튼</span>을 클릭하도록!</p>
+					<p>만약 그리는 걸 취소하고 싶다면 <span>ESC</span> 혹은 <span>마우스 오른쪽 버튼</span>을 클릭하세요.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState}>{popupState}</Popup>

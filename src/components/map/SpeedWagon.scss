@@ -24,7 +24,7 @@
 		max-width: 640px;
 		min-width: 360px;
 
-		& > div {
+		&>div {
 			padding: 20px;
 		}
 
@@ -57,6 +57,17 @@
 
 			span {
 				color: dodgerblue;
+			}
+
+			a {
+				color: crimson;
+				font-weight: bold;
+
+				cursor: pointer;
+
+				&:hover {
+					text-decoration: underline;
+				}
 			}
 		}
 

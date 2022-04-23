@@ -60,8 +60,7 @@ export default function WMS()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
-				zoom: 17,
-				constrainResolution: true
+				zoom: 17
 			})
 		});
 
@@ -153,12 +152,12 @@ export default function WMS()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>WMS도 마찬가지로 팝업을 구현할 수 있다네.</p>
-					<p>물론 Feature가 아닌 순수 이미지인 탓에, 방식은 조금 다르다는 것을 기억해야하네.</p>
-					<p>OGC 표준의 <span>GetFeatureInfo</span>를 통해 현재 지도 상의 Feature 데이터를 호출할 수 있지.</p>
+					<p>WMS는 상호작용이 불가능하지만, WMS 또한 팝업을 구현할 수 있습니다.</p>
+					<p>물론 Feature가 아닌 순수 이미지인 탓에, 방식은 조금 다르다는 특징이 있습니다.</p>
+					<p>OGC 표준의 <span>GetFeatureInfo</span>를 통해 현재 지도 상의 Feature 데이터 호출이 가능합니다.</p>
 					<br />
 
-					<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값을 별도로 불러오는 과정</span>이 있다는 걸 반드시 알아두게!</p>
+					<p>이미 저장된 Feature의 값을 불러오는 WFS와 다르게, <span>WMS는 API 호출을 통해 Feature의 값을 별도로 불러오는 과정</span>이 있습니다.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState}>{popupState}</Popup>

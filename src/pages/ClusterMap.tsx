@@ -106,8 +106,7 @@ export default function ClusterMap()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 13,
-				constrainResolution: true
+				zoom: 13
 			})
 		});
 
@@ -208,21 +207,15 @@ export default function ClusterMap()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>커피 좋아하나?</p>
-					<p>여기 너를 위해 대한민국의 스타벅스 위치 데이터를 가져왔다!</p>
-					<p>정말 많은 지점이 있지만, 이 모든 지점을 한 눈에 보기는 너도 어려울거다.</p>
+					<p>이 페이지의 데이터는 국내 스타벅스 전국 매장의 위치 데이터입니다.</p>
+					<p>이렇게 광범위한 지역에 걸친 다량의 데이터는, 한 눈에 보기에 어려움이 있습니다.</p>
 					<br />
 
-					<p>이 때 <span>Cluster Map</span>을 활용하면 지점을 효과적으로 그룹화하여 표시할 수 있지!</p>
-					<p>겉으론 복잡해 보이지만, 다행히 구현하는 방법도 그리 어렵지 않다!</p>
+					<p>이 때, <span>Cluster Map</span>을 사용하면 많은 양의 데이터를 쉽게 함축해서 볼 수 있습니다.</p>
+					<p>지도에 표현되는 피쳐의 수가 적어지므로 <span>많은 양의 데이터를 빠르게 표현</span>할 수 있습니다.</p>
 					<br />
 
-					<p>우측 상단 패널에서 그룹화할 <span>Feature의 기준 거리를 조절</span>할 수 있다.</p>
-					<p>데이터가 많아도 그룹화로 인해 Feature의 수가 줄어드는 효과가 있기 때문에 <span>동작이 빨라진다</span>는 점을 알아두도록!</p>
-					<br />
-
-					<p>하지만 스타일링을 구현하는 덴 조금 신경을 써줘야 할걸세.</p>
-					<p>Feature가 배열로 그룹화된 것 이외엔 나머지와 다를 바 없으니 너무 겁먹지들 말라고.</p>
+					<p>우측 상단의 패널에서 <span>그룹화 기준 거리를 변경</span>해보세요.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState}>{popupState}</Popup>

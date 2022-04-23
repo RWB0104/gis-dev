@@ -38,8 +38,7 @@ export default function VWorld()
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
 				zoom: 17,
 				minZoom: 6,
-				maxZoom: 18,
-				constrainResolution: true
+				maxZoom: 18
 			})
 		});
 
@@ -120,17 +119,20 @@ export default function VWorld()
 				</MapPanel>
 
 				<SpeedWagon>
-					<p>OSM을 쓰면서 아쉬운 점은 없었나?</p>
-					<p>눈치챘는지 모르겠지만, OSM은 사실 국내에서 주력으로 쓰기 그리 좋은 지도는 아니야.</p>
-					<p>네가 국내 한정 서비스를 생각 중이라면, 한국에 좀 더 특화된 지도를 서비스하는 게 더욱 좋겠지!</p>
+					<p>OSM을 쓰면서 아쉬운 점은 없었나요?</p>
+					<p>눈치챘는지 모르겠지만, OSM은 사실 국내에서 주력으로 쓰기 그리 좋은 지도는 아닙니다.</p>
+					<p>국내 한정 서비스를 기획중이라면, OSM은 그리 좋은 선택지가 아닐겁니다.</p>
 					<br />
 
-					<p><span>VWorld</span>는 <span>국내에 특화된 지도를 OpenAPI 형태로 제공</span>한다는 걸 알고있나?</p>
-					<p>이걸 활용하면 조금 더 국내 친화적인 지도 서비스를 제공할 수 있다!</p>
+					<p><span>VWorld</span>는 <span>국내에 특화된 지도를 OpenAPI 형태로 제공</span>하고 있습니다.</p>
+					<p>이걸 활용하면 조금 더 국내 친화적인 지도 서비스를 제공하는 것이 가능합니다.</p>
 					<br />
 
-					<p>VWorld에서는 일반지도 뿐만 아니라 위성지도 같은 다양한 레이어를 제공하지.</p>
-					<p>좌측 상단 메뉴에서 한 번 확인해봐라!</p>
+					<p>VWorld에서는 일반지도 뿐만 아니라 위성지도 같은 다양한 레이어를 제공합니다.</p>
+					<p>좌측 상단 메뉴에서 지도를 변경해보세요.</p>
+					<br />
+
+					<p>자세한 내용은 <a target='_blank' href='https://blog.itcode.dev/posts/2022/03/21/gis-guide-for-programmer-11'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

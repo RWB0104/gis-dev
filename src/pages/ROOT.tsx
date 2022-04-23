@@ -12,6 +12,7 @@ import './ROOT.scss';
 import Meta from '../components/global/Meta';
 import { MdAdsClick, MdOutlineGroupWork } from 'react-icons/md';
 import { GiSouthKorea } from 'react-icons/gi';
+import { FiZap } from 'react-icons/fi';
 
 /**
  * 루트 페이지 JSX 반환 메서드
@@ -33,6 +34,7 @@ export default function ROOT()
 
 			<article>
 				<h3>List</h3>
+
 				<Link to='/osm' title='OSM'><FaMapMarkedAlt /> OSM</Link>
 				<Link to='/vworld' title='VWorld'><GiSouthKorea /> VWorld</Link>
 				<Link to='/map-info' title='MapInfo'><FaInfoCircle /> MapInfo</Link>
@@ -48,6 +50,7 @@ export default function ROOT()
 				<Link to='/transaction-delete' title='WFS Transaction Delete'><FaMinusSquare /> WFS-T Delete</Link>
 				<Link to='/cluster-map' title='Cluster Map'><MdOutlineGroupWork /> Cluster Map</Link>
 				<Link to='/heat-map' title='Heat Map'><FaTemperatureHigh /> Heat Map</Link>
+				<Link to='/webgl' title='WebGL'><FiZap /> WebGL</Link>
 			</article>
 		</section>
 	);

@@ -25,6 +25,7 @@ import WFSTransactionUpdate from './pages/WFSTransactionUpdate';
 import WFSTransactionDelete from './pages/WFSTransactionDelete';
 import ClusterMap from './pages/ClusterMap';
 import HeatMap from './pages/HeatMap';
+import WebGL from './pages/WebGL';
 import './App.scss';
 
 /**
@@ -63,6 +64,7 @@ export default function App()
 					<Route path='/transaction-delete/' component={WFSTransactionDelete} />
 					<Route path='/cluster-map/' component={ClusterMap} />
 					<Route path='/heat-map/' component={HeatMap} />
+					<Route path='/webgl/' component={WebGL} />
 				</Switch>
 			</BrowserRouter>
 		</HelmetProvider>

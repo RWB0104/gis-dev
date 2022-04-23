@@ -33,8 +33,7 @@ export default function MapInfo()
 			view: new View({
 				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 17,
-				constrainResolution: true
+				zoom: 17
 			})
 		});
 
@@ -51,11 +50,11 @@ export default function MapInfo()
 				<MapBoard map={mapState} />
 
 				<SpeedWagon>
-					<p>단순 지도만 쳐다본다면 아무런 의미가 없다는 건 너도 잘 알겠지?</p>
-					<p>OL의 <span>View 객체</span>는 지도의 현재 상태값을 갖고 있다고 한다.</p>
+					<p>이제 지도를 통해 좀 더 의미있는 정보들을 얻어봅시다.</p>
+					<p>OL의 <span>View 객체</span>는 지도의 현재 상태값을 갖고 있습니다.</p>
 					<br />
 
-					<p>우측 하단의 정보창을 주목해라! 너를 위해 도움이 될 만한 것을 챙겨왔다.</p>
+					<p>우측 하단의 정보창은 유용할만한 정보들을 모아 표시합니다.</p>
 
 					<ul>
 						<li>베이스 맵 종류</li>
@@ -66,8 +65,10 @@ export default function MapInfo()
 						<li>마우스 위치</li>
 					</ul>
 
-					<p>메뉴 간소화를 위해 VWorld 페이지 좌측 상단의 메뉴를 통합했으니 당황하지 말라구.</p>
-					<p>View 객체와 이벤트를 적절히 활용하면 <span>현재 맵의 정보를 실시간으로 표현</span>이 가능하단걸 기억하도록!</p>
+					<p>메뉴 간소화를 위해 VWorld 페이지 좌측 상단의 메뉴를 통합했습니다.</p>
+					<p>View 객체와 이벤트를 적절히 활용하면 <span>현재 맵의 정보를 실시간으로 표현</span>이 가능합니다.</p>
+
+					<p>자세한 내용은 <a target='_blank' href='https://blog.itcode.dev/posts/2022/03/22/gis-guide-for-programmer-12'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>
