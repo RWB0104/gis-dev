@@ -45,7 +45,7 @@ export default function ClusterMap()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		const wfs = new Vector({
+		const wfs = new VectorSource({
 			format: new GeoJSON(),
 			url: (extent) => urlBuilder(WFS_URL, {
 				service: 'WFS',

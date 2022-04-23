@@ -6,7 +6,7 @@
  */
 
 import { Map, Overlay, View } from 'ol';
-import { Vector } from 'ol/source';
+import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
@@ -39,7 +39,7 @@ export default function WFSPopup()
 	{
 		document.querySelector('#map > .ol-viewport')?.remove();
 
-		const wfs = new Vector({
+		const wfs = new VectorSource({
 			format: new GeoJSON(),
 			url: (extent) => urlBuilder(WFS_URL, {
 				service: 'WFS',

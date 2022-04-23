@@ -98,7 +98,7 @@ export default function WMS()
 						else
 						{
 							const feature = new GeoJSON().readFeature(json.features[0]);
-							const vector = new Vector({ features: [ feature ] });
+							const vector = new VectorSource({ features: [ feature ] });
 
 							setPopupState(
 								<ul>
