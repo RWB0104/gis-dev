@@ -24,7 +24,7 @@ interface Props
  *
  * @returns {JSX.Element} JSX
  */
-export default function Popup({ map, children, onUpdateClick, onDeleteClick }: Props)
+export default function Popup({ map, children, onUpdateClick, onDeleteClick }: Props): JSX.Element
 {
 	return (
 		<div id='map-popup'>

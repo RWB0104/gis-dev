@@ -6,29 +6,30 @@
  */
 
 import { Map, View } from 'ol';
-import { Vector as VectorSource } from 'ol/source';
-import { Vector as VectorLayer } from 'ol/layer';
 import { GeoJSON } from 'ol/format';
+import { Vector as VectorLayer } from 'ol/layer';
 import { bbox } from 'ol/loadingstrategy';
-import React, { useEffect, useState } from 'react';
+import { Vector as VectorSource } from 'ol/source';
 import proj4 from 'proj4';
-import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
-import MapBoard from '../components/map/MapBoard';
-import { sejongPosition } from '../common/position';
-import { WFS_URL } from '../common/env';
-import Meta from '../components/global/Meta';
-import { basicStyle } from '../common/style';
-import SpeedWagon from '../components/map/SpeedWagon';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import React, { useEffect, useState } from 'react';
 import { FaHome } from 'react-icons/fa';
+
+import { WFS_URL } from '../common/env';
+import { googleRoadLayer } from '../common/layers';
+import { sejongPosition } from '../common/position';
+import { basicStyle } from '../common/style';
 import { urlBuilder } from '../common/util';
+import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 /**
  * WFS 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function WFS()
+export default function WFS(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
@@ -38,33 +39,33 @@ export default function WFS()
 
 		const wfs = new VectorSource({
 			format: new GeoJSON(),
+			strategy: bbox,
 			url: (extent) => urlBuilder(WFS_URL, {
-				service: 'WFS',
-				version: '2.0.0',
-				request: 'GetFeature',
-				typename: 'TEST:buld_sejong',
-				srsName: 'EPSG:3857',
-				outputFormat: 'application/json',
+				bbox: `${extent.join(',')},EPSG:3857`,
 				exceptions: 'application/json',
-				bbox: `${extent.join(',')},EPSG:3857`
-			}),
-			strategy: bbox
+				outputFormat: 'application/json',
+				request: 'GetFeature',
+				service: 'WFS',
+				srsName: 'EPSG:3857',
+				typename: 'TEST:buld_sejong',
+				version: '2.0.0'
+			})
 		});
 
 		const wfsLayer = new VectorLayer({
-			source: wfs,
-			style: feature => basicStyle(feature, 'buld_nm'),
 			minZoom: 15,
-			zIndex: 5,
-			properties: { name: 'wfs' }
+			properties: { name: 'wfs' },
+			source: wfs,
+			style: (feature) => basicStyle(feature, 'buld_nm'),
+			zIndex: 5
 		});
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			layers: [ googleRoadLayer, wfsLayer ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
+				projection: 'EPSG:3857',
 				zoom: 17
 			})
 		});
@@ -73,11 +74,11 @@ export default function WFS()
 	}, []);
 
 	return (
-		<section id='wfs' className='page'>
-			<Meta title='WFS' description='WFS 레이어 예제' url='/wfs/' />
+		<section className='page' id='wfs'>
+			<Meta description='WFS 레이어 예제' title='WFS' url='/wfs/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
 				<MapInteraction>
 					<HomeButton map={mapState} position={sejongPosition} />
@@ -102,6 +103,9 @@ export default function WFS()
 					<br />
 
 					<p>이 지도부터 생긴 <FaHome color='dodgerblue' /> 버튼은 맵의 초기 위치로 가는 버튼입니다.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/05/15/gis-guide-for-programmer-15' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

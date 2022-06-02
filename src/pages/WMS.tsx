@@ -6,28 +6,30 @@
  */
 
 import { Map, View } from 'ol';
-import { ImageWMS, TileWMS } from 'ol/source';
-import TileLayer from 'ol/layer/Tile';
-import React, { useEffect, useState } from 'react';
-import proj4 from 'proj4';
 import ImageLayer from 'ol/layer/Image';
-import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
-import MapBoard from '../components/map/MapBoard';
+import TileLayer from 'ol/layer/Tile';
+import { ImageWMS, TileWMS } from 'ol/source';
+import proj4 from 'proj4';
+import React, { useEffect, useState } from 'react';
 import { IoAppsSharp, IoImagesSharp } from 'react-icons/io5';
-import { sejongPosition } from '../common/position';
-import { WMS_URL } from '../common/env';
-import Meta from '../components/global/Meta';
-import SpeedWagon from '../components/map/SpeedWagon';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
-import MapPanel from '../components/map/MapPanel';
+
 import './WMS.scss';
+
+import { WMS_URL } from '../common/env';
+import { googleRoadLayer } from '../common/layers';
+import { sejongPosition } from '../common/position';
+import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
+import MapPanel from '../components/map/MapPanel';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 /**
  * WMS 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function WMS()
+export default function WMS(): JSX.Element
 {
 	const [ type, setType ] = useState(true);
 	const [ mapState, setMapState ] = useState(new Map({}));
@@ -37,11 +39,11 @@ export default function WMS()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, getLayer(type) ],
+			layers: [ googleRoadLayer, getLayer(type) ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
+				projection: 'EPSG:3857',
 				zoom: 17
 			})
 		});
@@ -51,21 +53,21 @@ export default function WMS()
 
 	useEffect(() =>
 	{
-		mapState.getAllLayers().filter(layer => layer.get('name') === 'wms').forEach(layer => mapState.removeLayer(layer));
+		mapState.getAllLayers().filter((layer) => layer.get('name') === 'wms').forEach((layer) => mapState.removeLayer(layer));
 		mapState.addLayer(getLayer(type));
 	}, [ type ]);
 
 	return (
-		<section id='wms' className='page'>
-			<Meta title='WMS' description='WMS 레이어 예제' url='/wms/' />
+		<section className='page' id='wms'>
+			<Meta description='WMS 레이어 예제' title='WMS' url='/wms/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
-				<MapPanel map={mapState} width={230} height={85}>
+				<MapPanel height={85} map={mapState} width={230}>
 					<div className='item'>
-						<button onClick={() => setType(true)} data-selected={type}><IoAppsSharp /> Tile</button>
-						<button onClick={() => setType(false)} data-selected={!type}><IoImagesSharp /> Image</button>
+						<button data-selected={type} onClick={() => setType(true)}><IoAppsSharp /> Tile</button>
+						<button data-selected={!type} onClick={() => setType(false)}><IoImagesSharp /> Image</button>
 					</div>
 				</MapPanel>
 
@@ -92,6 +94,9 @@ export default function WMS()
 
 					<p>좌측 상단에서 레이어의 종류를 선택해보세요.</p>
 					<p>스타일은 코드 상이 아닌 GeoServer에서 SLD 형태로 미리 작성합니다.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/05/16/gis-guide-for-programmer-16' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>
@@ -111,36 +116,34 @@ function getLayer(type: boolean): TileLayer<TileWMS> | ImageLayer<ImageWMS>
 	if (type)
 	{
 		return new TileLayer({
-			source: new TileWMS({
-				url: WMS_URL,
-				params: {
-					layers: 'buld_sejong',
-					exceptions: 'application/json'
-				},
-				transition: 0.3,
-				serverType: 'geoserver'
-			}),
 			minZoom: 15,
 			properties: { name: 'wms' },
+			source: new TileWMS({
+				params: {
+					exceptions: 'application/json',
+					layers: 'buld_sejong'
+				},
+				serverType: 'geoserver',
+				transition: 0.3,
+				url: WMS_URL
+			}),
 			zIndex: 5
 		});
 	}
 
 	// Image 레이어일 경우
-	else
-	{
-		return new ImageLayer({
-			source: new ImageWMS({
-				url: WMS_URL,
-				params: {
-					layers: 'buld_sejong',
-					exceptions: 'application/json'
-				},
-				serverType: 'geoserver'
-			}),
-			minZoom: 15,
-			properties: { name: 'wms' },
-			zIndex: 5
-		});
-	}
+
+	return new ImageLayer({
+		minZoom: 15,
+		properties: { name: 'wms' },
+		source: new ImageWMS({
+			params: {
+				exceptions: 'application/json',
+				layers: 'buld_sejong'
+			},
+			serverType: 'geoserver',
+			url: WMS_URL
+		}),
+		zIndex: 5
+	});
 }

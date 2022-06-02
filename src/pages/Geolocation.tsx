@@ -6,22 +6,23 @@
  */
 
 import { Map, View } from 'ol';
-import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
+import React, { useEffect, useState } from 'react';
+import { BiCurrentLocation } from 'react-icons/bi';
+
+import { googleRoadLayer } from '../common/layers';
+import { seoulPosition } from '../common/position';
+import Meta from '../components/global/Meta';
 import MapBoard from '../components/map/MapBoard';
 import MapInteraction, { Location } from '../components/map/MapInteraction';
-import Meta from '../components/global/Meta';
 import SpeedWagon from '../components/map/SpeedWagon';
-import { BiCurrentLocation } from 'react-icons/bi';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
-import { seoulPosition } from '../common/position';
 
 /**
  * 지오 로케이션 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function Geolocation()
+export default function Geolocation(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
@@ -30,11 +31,11 @@ export default function Geolocation()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer ],
+			layers: [ googleRoadLayer ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+				projection: 'EPSG:3857',
 				zoom: 17
 			})
 		});
@@ -43,11 +44,11 @@ export default function Geolocation()
 	}, []);
 
 	return (
-		<section id='geolocation' className='page'>
-			<Meta title='Geolocation' description='지오 로케이션 예제' url='/geolocation/' />
+		<section className='page' id='geolocation'>
+			<Meta description='지오 로케이션 예제' title='Geolocation' url='/geolocation/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
 				<MapInteraction>
 					<Location map={mapState} />
@@ -63,6 +64,9 @@ export default function Geolocation()
 
 					<p>보안 상의 이유로 <span>localhost</span> 혹은 <span>https</span> 환경에서만 사용이 가능합니다.</p>
 					<p>왜인지 모르겠지만, Mac에서의 순수 지오로케이션은 느리니 사용에 참고하세요.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/04/03/gis-guide-for-programmer-13' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

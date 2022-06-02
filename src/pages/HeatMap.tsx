@@ -6,29 +6,31 @@
  */
 
 import { Map, View } from 'ol';
-import { Vector as VectorSource } from 'ol/source';
-import { Heatmap } from 'ol/layer';
 import { GeoJSON } from 'ol/format';
+import { Heatmap } from 'ol/layer';
 import { bbox } from 'ol/loadingstrategy';
-import React, { useEffect, useState } from 'react';
+import { Vector as VectorSource } from 'ol/source';
 import proj4 from 'proj4';
-import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
-import MapBoard from '../components/map/MapBoard';
-import { sejongPosition, seoulPosition } from '../common/position';
-import { WFS_URL } from '../common/env';
-import Meta from '../components/global/Meta';
-import SpeedWagon from '../components/map/SpeedWagon';
-import MapPanel from '../components/map/MapPanel';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import React, { useEffect, useState } from 'react';
+
 import './HeatMap.scss';
+
+import { WFS_URL } from '../common/env';
+import { googleRoadLayer } from '../common/layers';
+import { sejongPosition, seoulPosition } from '../common/position';
 import { urlBuilder } from '../common/util';
+import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
+import MapPanel from '../components/map/MapPanel';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 /**
  * 히트 맵 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function HeatMap()
+export default function HeatMap(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
@@ -43,33 +45,33 @@ export default function HeatMap()
 
 		const wfs = new VectorSource({
 			format: new GeoJSON(),
+			strategy: bbox,
 			url: (extent) => urlBuilder(WFS_URL, {
-				service: 'WFS',
-				version: '2.0.0',
-				request: 'GetFeature',
-				typename: 'TEST:point_starbucks',
-				srsName: 'EPSG:3857',
-				outputFormat: 'application/json',
+				bbox: `${extent.join(',')},EPSG:3857`,
 				exceptions: 'application/json',
-				bbox: `${extent.join(',')},EPSG:3857`
-			}),
-			strategy: bbox
+				outputFormat: 'application/json',
+				request: 'GetFeature',
+				service: 'WFS',
+				srsName: 'EPSG:3857',
+				typename: 'TEST:point_starbucks',
+				version: '2.0.0'
+			})
 		});
 
 		const heatLayer = new Heatmap({
-			source: wfs,
-			zIndex: 5,
-			properties: { name: 'wfs' },
 			blur: defaultValue,
-			radius: defaultValue
+			properties: { name: 'wfs' },
+			radius: defaultValue,
+			source: wfs,
+			zIndex: 5
 		});
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, heatLayer ],
+			layers: [ googleRoadLayer, heatLayer ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+				projection: 'EPSG:3857',
 				zoom: 13
 			})
 		});
@@ -79,7 +81,7 @@ export default function HeatMap()
 
 	useEffect(() =>
 	{
-		const layer = mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0];
+		const layer = mapState.getAllLayers().filter((layer) => layer.get('name') === 'wfs')[0];
 
 		// 레이어가 유효할 경우
 		if (layer)
@@ -91,7 +93,7 @@ export default function HeatMap()
 
 	useEffect(() =>
 	{
-		const layer = mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0];
+		const layer = mapState.getAllLayers().filter((layer) => layer.get('name') === 'wfs')[0];
 
 		// 레이어가 유효할 경우
 		if (layer)
@@ -102,23 +104,23 @@ export default function HeatMap()
 	}, [ radiusState ]);
 
 	return (
-		<section id='heat-map' className='page'>
-			<Meta title='Heat Map' description='히트 맵 예제' url='/heat-map/' />
+		<section className='page' id='heat-map'>
+			<Meta description='히트 맵 예제' title='Heat Map' url='/heat-map/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
-				<MapPanel map={mapState} width={220} height={155}>
+				<MapPanel height={155} map={mapState} width={220}>
 					<div className='item'>
 						<div className='head'>
 							<small>블러 (blur)</small>
 
-							<input readOnly value={blurState} />
+							<input value={blurState} readOnly />
 						</div>
 
 						<div className='body'>
 							<small>0</small>
-							<input type='range' value={blurState} min={0} max={100} step={1} onChange={(e) => setBlurState(parseInt(e.target.value))} />
+							<input max={100} min={0} step={1} type='range' value={blurState} onChange={(e) => setBlurState(parseInt(e.target.value))} />
 							<small>200</small>
 						</div>
 					</div>
@@ -127,12 +129,12 @@ export default function HeatMap()
 						<div className='head'>
 							<small>반지름 (radius)</small>
 
-							<input readOnly value={radiusState} />
+							<input value={radiusState} readOnly />
 						</div>
 
 						<div className='body'>
 							<small>0</small>
-							<input type='range' value={radiusState} min={0} max={100} step={1} onChange={(e) => setRadiusState(parseInt(e.target.value))} />
+							<input max={100} min={0} step={1} type='range' value={radiusState} onChange={(e) => setRadiusState(parseInt(e.target.value))} />
 							<small>200</small>
 						</div>
 					</div>
@@ -159,6 +161,9 @@ export default function HeatMap()
 					<p>예를 들어, 스타벅스는 강원도, 특히 강원도 아랫지방엔 거의 입점하지 않고 있다는 걸 파악할 수 있습니다.</p>
 					<p>반면 서울, 특히 강남과 시청 지역은 그 수가 매우 밀접합니다.</p>
 					<p>같은 데이터도 관점에 따라 얻을 수 있는 정보가 달라질 수 있습니다.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/06/02/gis-guide-for-programmer-24' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

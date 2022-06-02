@@ -8,32 +8,34 @@
 import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import './App.scss';
+
 import Header from './components/header/Header';
-import ROOT from './pages/ROOT';
-import OSM from './pages/OSM';
-import VWorld from './pages/VWorld';
-import MapInfo from './pages/MapInfo';
-import Geolocation from './pages/Geolocation';
+import ClusterMap from './pages/ClusterMap';
 import Feature from './pages/Feature';
-import WFS from './pages/WFS';
-import WMS from './pages/WMS';
 import FeatureClick from './pages/FeatureClick';
+import Geolocation from './pages/Geolocation';
+import HeatMap from './pages/HeatMap';
+import MapInfo from './pages/MapInfo';
+import OSM from './pages/OSM';
+import ROOT from './pages/ROOT';
+import VWorld from './pages/VWorld';
+import WebGL from './pages/WebGL';
+import WFS from './pages/WFS';
 import WFSPopup from './pages/WFSPopup';
-import WMSPopup from './pages/WMSPopup';
+import WFSTransactionDelete from './pages/WFSTransactionDelete';
 import WFSTransactionInsert from './pages/WFSTransactionInsert';
 import WFSTransactionUpdate from './pages/WFSTransactionUpdate';
-import WFSTransactionDelete from './pages/WFSTransactionDelete';
-import ClusterMap from './pages/ClusterMap';
-import HeatMap from './pages/HeatMap';
-import WebGL from './pages/WebGL';
-import './App.scss';
+import WMS from './pages/WMS';
+import WMSPopup from './pages/WMSPopup';
 
 /**
  * 애플리케이션 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function App()
+export default function App(): JSX.Element
 {
 	useEffect(() =>
 	{
@@ -48,23 +50,23 @@ export default function App()
 				<Header />
 
 				<Switch>
-					<Route exact path='/' component={ROOT} />
-					<Route path='/osm/' component={OSM} />
-					<Route path='/vworld/' component={VWorld} />
-					<Route path='/map-info/' component={MapInfo} />
-					<Route path='/geolocation/' component={Geolocation} />
-					<Route path='/feature/' component={Feature} />
-					<Route path='/wfs/' component={WFS} />
-					<Route path='/wms/' component={WMS} />
-					<Route path='/feature-click/' component={FeatureClick} />
-					<Route path='/wfs-popup/' component={WFSPopup} />
-					<Route path='/wms-popup/' component={WMSPopup} />
-					<Route path='/transaction-insert/' component={WFSTransactionInsert} />
-					<Route path='/transaction-update/' component={WFSTransactionUpdate} />
-					<Route path='/transaction-delete/' component={WFSTransactionDelete} />
-					<Route path='/cluster-map/' component={ClusterMap} />
-					<Route path='/heat-map/' component={HeatMap} />
-					<Route path='/webgl/' component={WebGL} />
+					<Route component={ROOT} path='/' exact />
+					<Route component={OSM} path='/osm/' />
+					<Route component={VWorld} path='/vworld/' />
+					<Route component={MapInfo} path='/map-info/' />
+					<Route component={Geolocation} path='/geolocation/' />
+					<Route component={Feature} path='/feature/' />
+					<Route component={WFS} path='/wfs/' />
+					<Route component={WMS} path='/wms/' />
+					<Route component={FeatureClick} path='/feature-click/' />
+					<Route component={WFSPopup} path='/wfs-popup/' />
+					<Route component={WMSPopup} path='/wms-popup/' />
+					<Route component={WFSTransactionInsert} path='/transaction-insert/' />
+					<Route component={WFSTransactionUpdate} path='/transaction-update/' />
+					<Route component={WFSTransactionDelete} path='/transaction-delete/' />
+					<Route component={ClusterMap} path='/cluster-map/' />
+					<Route component={HeatMap} path='/heat-map/' />
+					<Route component={WebGL} path='/webgl/' />
 				</Switch>
 			</BrowserRouter>
 		</HelmetProvider>

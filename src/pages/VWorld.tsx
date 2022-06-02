@@ -6,13 +6,14 @@
  */
 
 import { Map, View } from 'ol';
-import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import Meta from '../components/global/Meta';
-import SpeedWagon from '../components/map/SpeedWagon';
+import React, { useEffect, useState } from 'react';
+
 import { vworldBaseLayer, vworldGrayLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer } from '../common/layers';
-import MapPanel from '../components/map/MapPanel';
 import { seoulPosition } from '../common/position';
+import Meta from '../components/global/Meta';
+import MapPanel from '../components/map/MapPanel';
+import SpeedWagon from '../components/map/SpeedWagon';
 import './VWorld.scss';
 
 /**
@@ -20,7 +21,7 @@ import './VWorld.scss';
  *
  * @returns {JSX.Element} JSX
  */
-export default function VWorld()
+export default function VWorld(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ layerState, setLayerState ] = useState('base-vworld-base');
@@ -34,11 +35,11 @@ export default function VWorld()
 			layers: [ vworldBaseLayer, vworldHybridLayer ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
-				zoom: 17,
+				maxZoom: 18,
 				minZoom: 6,
-				maxZoom: 18
+				projection: 'EPSG:3857',
+				zoom: 17
 			})
 		});
 
@@ -47,7 +48,7 @@ export default function VWorld()
 
 	useEffect(() =>
 	{
-		mapState.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('base-vworld')).forEach(layer => mapState.removeLayer(layer));
+		mapState.getAllLayers().filter((layer) => (layer.get('name') as string).startsWith('base-vworld')).forEach((layer) => mapState.removeLayer(layer));
 
 		switch (layerState)
 		{
@@ -80,18 +81,18 @@ export default function VWorld()
 		// 확장 레이어를 삭제할 경우
 		else
 		{
-			mapState.getAllLayers().filter(layer => (layer.get('name') as string).startsWith('ext')).forEach(layer => mapState.removeLayer(layer));
+			mapState.getAllLayers().filter((layer) => (layer.get('name') as string).startsWith('ext')).forEach((layer) => mapState.removeLayer(layer));
 		}
 	}, [ extState ]);
 
 	return (
-		<section id='vworld' className='page'>
-			<Meta title='VWorld' description='VWorld 베이스 지도 예제' url='/vworld/' />
+		<section className='page' id='vworld'>
+			<Meta description='VWorld 베이스 지도 예제' title='VWorld' url='/vworld/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
-				<MapPanel map={mapState} width={200} height={120}>
+				<MapPanel height={120} map={mapState} width={200}>
 					<div className='item'>
 						<div className='label'>
 							<small>베이스</small>
@@ -113,7 +114,7 @@ export default function VWorld()
 						</div>
 
 						<div className='body'>
-							<input type='checkbox' checked={extState} onChange={(e) => setExtState(e.target.checked)} />
+							<input checked={extState} type='checkbox' onChange={(e) => setExtState(e.target.checked)} />
 						</div>
 					</div>
 				</MapPanel>
@@ -132,7 +133,7 @@ export default function VWorld()
 					<p>좌측 상단 메뉴에서 지도를 변경해보세요.</p>
 					<br />
 
-					<p>자세한 내용은 <a target='_blank' href='https://blog.itcode.dev/posts/2022/03/21/gis-guide-for-programmer-11'>여기</a>를 참조하세요.</p>
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/03/21/gis-guide-for-programmer-11' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

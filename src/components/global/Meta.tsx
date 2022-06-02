@@ -6,6 +6,7 @@
  */
 
 import { Helmet } from 'react-helmet-async';
+
 import { TITLE, URL } from '../../common/env';
 
 interface Props
@@ -15,28 +16,35 @@ interface Props
 	url: string
 }
 
-export default function Meta({ title, description, url }: Props)
+/**
+ * 메타 JSX 반환 메서드
+ *
+ * @param {Props} param0: 프로퍼티
+ *
+ * @returns {JSX.Element} JSX
+ */
+export default function Meta({ title, description, url }: Props): JSX.Element
 {
 	const fullTitle = `${title} - ${TITLE}`;
 
 	return (
 		<Helmet>
-			<meta name="description" content={description} />
+			<meta content={description} name='description' />
 
-			<meta property="og:site_name" content={TITLE} />
-			<meta property="og:title" content={fullTitle} />
-			<meta property="og:description" content={description} />
-			<meta property="og:type" content="website" />
-			<meta property="og:url" content={`${URL}${url}`} />
-			<meta property="og:locale" content="ko_KR" />
-			<meta property="og:image" content="https://user-images.githubusercontent.com/50317129/155851764-e49220c4-0568-4472-8d5c-ae0edeeb790c.png" />
+			<meta content={TITLE} property='og:site_name' />
+			<meta content={fullTitle} property='og:title' />
+			<meta content={description} property='og:description' />
+			<meta content='website' property='og:type' />
+			<meta content={`${URL}${url}`} property='og:url' />
+			<meta content='ko_KR' property='og:locale' />
+			<meta content='https://user-images.githubusercontent.com/50317129/155851764-e49220c4-0568-4472-8d5c-ae0edeeb790c.png' property='og:image' />
 
-			<link rel="canonical" href={`${URL}${url}`} />
+			<link href={`${URL}${url}`} rel='canonical' />
 
 			<title>{fullTitle}</title>
 
-			<script async src="https://www.googletagmanager.com/gtag/js?id=G-1YPNLPR0CQ"></script>
-			<script src="https://project.itcode.dev/js/ga.js"></script>
+			<script src='https://www.googletagmanager.com/gtag/js?id=G-1YPNLPR0CQ' async />
+			<script src='https://project.itcode.dev/js/ga.js' />
 		</Helmet>
 	);
 }

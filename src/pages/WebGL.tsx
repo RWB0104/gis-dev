@@ -6,22 +6,24 @@
  */
 
 import { Feature, Map, View } from 'ol';
-import React, { useEffect, useState } from 'react';
-import proj4 from 'proj4';
-import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
-import MapBoard from '../components/map/MapBoard';
-import { sejongPosition } from '../common/position';
-import Meta from '../components/global/Meta';
-import SpeedWagon from '../components/map/SpeedWagon';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 import Geometry from 'ol/geom/Geometry';
 import Point from 'ol/geom/Point';
-import VectorSource from 'ol/source/Vector';
-import WebGLPointsLayer from 'ol/layer/WebGLPoints';
-import { webGLStyle } from '../common/style';
-import MapPanel from '../components/map/MapPanel';
-import { FiZap, FiZapOff } from 'react-icons/fi';
 import VectorLayer from 'ol/layer/Vector';
+import WebGLPointsLayer from 'ol/layer/WebGLPoints';
+import VectorSource from 'ol/source/Vector';
+import proj4 from 'proj4';
+import React, { useEffect, useState } from 'react';
+import { FiZap, FiZapOff } from 'react-icons/fi';
+
+import { googleRoadLayer } from '../common/layers';
+import { sejongPosition } from '../common/position';
+import { webGLStyle } from '../common/style';
+import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
+import MapPanel from '../components/map/MapPanel';
+import SpeedWagon from '../components/map/SpeedWagon';
+
 import './WebGL.scss';
 
 /**
@@ -29,11 +31,11 @@ import './WebGL.scss';
  *
  * @returns {JSX.Element} JSX
  */
-export default function WebGL()
+export default function WebGL(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ type, setType ] = useState(true);
-	const [ source, setSource ] = useState(new VectorSource())  as [ VectorSource<Geometry>, React.Dispatch<React.SetStateAction<VectorSource<Geometry>>> ];
+	const [ source, setSource ] = useState(new VectorSource()) as [ VectorSource<Geometry>, React.Dispatch<React.SetStateAction<VectorSource<Geometry>>> ];
 
 	useEffect(() =>
 	{
@@ -58,25 +60,21 @@ export default function WebGL()
 
 			const point = new Point([ x, y ]);
 
-			const feature = new Feature<Geometry>({
-				geometry: point
-			});
+			const feature = new Feature<Geometry>({ geometry: point });
 
 			features.push(feature);
 		}
 
-		const vectorSource = new VectorSource({
-			features: features
-		});
+		const vectorSource = new VectorSource({ features });
 
 		setSource(vectorSource);
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, getLayer(type, vectorSource) ],
+			layers: [ googleRoadLayer, getLayer(type, vectorSource) ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', sejongPosition),
+				projection: 'EPSG:3857',
 				zoom: 17
 			})
 		});
@@ -88,21 +86,21 @@ export default function WebGL()
 
 	useEffect(() =>
 	{
-		mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs').forEach(layer => mapState.removeLayer(layer));
+		mapState.getAllLayers().filter((layer) => layer.get('name') === 'wfs').forEach((layer) => mapState.removeLayer(layer));
 		mapState.addLayer(getLayer(type, source));
 	}, [ type ]);
 
 	return (
-		<section id='webgl' className='page'>
-			<Meta title='WebGL' description='WebGL 적용 예제' url='/webgl/' />
+		<section className='page' id='webgl'>
+			<Meta description='WebGL 적용 예제' title='WebGL' url='/webgl/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
-				<MapPanel map={mapState} width={300} height={85}>
+				<MapPanel height={85} map={mapState} width={300}>
 					<div className='item'>
-						<button onClick={() => setType(true)} data-selected={type}><FiZap /> WebGL</button>
-						<button onClick={() => setType(false)} data-selected={!type}><FiZapOff /> Non WebGL</button>
+						<button data-selected={type} onClick={() => setType(true)}><FiZap /> WebGL</button>
+						<button data-selected={!type} onClick={() => setType(false)}><FiZapOff /> Non WebGL</button>
 					</div>
 				</MapPanel>
 
@@ -128,6 +126,9 @@ export default function WebGL()
 					<p>단, OpenLayers에서 제공하는 기능은 <span>Point 객체만을 지원</span>합니다.</p>
 					<p>우측 상단 패널에서, WebGL의 유무에 따른 속도 차이를 비교해보세요!</p>
 					<p>지도를 많이 축소한 상태에서 <span>Non WebGL</span>을 사용하게 되면 페이지가 멈출 가능성이 높습니다.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/06/02/gis-guide-for-programmer-25' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>
@@ -148,20 +149,18 @@ function getLayer(type: boolean, source: VectorSource<Geometry>): WebGLPointsLay
 	if (type)
 	{
 		return new WebGLPointsLayer({
-			source: source,
+			properties: { name: 'wfs' },
+			source,
 			style: webGLStyle(),
-			zIndex: 5,
-			properties: { name: 'wfs' }
+			zIndex: 5
 		});
 	}
 
 	// Image 레이어일 경우
-	else
-	{
-		return new VectorLayer({
-			source: source,
-			zIndex: 5,
-			properties: { name: 'wfs' }
-		});
-	}
+
+	return new VectorLayer({
+		properties: { name: 'wfs' },
+		source,
+		zIndex: 5
+	});
 }

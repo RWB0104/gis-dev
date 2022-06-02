@@ -15,7 +15,8 @@ import { Circle, Fill, Stroke, Style } from 'ol/style';
 import proj4 from 'proj4';
 import { SyntheticEvent } from 'react';
 import { BiCurrentLocation } from 'react-icons/bi';
-import { FaEdit, FaHome, FaPlus } from 'react-icons/fa';
+import { FaHome, FaPlus } from 'react-icons/fa';
+
 import { seoulPosition } from '../../common/position';
 import './MapInteraction.scss';
 
@@ -48,7 +49,7 @@ interface SubProps3
  *
  * @returns {JSX.Element} JSX
  */
-export default function MapInteraction({ children }: Props)
+export default function MapInteraction({ children }: Props): JSX.Element
 {
 	return (
 		<div className='map-interaction'>
@@ -64,7 +65,7 @@ export default function MapInteraction({ children }: Props)
  *
  * @returns {JSX.Element | null} JSX
  */
-export function Location({ map }: SubProps)
+export function Location({ map }: SubProps): JSX.Element | null
 {
 	// 맵 객체가 유효할 경우
 	if (map)
@@ -78,7 +79,7 @@ export function Location({ map }: SubProps)
 			{
 				button.setAttribute('disabled', '');
 
-				navigator.geolocation.getCurrentPosition(position =>
+				navigator.geolocation.getCurrentPosition((position) =>
 				{
 					const { latitude, longitude } = position.coords;
 					const baseEPSG = map.getView().getProjection().getCode();
@@ -101,15 +102,13 @@ export function Location({ map }: SubProps)
 		};
 
 		return (
-			<button className='location' onClick={onClick}><BiCurrentLocation size={25} color="white" /></button>
+			<button className='location' onClick={onClick}><BiCurrentLocation color='white' size={25} /></button>
 		);
 	}
 
 	// 아닐 경우
-	else
-	{
-		return null;
-	}
+
+	return null;
 }
 
 /**
@@ -117,39 +116,35 @@ export function Location({ map }: SubProps)
  *
  * @param {SubProps} props: 프로퍼티
  *
- * @returns {JSX.Element} Element
+ * @returns {JSX.Element | null} JSX
  */
-export function LocationWithMarker({ map }: SubProps)
+export function LocationWithMarker({ map }: SubProps): JSX.Element | null
 {
 	// 맵 객체가 유효할 경우
 	if (map)
 	{
 		map.on('pointerdrag', () =>
 		{
-			map.getAllLayers().filter(layer => layer.get('name') === 'location')[0].getSource().clear();
+			map.getAllLayers().filter((layer) => layer.get('name') === 'location')[0].getSource().clear();
 		});
 
 		// 로케이션 벡터 레이어가 없을 경우
-		if (map.getAllLayers().filter(layer => layer.get('name') === 'location').length === 0)
+		if (map.getAllLayers().filter((layer) => layer.get('name') === 'location').length === 0)
 		{
 			map.addLayer(new VectorLayer({
+				minZoom: 15,
+				properties: { name: 'location' },
 				source: new VectorSource(),
-				properties: {
-					name: 'location'
-				},
 				style: new Style({
 					image: new Circle({
-						fill: new Fill({
-							color: 'dodgerblue'
-						}),
+						fill: new Fill({ color: 'dodgerblue' }),
+						radius: 10,
 						stroke: new Stroke({
 							color: 'white',
 							width: 3
-						}),
-						radius: 10
+						})
 					})
 				}),
-				minZoom: 15,
 				zIndex: 10
 			}));
 		}
@@ -163,7 +158,7 @@ export function LocationWithMarker({ map }: SubProps)
 
 				button.setAttribute('disabled', '');
 
-				navigator.geolocation.getCurrentPosition(position =>
+				navigator.geolocation.getCurrentPosition((position) =>
 				{
 					const { latitude, longitude } = position.coords;
 					const baseEPSG = map.getView().getProjection().getCode();
@@ -172,9 +167,7 @@ export function LocationWithMarker({ map }: SubProps)
 
 					flyTo(map.getView(), coord);
 
-					map.getAllLayers().filter(layer => layer.get('name') === 'location')[0].getSource().addFeature(new Feature({
-						geometry: new Point(coord)
-					}));
+					map.getAllLayers().filter((layer) => layer.get('name') === 'location')[0].getSource().addFeature(new Feature({ geometry: new Point(coord) }));
 
 					button.removeAttribute('disabled');
 				}, () =>
@@ -192,15 +185,13 @@ export function LocationWithMarker({ map }: SubProps)
 		};
 
 		return (
-			<button className='location' title='현재 위치 이동' onClick={onClick}><BiCurrentLocation size={25} color="white" /></button>
+			<button className='location' title='현재 위치 이동' onClick={onClick}><BiCurrentLocation color='white' size={25} /></button>
 		);
 	}
 
 	// 아닐 경우
-	else
-	{
-		return null;
-	}
+
+	return null;
 }
 
 /**
@@ -208,9 +199,9 @@ export function LocationWithMarker({ map }: SubProps)
  *
  * @param {SubProps2} props: 프로퍼티
  *
- * @returns {JSX.Element} Element
+ * @returns {JSX.Element | null} JSX
  */
-export function HomeButton({ map, position = seoulPosition }: SubProps2)
+export function HomeButton({ map, position = seoulPosition }: SubProps2): JSX.Element | null
 {
 	// 맵 객체가 유효할 경우
 	if (map)
@@ -221,15 +212,13 @@ export function HomeButton({ map, position = seoulPosition }: SubProps2)
 		};
 
 		return (
-			<button className='sejong' title='세종시 이동' onClick={onClick}><FaHome size={25} color="white" /></button>
+			<button className='sejong' title='세종시 이동' onClick={onClick}><FaHome color='white' size={25} /></button>
 		);
 	}
 
 	// 아닐 경우
-	else
-	{
-		return null;
-	}
+
+	return null;
 }
 
 /**
@@ -237,14 +226,14 @@ export function HomeButton({ map, position = seoulPosition }: SubProps2)
  *
  * @param {SubProps3} param0: 프로퍼티
  *
- * @returns {JSX.Element} Element
+ * @returns {JSX.Element | null} Element
  */
-export function AddPolygon({ map, drawend }: SubProps3)
+export function AddPolygon({ map, drawend }: SubProps3): JSX.Element | null
 {
 	// 맵 객체가 유효할 경우
 	if (map)
 	{
-		let drawLayer = map.getAllLayers().filter(layer => layer.get('name') === 'draw')[0];
+		let drawLayer = map.getAllLayers().filter((layer) => layer.get('name') === 'draw')[0];
 
 		// 드로우 벡터 레이어가 없을 경우
 		if (!drawLayer)
@@ -252,8 +241,8 @@ export function AddPolygon({ map, drawend }: SubProps3)
 			const drawSource = new VectorSource();
 
 			drawLayer = new VectorLayer({
-				source: drawSource,
-				properties: { name: 'draw' }
+				properties: { name: 'draw' },
+				source: drawSource
 			});
 
 			map.addLayer(drawLayer);
@@ -280,7 +269,7 @@ export function AddPolygon({ map, drawend }: SubProps3)
 
 		const onClick = () =>
 		{
-			drawInteraction.on('drawstart', () =>
+			drawInteraction.once('drawstart', () =>
 			{
 				const source: VectorSource<Geometry> = drawLayer.getSource();
 				source.clear();
@@ -289,7 +278,7 @@ export function AddPolygon({ map, drawend }: SubProps3)
 			// 드로우 종료 메서드가 있을 경우
 			if (drawend)
 			{
-				drawInteraction.on('drawend', (e) =>
+				drawInteraction.once('drawend', (e) =>
 				{
 					map.removeInteraction(drawInteraction);
 					drawend(e);
@@ -300,48 +289,13 @@ export function AddPolygon({ map, drawend }: SubProps3)
 		};
 
 		return (
-			<button className='add' title='건물 추가' onClick={onClick}><FaPlus size={20} color="white" /></button>
+			<button className='add' title='건물 추가' onClick={onClick}><FaPlus color='white' size={20} /></button>
 		);
 	}
 
 	// 아닐 경우
-	else
-	{
-		return null;
-	}
-}
 
-export function UpdatePolygon({ map }: SubProps)
-{
-	// 맵 객체가 유효할 경우
-	if (map)
-	{
-		map.on('singleclick', (e) =>
-		{
-			// 해당 픽셀에 객체가 있을 경우
-			if (map.hasFeatureAtPixel(e.pixel))
-			{
-				map.forEachFeatureAtPixel(e.pixel, feature =>
-				{
-					// 해당 객체의 아이디가 buld_test으로 시작할 경우
-					if (feature.getId()?.toString().startsWith('buld_test'))
-					{
-						console.dir(feature);
-					}
-				});
-			}
-		});
-
-		return (
-			<button className='update' title='건물 갱신'><FaEdit size={20} color="white" /></button>
-		);
-	}
-
-	// 아닐 경우
-	else
-	{
-		return null;
-	}
+	return null;
 }
 
 /**
@@ -350,7 +304,7 @@ export function UpdatePolygon({ map }: SubProps)
  * @param {View} view: 뷰 객체
  * @param {number[]} location: 좌표 (EPSG:4326)
  */
-function flyTo(view: View, location: number[])
+function flyTo(view: View, location: number[]): void
 {
 	const duration = 2000;
 	const zoom = view.getZoom() || 15;
@@ -378,15 +332,19 @@ function flyTo(view: View, location: number[])
 
 	view.animate({
 		center: location,
-		duration: duration
+		duration
 	}, callback);
 
-	view.animate({
-		zoom: zoom - 3,
-		duration: duration / 2
-	},
-	{
-		zoom: zoom,
-		duration: duration / 2
-	}, callback);
+	view.animate(
+		{
+			duration: duration / 2,
+			zoom: zoom - 3
+		},
+		{
+			duration: duration / 2,
+			zoom
+		},
+
+		callback
+	);
 }

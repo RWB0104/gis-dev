@@ -19,7 +19,14 @@ interface Props
 	children?: JSX.Element | JSX.Element[]
 }
 
-export default function MapPanel({ map, width = 200, height = 200, children }: Props)
+/**
+ * 맵 패널 JSX 반환 메서드
+ *
+ * @param {Props} param0: 프로퍼티
+ *
+ * @returns {JSX.Element | null} JSX
+ */
+export default function MapPanel({ map, width = 200, height = 200, children }: Props): JSX.Element | null
 {
 	const [ show, setShow ] = useState(true);
 
@@ -29,7 +36,7 @@ export default function MapPanel({ map, width = 200, height = 200, children }: P
 	};
 
 	return map ? (
-		<div className='map-panel' data-show={show} style={{ width: width, height: height }}>
+		<div className='map-panel' data-show={show} style={{ height, width }}>
 			<div className='header'>
 				<button onClick={sizeClick}>{show ? <FaRegWindowMinimize /> : <FiMaximize />}</button>
 			</div>

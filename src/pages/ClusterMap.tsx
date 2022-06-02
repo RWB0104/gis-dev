@@ -6,33 +6,35 @@
  */
 
 import { Map, Overlay, View } from 'ol';
-import { Cluster, Vector } from 'ol/source';
-import { Vector as VectorLayer } from 'ol/layer';
-import { GeoJSON } from 'ol/format';
-import { bbox } from 'ol/loadingstrategy';
-import React, { useEffect, useState } from 'react';
-import proj4 from 'proj4';
-import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
-import MapBoard from '../components/map/MapBoard';
-import { sejongPosition, seoulPosition } from '../common/position';
-import { WFS_URL } from '../common/env';
-import Meta from '../components/global/Meta';
-import { clusterBasicStyle, starbucksBasicStyle, starbucksClickStyle, starbucksHoverStyle } from '../common/style';
-import SpeedWagon from '../components/map/SpeedWagon';
-import { defaults, Select } from 'ol/interaction';
 import { click, pointerMove } from 'ol/events/condition';
-import Popup from '../components/map/Popup';
-import MapPanel from '../components/map/MapPanel';
+import { GeoJSON } from 'ol/format';
+import { defaults, Select } from 'ol/interaction';
+import { Vector as VectorLayer } from 'ol/layer';
+import { bbox } from 'ol/loadingstrategy';
+import { Cluster, Vector as VectorSource } from 'ol/source';
+import proj4 from 'proj4';
+import React, { useEffect, useState } from 'react';
+
 import './ClusterMap.scss';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+
+import { WFS_URL } from '../common/env';
+import { googleRoadLayer } from '../common/layers';
+import { sejongPosition, seoulPosition } from '../common/position';
+import { clusterBasicStyle, starbucksBasicStyle, starbucksClickStyle, starbucksHoverStyle } from '../common/style';
 import { urlBuilder } from '../common/util';
+import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
+import MapInteraction, { LocationWithMarker, HomeButton } from '../components/map/MapInteraction';
+import MapPanel from '../components/map/MapPanel';
+import Popup from '../components/map/Popup';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 /**
  * 클러스터 맵 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function ClusterMap()
+export default function ClusterMap(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 	const [ popupState, setPopupState ] = useState() as [JSX.Element, React.Dispatch<React.SetStateAction<JSX.Element>>];
@@ -47,65 +49,61 @@ export default function ClusterMap()
 
 		const wfs = new VectorSource({
 			format: new GeoJSON(),
+			strategy: bbox,
 			url: (extent) => urlBuilder(WFS_URL, {
-				service: 'WFS',
-				version: '2.0.0',
-				request: 'GetFeature',
-				typename: 'TEST:point_starbucks',
-				srsName: 'EPSG:3857',
-				outputFormat: 'application/json',
+				bbox: `${extent.join(',')},EPSG:3857`,
 				exceptions: 'application/json',
-				bbox: `${extent.join(',')},EPSG:3857`
-			}),
-			strategy: bbox
+				outputFormat: 'application/json',
+				request: 'GetFeature',
+				service: 'WFS',
+				srsName: 'EPSG:3857',
+				typename: 'TEST:point_starbucks',
+				version: '2.0.0'
+			})
 		});
 
 		const clusterSource = new Cluster({
-			source: wfs,
-			distance: defaultDistance
+			distance: defaultDistance,
+			source: wfs
 		});
 
 		const wfsLayer = new VectorLayer({
+			properties: { name: 'wfs' },
 			source: clusterSource,
-			style: feature => feature.get('features').length > 1 ? clusterBasicStyle(feature) : starbucksBasicStyle(feature, 'name'),
-			zIndex: 5,
-			properties: { name: 'wfs' }
+			style: (feature) => (feature.get('features').length > 1 ? clusterBasicStyle(feature) : starbucksBasicStyle(feature, 'name')),
+			zIndex: 5
 		});
 
 		const hoverSelect = new Select({
 			condition: pointerMove,
-			filter: feature => feature.get('features').length === 1,
-			style: feature => starbucksHoverStyle(feature, 'name')
+			filter: (feature) => feature.get('features').length === 1,
+			style: (feature) => starbucksHoverStyle(feature, 'name')
 		});
 
 		const clickSelect = new Select({
 			condition: click,
-			filter: feature => feature.get('features').length === 1,
-			style: feature => starbucksClickStyle(feature, 'name')
+			filter: (feature) => feature.get('features').length === 1,
+			style: (feature) => starbucksClickStyle(feature, 'name')
 		});
 
 		const popup = document.getElementById('map-popup') as HTMLElement | null;
 
 		const overlay = new Overlay({
-			id: 'popup',
+			autoPan: { animation: { duration: 250 } },
 			element: popup || undefined,
-			positioning: 'bottom-center',
+			id: 'popup',
 			offset: [ 0, -30 ],
-			autoPan: {
-				animation: {
-					duration: 250
-				}
-			}
+			positioning: 'bottom-center'
 		});
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer, wfsLayer ],
+			interactions: defaults().extend([ hoverSelect, clickSelect ]),
+			layers: [ googleRoadLayer, wfsLayer ],
 			overlays: [ overlay ],
 			target: 'map',
-			interactions: defaults().extend([ hoverSelect, clickSelect ]),
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+				projection: 'EPSG:3857',
 				zoom: 13
 			})
 		});
@@ -117,7 +115,7 @@ export default function ClusterMap()
 			// 해당 픽셀에 객체가 있을 경우
 			if (map.hasFeatureAtPixel(e.pixel))
 			{
-				map.forEachFeatureAtPixel(e.pixel, features =>
+				map.forEachFeatureAtPixel(e.pixel, (features) =>
 				{
 					const feature = features.get('features')[0];
 
@@ -133,16 +131,18 @@ export default function ClusterMap()
 
 							setPopupState((
 								<>
-									{feature.get('thumbnail') && <div className='thumbnail'>
-										<a href={`https://www.starbucks.co.kr/${feature.get('thumbnail')}`} target='_blank'><img src={`https://www.starbucks.co.kr/${feature.get('thumbnail')}`} /></a>
-									</div>}
+									{feature.get('thumbnail') && (
+										<div className='thumbnail'>
+											<a href={`https://www.starbucks.co.kr/${feature.get('thumbnail')}`} rel='noreferrer' target='_blank'><img alt='thumbnail' src={`https://www.starbucks.co.kr/${feature.get('thumbnail')}`} /></a>
+										</div>
+									)}
 
 									<ul>
 										<li>{feature.getId() || ''}</li>
 										<li>{feature.get('name') || <span>이름 없음</span>}</li>
-										<li>🏠 {feature.get('doro_addr') ? <a href={`https://map.naver.com/v5/search/${feature.get('doro_addr')}${feature.get('name') && ` 스타벅스 ${feature.get('name')}점`}`} target='_blank'>{feature.get('doro_addr')}{feature.get('name') && ` 스타벅스  ${feature.get('name')}점`}</a> : <span>주소 없음</span>}</li>
-										<li>🏠 {feature.get('addr') ? <a href={`https://map.naver.com/v5/search/${feature.get('addr')}${feature.get('name') && ` 스타벅스  ${feature.get('name')}점`}`} target='_blank'>{feature.get('addr')}{feature.get('name') && ` 스타벅스  ${feature.get('name')}점`}</a> : <span>주소 없음</span>}</li>
-										<li>📱 {feature.get('tel') ? <a href={`tel:${feature.get('tel')}`} data-tel="true">{feature.get('tel')}</a> : <span>번호 없음</span>}</li>
+										<li>🏠 {feature.get('doro_addr') ? <a href={`https://map.naver.com/v5/search/${feature.get('doro_addr')}${feature.get('name') && ` 스타벅스 ${feature.get('name')}점`}`} rel='noreferrer' target='_blank'>{feature.get('doro_addr')}{feature.get('name') && ` 스타벅스  ${feature.get('name')}점`}</a> : <span>주소 없음</span>}</li>
+										<li>🏠 {feature.get('addr') ? <a href={`https://map.naver.com/v5/search/${feature.get('addr')}${feature.get('name') && ` 스타벅스  ${feature.get('name')}점`}`} rel='noreferrer' target='_blank'>{feature.get('addr')}{feature.get('name') && ` 스타벅스  ${feature.get('name')}점`}</a> : <span>주소 없음</span>}</li>
+										<li>📱 {feature.get('tel') ? <a data-tel='true' href={`tel:${feature.get('tel')}`}>{feature.get('tel')}</a> : <span>번호 없음</span>}</li>
 									</ul>
 								</>
 							));
@@ -165,35 +165,34 @@ export default function ClusterMap()
 
 	useEffect(() =>
 	{
-		const layer = mapState.getAllLayers().filter(layer => layer.get('name') === 'wfs')[0];
+		const layer = mapState.getAllLayers().filter((layer) => layer.get('name') === 'wfs')[0];
 
 		// 레이어가 유효할 경우
 		if (layer)
 		{
 			const cluster = layer.getSource() as Cluster;
 			cluster.setDistance(distanceState);
-			console.dir(mapState.getAllLayers());
 		}
 	}, [ distanceState ]);
 
 	return (
-		<section id='cluster-map' className='page'>
-			<Meta title='Cluster Map' description='클러스터 맵 예제' url='/cluster-map/' />
+		<section className='page' id='cluster-map'>
+			<Meta description='클러스터 맵 예제' title='Cluster Map' url='/cluster-map/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
-				<MapPanel map={mapState} width={220} height={100}>
+				<MapPanel height={100} map={mapState} width={220}>
 					<div className='item'>
 						<div className='head'>
 							<small>그룹화 거리 (distance)</small>
 
-							<input readOnly value={distanceState} />
+							<input value={distanceState} readOnly />
 						</div>
 
 						<div className='body'>
 							<small>0</small>
-							<input type='range' min={0} max={200} step={1} onChange={(e) => setDistanceState(parseInt(e.target.value))} />
+							<input max={200} min={0} step={1} type='range' onChange={(e) => setDistanceState(parseInt(e.target.value))} />
 							<small>200</small>
 						</div>
 					</div>
@@ -216,6 +215,9 @@ export default function ClusterMap()
 					<br />
 
 					<p>우측 상단의 패널에서 <span>그룹화 기준 거리를 변경</span>해보세요.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/06/01/gis-guide-for-programmer-23' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 
 				<Popup map={mapState}>{popupState}</Popup>

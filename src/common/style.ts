@@ -27,16 +27,14 @@ import Text from 'ol/style/Text';
 export function basicStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
+		fill: new Fill({ color: 'rgba(100, 149, 237, 0.6)' }),
 		stroke: new Stroke({
 			color: 'rgba(100, 149, 237, 1)',
 			width: 2
 		}),
-		fill: new Fill({
-			color: 'rgba(100, 149, 237, 0.6)'
-		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'white' }),
+			font: '0.8rem sans-serif',
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
@@ -57,16 +55,14 @@ export function basicStyle(feature: RenderFeature | Feature<Geometry>, labelColu
 export function hoverStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
+		fill: new Fill({ color: 'rgba(100, 149, 237, 0.6)' }),
 		stroke: new Stroke({
 			color: 'rgba(0, 0, 0, 1)',
 			width: 2
 		}),
-		fill: new Fill({
-			color: 'rgba(100, 149, 237, 0.6)'
-		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'white' }),
+			font: '0.8rem sans-serif',
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
@@ -87,16 +83,14 @@ export function hoverStyle(feature: RenderFeature | Feature<Geometry>, labelColu
 export function clickStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string)
 {
 	return new Style({
+		fill: new Fill({ color: 'rgba(100, 149, 237, 1)' }),
 		stroke: new Stroke({
 			color: 'rgba(0, 0, 0, 1)',
 			width: 2
 		}),
-		fill: new Fill({
-			color: 'rgba(100, 149, 237, 1)'
-		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'yellow' }),
+			font: '0.8rem sans-serif',
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
@@ -118,18 +112,18 @@ export function starbucksBasicStyle(feature: RenderFeature | Feature<Geometry>, 
 {
 	return new Style({
 		image: new Icon({
-			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F',
-			scale: 0.05
+			scale: 0.05,
+			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F'
 		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'white' }),
+			font: '0.8rem sans-serif',
+			offsetY: 30,
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
 			}),
-			text: feature.get('features')[0].get(labelColumn),
-			offsetY: 30
+			text: feature.get('features')[0].get(labelColumn)
 		})
 	});
 }
@@ -146,18 +140,16 @@ export function clusterBasicStyle(feature: RenderFeature | Feature<Geometry>)
 {
 	return new Style({
 		image: new Circle({
+			fill: new Fill({ color: 'rgba(3, 102, 53, 0.6)' }),
+			radius: 20,
 			stroke: new Stroke({
 				color: 'rgba(3, 102, 53, 1)',
 				width: 2
-			}),
-			fill: new Fill({
-				color: 'rgba(3, 102, 53, 0.6)'
-			}),
-			radius: 20
+			})
 		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'white' }),
+			font: '0.8rem sans-serif',
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
@@ -179,18 +171,18 @@ export function starbucksHoverStyle(feature: RenderFeature | Feature<Geometry>, 
 {
 	return new Style({
 		image: new Icon({
-			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F',
-			scale: 0.07
+			scale: 0.07,
+			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F'
 		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'white' }),
+			font: '0.8rem sans-serif',
+			offsetY: 35,
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
 			}),
-			text: feature.get('features')[0].get(labelColumn),
-			offsetY: 35
+			text: feature.get('features')[0].get(labelColumn)
 		})
 	});
 }
@@ -207,18 +199,18 @@ export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, 
 {
 	return new Style({
 		image: new Icon({
-			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F',
-			scale: 0.07
+			scale: 0.07,
+			src: 'https://t1.daumcdn.net/cfile/tistory/99857F4F5E738F472F'
 		}),
 		text: new Text({
-			font: '0.8rem sans-serif',
 			fill: new Fill({ color: 'yellow' }),
+			font: '0.8rem sans-serif',
+			offsetY: 35,
 			stroke: new Stroke({
 				color: 'rgba(0, 0, 0, 1)',
 				width: 4
 			}),
-			text: feature.get('features')[0].get(labelColumn),
-			offsetY: 35
+			text: feature.get('features')[0].get(labelColumn)
 		})
 	});
 }
@@ -232,10 +224,10 @@ export function webGLStyle(): LiteralStyle
 {
 	return {
 		symbol: {
-			symbolType: 'circle',
-			size: 14,
 			color: 'red',
-			opacity: 0.6
+			opacity: 0.6,
+			size: 14,
+			symbolType: 'circle'
 		}
 	};
 }

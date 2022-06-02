@@ -5,8 +5,9 @@
  * @since 2022.02.13 Sun 21:34:00
  */
 
-import { Link, useLocation } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
+
 import { TITLE } from '../../common/env';
 import './Header.scss';
 
@@ -18,9 +19,9 @@ interface SubProps
 /**
  * 헤더 JSX 반환 메서드
  *
- * @returns {JSX.Element | null} JSX
+ * @returns {JSX.Element} JSX
  */
-export default function Header()
+export default function Header(): JSX.Element
 {
 	const { pathname } = useLocation();
 
@@ -28,7 +29,7 @@ export default function Header()
 		<header>
 			<GoHome isRoot={pathname === '/'} />
 
-			<img src="/gis-dev/logo.png" />
+			<img alt='logo' src='/gis-dev/logo.png' />
 
 			<h1>{TITLE}</h1>
 		</header>
@@ -42,7 +43,7 @@ export default function Header()
  *
  * @returns {JSX.Element | null} JSX
  */
-function GoHome({ isRoot }: SubProps)
+function GoHome({ isRoot }: SubProps): JSX.Element | null
 {
 	return isRoot ? null : (<Link to='/'><FaArrowLeft /></Link>);
 }

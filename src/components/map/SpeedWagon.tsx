@@ -19,10 +19,10 @@ interface Props
  * @param {Props} param0: 반갑네 친구! 난 프로퍼티라고 하네!
  * @returns {JSX.Element} 이 몸이 바로 Element다!
  */
-export default function SpeedWagon({ children }: Props)
+export default function SpeedWagon({ children }: Props): JSX.Element
 {
 	return (
-		<div id='speed-wagon' data-show='true'>
+		<div data-show='true' id='speed-wagon'>
 			<div className='wrap'>
 				<div className='help'>
 					<h3>도와줘요! 스피드왜건!</h3>
@@ -38,7 +38,9 @@ export default function SpeedWagon({ children }: Props)
 						const target = e.target as HTMLButtonElement;
 						const popup = target.offsetParent;
 						popup?.setAttribute('data-show', 'false');
-					}}><BiHeart /> 고마워요 스피드웨건!</button>
+					}}
+					><BiHeart /> 고마워요 스피드웨건!
+					</button>
 				</div>
 			</div>
 		</div>

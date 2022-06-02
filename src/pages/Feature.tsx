@@ -6,22 +6,23 @@
  */
 
 import { Map, View } from 'ol';
-import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import MapBoard from '../components/map/MapBoard';
+import React, { useEffect, useState } from 'react';
+import { BiCurrentLocation } from 'react-icons/bi';
+
+import { googleRoadLayer } from '../common/layers';
+import { seoulPosition } from '../common/position';
 import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
 import MapInteraction, { LocationWithMarker } from '../components/map/MapInteraction';
 import SpeedWagon from '../components/map/SpeedWagon';
-import { BiCurrentLocation } from 'react-icons/bi';
-import { seoulPosition } from '../common/position';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
 
 /**
  * 피쳐 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function Feature()
+export default function Feature(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
@@ -30,11 +31,11 @@ export default function Feature()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer ],
+			layers: [ googleRoadLayer ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+				projection: 'EPSG:3857',
 				zoom: 17
 			})
 		});
@@ -43,11 +44,11 @@ export default function Feature()
 	}, []);
 
 	return (
-		<section id='feature' className='page'>
-			<Meta title='Feature' description='피쳐 추가 예제' url='/feature/' />
+		<section className='page' id='feature'>
+			<Meta description='피쳐 추가 예제' title='Feature' url='/feature/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
 				<MapInteraction>
 					<LocationWithMarker map={mapState} />
@@ -67,6 +68,9 @@ export default function Feature()
 
 					<p>이렇게 지도에 표현되는 <span>Vector</span> 요소를 <span>Feature</span>라 부릅니다.</p>
 					<p>이 Feature들은 지도 상의 객체이므로 <span>상호작용도 가능</span>합니다.</p>
+					<br />
+
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/04/04/gis-guide-for-programmer-14' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>

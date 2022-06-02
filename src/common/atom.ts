@@ -11,21 +11,21 @@ import RenderFeature from 'ol/render/Feature';
 import { atom } from 'recoil';
 
 export const featureAtom = atom({
-	key: 'feature',
-	default: undefined as Feature<Geometry> | RenderFeature | undefined
+	default: undefined as Feature<Geometry> | RenderFeature | undefined,
+	key: 'feature'
 });
 
 export const featuresAtom = atom({
-	key: 'features',
-	default: undefined as Collection<Feature<Geometry>> | undefined
+	default: undefined as Collection<Feature<Geometry>> | undefined,
+	key: 'features'
 });
 
 export const featureIdAtom = atom({
-	key: 'featureId',
-	default: undefined as string | number | undefined
+	default: undefined as string | number | undefined,
+	key: 'featureId'
 });
 
 export const showAtom = atom({
-	key: 'show',
-	default: false
+	default: false,
+	key: 'show'
 });

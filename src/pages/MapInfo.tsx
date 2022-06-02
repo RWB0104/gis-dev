@@ -6,20 +6,21 @@
  */
 
 import { Map, View } from 'ol';
-import React, { useEffect, useState } from 'react';
 import proj4 from 'proj4';
-import MapBoard from '../components/map/MapBoard';
-import Meta from '../components/global/Meta';
-import SpeedWagon from '../components/map/SpeedWagon';
-import { vworldBaseLayer, vworldHybridLayer } from '../common/layers';
+import React, { useEffect, useState } from 'react';
+
+import { googleRoadLayer } from '../common/layers';
 import { seoulPosition } from '../common/position';
+import Meta from '../components/global/Meta';
+import MapBoard from '../components/map/MapBoard';
+import SpeedWagon from '../components/map/SpeedWagon';
 
 /**
  * 맵 정보 페이지 JSX 반환 메서드
  *
  * @returns {JSX.Element} JSX
  */
-export default function MapInfo()
+export default function MapInfo(): JSX.Element
 {
 	const [ mapState, setMapState ] = useState(new Map({}));
 
@@ -28,11 +29,11 @@ export default function MapInfo()
 		document.querySelector('#map > .ol-viewport')?.remove();
 
 		const map = new Map({
-			layers: [ vworldBaseLayer, vworldHybridLayer ],
+			layers: [ googleRoadLayer ],
 			target: 'map',
 			view: new View({
-				projection: 'EPSG:3857',
 				center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+				projection: 'EPSG:3857',
 				zoom: 17
 			})
 		});
@@ -41,11 +42,11 @@ export default function MapInfo()
 	}, []);
 
 	return (
-		<section id='map-info' className='page'>
-			<Meta title='MapInfo' description='맵 관련 정보 예제' url='/map-info/' />
+		<section className='page' id='map-info'>
+			<Meta description='맵 관련 정보 예제' title='MapInfo' url='/map-info/' />
 
 			<article className='map-wrapper'>
-				<div id='map'></div>
+				<div id='map' />
 
 				<MapBoard map={mapState} />
 
@@ -67,8 +68,9 @@ export default function MapInfo()
 
 					<p>메뉴 간소화를 위해 VWorld 페이지 좌측 상단의 메뉴를 통합했습니다.</p>
 					<p>View 객체와 이벤트를 적절히 활용하면 <span>현재 맵의 정보를 실시간으로 표현</span>이 가능합니다.</p>
+					<br />
 
-					<p>자세한 내용은 <a target='_blank' href='https://blog.itcode.dev/posts/2022/03/22/gis-guide-for-programmer-12'>여기</a>를 참조하세요.</p>
+					<p>자세한 내용은 <a href='https://blog.itcode.dev/projects/2022/03/22/gis-guide-for-programmer-12' rel='noreferrer' target='_blank'>여기</a>를 참조하세요.</p>
 				</SpeedWagon>
 			</article>
 		</section>
