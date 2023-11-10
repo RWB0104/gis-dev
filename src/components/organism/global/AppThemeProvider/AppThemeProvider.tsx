@@ -7,18 +7,19 @@
 
 'use client';
 
+import { themeStore } from '@gis-dev/script/states/theme';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 // eslint-disable-next-line camelcase
-import { Noto_Sans_KR, Dancing_Script } from 'next/font/google';
+import { Noto_Sans_KR, Bungee_Shade } from 'next/font/google';
 import { PropsWithChildren, ReactNode, useMemo } from 'react';
 
 export type AppThemeProviderProps = PropsWithChildren;
 
 export const notoSans = Noto_Sans_KR({ subsets: [ 'latin' ], weight: [ '100', '300', '400', '500', '700', '900' ] });
-export const dancingScript = Dancing_Script({ subsets: [ 'latin' ], weight: [ '400' ] });
+export const bungeeShade = Bungee_Shade({ subsets: [ 'latin' ], weight: [ '400' ] });
 
-const fontFamily = [ notoSans.style.fontFamily, 'sans-serif' ];
+const fontFamily = [ notoSans.style.fontFamily ];
 
 /**
  * 앱 테마 프로바이더 organism 컴포넌트 반환 메서드
@@ -29,10 +30,15 @@ const fontFamily = [ notoSans.style.fontFamily, 'sans-serif' ];
  */
 export default function AppThemeProvider({ children }: AppThemeProviderProps): ReactNode
 {
-	const theme = useMemo(() => createTheme(({ typography: { fontFamily: fontFamily.join(', ') } })), []);
+	const { theme } = themeStore();
+
+	const themeObject = useMemo(() => createTheme(({
+		palette: { mode: theme },
+		typography: { fontFamily: fontFamily.join(', ') }
+	})), [ theme ]);
 
 	return (
-		<ThemeProvider data-component='AppThemeProvider' theme={theme}>
+		<ThemeProvider theme={themeObject}>
 			<CssBaseline />
 
 			{children}

@@ -8,10 +8,10 @@
 import { PaletteMode } from '@mui/material';
 import { create } from 'zustand';
 
-export type ThemeStateSetThemeHandler = (theme: PaletteMode) => void;
-export type ThemeStateToggleThemeHandler = () => void;
+export type ThemeStoreSetThemeHandler = (theme: PaletteMode) => void;
+export type ThemeStoreToggleThemeHandler = () => void;
 
-export interface ThemeStateProps
+export interface ThemeStoreProps
 {
 	/**
 	 * 테마
@@ -21,15 +21,15 @@ export interface ThemeStateProps
 	/**
 	 * 테마 할당 메서드
 	 */
-	setTheme: ThemeStateSetThemeHandler;
+	setTheme: ThemeStoreSetThemeHandler;
 
 	/**
 	 * 테마 토글 메서드
 	 */
-	toggleTheme: ThemeStateToggleThemeHandler;
+	toggleTheme: ThemeStoreToggleThemeHandler;
 }
 
-export const themeState = create<ThemeStateProps>((set) => ({
+export const themeStore = create<ThemeStoreProps>((set) => ({
 	setTheme: (theme): void =>
 	{
 		localStorage.setItem('theme', theme);

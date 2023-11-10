@@ -5,10 +5,13 @@
  * @since 2023.11.10 Fri 17:50:29
  */
 
-import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
+'use client';
 
 import Header from '@gis-dev/components/molecule/Header';
 import Sidebar from '@gis-dev/components/molecule/Sidebar';
+import { ModalProps } from '@mui/material';
+import { usePathname } from 'next/navigation';
+import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
 
 /**
  * 네비게이션 organism 컴포넌트 반환 메서드
@@ -17,6 +20,8 @@ import Sidebar from '@gis-dev/components/molecule/Sidebar';
  */
 export default function Navigation(): ReactNode
 {
+	const pathname = usePathname();
+
 	const [ isMenuOpenState, setMenuOpenState ] = useState(false);
 
 	const handleMenuClick: MouseEventHandler<HTMLButtonElement> = useCallback(() =>
@@ -24,10 +29,25 @@ export default function Navigation(): ReactNode
 		setMenuOpenState((state) => !state);
 	}, [ setMenuOpenState ]);
 
+	const handleClose: ModalProps['onClose'] = useCallback(() =>
+	{
+		setMenuOpenState(false);
+	}, [ setMenuOpenState ]);
+
+	const handleMenuItemClick: MouseEventHandler<HTMLAnchorElement> = useCallback(() =>
+	{
+		setMenuOpenState(false);
+	}, [ setMenuOpenState ]);
+
 	return (
 		<>
 			<Header onMenuClick={handleMenuClick} />
-			<Sidebar open={isMenuOpenState} />
+			<Sidebar
+				currentLink={pathname}
+				open={isMenuOpenState}
+				onClose={handleClose}
+				onMenuItemClick={handleMenuItemClick}
+			/>
 		</>
 	);
 }

@@ -6,6 +6,7 @@
  */
 
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -18,7 +19,9 @@ export default function App(): ReactNode
 {
 	return (
 		<Stack gap={10}>
-			<Link href='/osm'>osm</Link>
+			<Link href='/osm'>
+				<Typography>osm</Typography>
+			</Link>
 		</Stack>
 	);
 }

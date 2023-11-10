@@ -5,14 +5,17 @@
  * @since 2023.11.10 Fri 17:33:52
  */
 
+import { bungeeShade } from '@gis-dev/components/organism/global/AppThemeProvider';
+import { APP_INFO } from '@gis-dev/script/common/env';
+import Menu from '@mui/icons-material/Menu';
+import { useTheme } from '@mui/material/';
 import Box, { BoxProps } from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import Link from 'next/link';
 import { MouseEventHandler, ReactNode } from 'react';
-
-import { APP_INFO } from '@gis-dev/script/common/env';
 
 export interface HeaderProps extends BoxProps
 {
@@ -31,14 +34,36 @@ export interface HeaderProps extends BoxProps
  */
 export default function Header({ onMenuClick, ...props }: HeaderProps): ReactNode
 {
+	const { palette: { background } } = useTheme();
+
 	return (
-		<Box boxShadow='0px 3px 10px #00000033' data-component='Header' left={0} position='static' top={0} width='100%' {...props}>
+		<Box
+			bgcolor={background.default}
+			boxShadow='0px 3px 10px #00000022'
+			data-component='Header'
+			left={0}
+			position='sticky'
+			top={0}
+			width='100%'
+			zIndex={10001}
+			{...props}
+		>
 			<Stack alignItems='center' flexDirection='row' gap={2} padding={1} paddingLeft={3} paddingRight={3}>
-				{onMenuClick ? <IconButton onClick={onMenuClick} /> : null}
+				{onMenuClick ? (
+					<IconButton size='small' onClick={onMenuClick}>
+						<Menu />
+					</IconButton>
+				) : null}
 
-				<Image alt={APP_INFO.title} height={32} src={APP_INFO.image} width={32} />
+				<Link href='/'>
+					<Stack justifyContent='center'>
+						<Image alt={APP_INFO.title} height={24} src={APP_INFO.image} width={24} />
+					</Stack>
+				</Link>
 
-				<Typography fontWeight='bold' variant='h6'>{APP_INFO.title}</Typography>
+				<Link href='/'>
+					<Typography fontFamily={bungeeShade.style.fontFamily} fontWeight='bold'>{APP_INFO.title}</Typography>
+				</Link>
 			</Stack>
 		</Box>
 	);
