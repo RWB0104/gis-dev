@@ -21,6 +21,7 @@
     "eslint-config-next": "^14.0.2",
     "next": "^14.0.2",
     "ol": "^8.1.0",
+    "proj4": "^2.9.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-ga4": "^2.1.0",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@itcode-dev/eslint-config": "^2.0.1",
     "@tanstack/react-query-devtools": "^5.8.1",
+    "@types/proj4": "^2.5.5",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint-config-airbnb": "^19.0.4",
