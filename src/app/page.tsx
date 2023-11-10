@@ -5,6 +5,8 @@
  * @since 2023.10.18 Wed 18:40:21
  */
 
+import Stack from '@mui/material/Stack';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 /**
@@ -15,6 +17,8 @@ import { ReactNode } from 'react';
 export default function App(): ReactNode
 {
 	return (
-		<div>App</div>
+		<Stack gap={10}>
+			<Link href='/osm'>osm</Link>
+		</Stack>
 	);
 }
