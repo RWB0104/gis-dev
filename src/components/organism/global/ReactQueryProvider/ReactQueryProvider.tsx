@@ -28,7 +28,7 @@ export default function ReactQueryProvider({ children }: ReactQueryProviderProps
 		<QueryClientProvider client={client} data-component='ReactQueryProvider'>
 			{children}
 
-			<ReactQueryDevtools />
+			<ReactQueryDevtools buttonPosition='bottom-left' />
 		</QueryClientProvider>
 	);
 }

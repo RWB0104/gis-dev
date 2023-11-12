@@ -9,9 +9,9 @@
 
 import Header from '@gis-dev/components/molecule/Header';
 import Sidebar from '@gis-dev/components/molecule/Sidebar';
-import { ModalProps } from '@mui/material';
+import { ModalProps } from '@mui/material/Modal';
 import { usePathname } from 'next/navigation';
-import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
+import { MouseEventHandler, ReactNode, useCallback, useEffect, useState } from 'react';
 
 /**
  * 네비게이션 organism 컴포넌트 반환 메서드
@@ -34,10 +34,10 @@ export default function Navigation(): ReactNode
 		setMenuOpenState(false);
 	}, [ setMenuOpenState ]);
 
-	const handleMenuItemClick: MouseEventHandler<HTMLAnchorElement> = useCallback(() =>
+	useEffect(() =>
 	{
 		setMenuOpenState(false);
-	}, [ setMenuOpenState ]);
+	}, [ pathname, setMenuOpenState ]);
 
 	return (
 		<>
@@ -46,7 +46,6 @@ export default function Navigation(): ReactNode
 				currentLink={pathname}
 				open={isMenuOpenState}
 				onClose={handleClose}
-				onMenuItemClick={handleMenuItemClick}
 			/>
 		</>
 	);

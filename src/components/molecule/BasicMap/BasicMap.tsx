@@ -7,12 +7,20 @@
 
 'use client';
 
+import { MapContext } from '@gis-dev/script/context/map';
+import Add from '@mui/icons-material/Add';
 import Box, { BoxProps } from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import classNames from 'classnames/bind';
 import { Map } from 'ol';
 import { MapOptions } from 'ol/Map';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useContext, useEffect, useRef } from 'react';
+
+import styles from './BasicMap.module.scss';
 
 import 'ol/ol.css';
+
+const cn = classNames.bind(styles);
 
 export interface BasicMapProps extends BoxProps
 {
@@ -20,6 +28,11 @@ export interface BasicMapProps extends BoxProps
 	 * 맵 옵션
 	 */
 	options: MapOptions;
+
+	/**
+	 * 커서 여부
+	 */
+	hasCursor?: boolean;
 }
 
 /**
@@ -29,8 +42,10 @@ export interface BasicMapProps extends BoxProps
  *
  * @returns {ReactNode} ReactNode
  */
-export default function BasicMap({ options, ...props }: BasicMapProps): ReactNode
+export default function BasicMap({ options, hasCursor, children, ...props }: BasicMapProps): ReactNode
 {
+	const { setMap } = useContext(MapContext);
+
 	const ref = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() =>
@@ -44,23 +59,40 @@ export default function BasicMap({ options, ...props }: BasicMapProps): ReactNod
 		const map = new Map(options);
 
 		map.setTarget(ref.current);
+		setMap?.(map);
 
 		// eslint-disable-next-line consistent-return
 		return (): void =>
 		{
 			map.setTarget(undefined);
 		};
-	}, [ options, ref ]);
+	}, [ options, ref, setMap ]);
 
 	return (
 		<Box
 			bgcolor='gainsboro'
-			data-component='BasicMapProps'
+			data-component='BasicMap'
 			height='100%'
-			id='map'
 			ref={ref}
 			width='100%'
+			zIndex={1}
 			{...props}
-		/>
+		>
+			{hasCursor ? (
+				<Stack
+					alignItems='center'
+					className={cn('pointer')}
+					justifyContent='center'
+					left='50%'
+					position='absolute'
+					top='50%'
+					zIndex={2}
+				>
+					<Add htmlColor='#00000070' />
+				</Stack>
+			) : null}
+
+			{children}
+		</Box>
 	);
 }

@@ -5,6 +5,7 @@
  * @since 2023.11.10 Fri 17:53:44
  */
 
+import { montserrat } from '@gis-dev/components/organism/global/AppThemeProvider';
 import pkg from '@gis-dev/package';
 import { APP_INFO, MENU_LIST } from '@gis-dev/script/common/env';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -38,7 +39,7 @@ export interface SidebarProps extends DrawerProps
  *
  * @returns {ReactNode} ReactNode
  */
-export default function Sidebar({ currentLink, onMenuItemClick, ...props }: SidebarProps): ReactNode
+export default function Sidebar({ currentLink, ...props }: SidebarProps): ReactNode
 {
 	return (
 		<Drawer data-component='Sidebar' {...props}>
@@ -58,12 +59,12 @@ export default function Sidebar({ currentLink, onMenuItemClick, ...props }: Side
 					{MENU_LIST.map(({ title, link, divide }) => (
 						<Fragment key={`Sidebar-Link-${link}`}>
 							<Box paddingLeft={1} paddingRight={1}>
-								<Link href={link} onClick={onMenuItemClick}>
+								<Link href={link}>
 									<Button fullWidth>
 										<Stack
 											alignItems='center'
 											color={currentLink === link ? 'primary' : 'GrayText'}
-											flexDirection='row'
+											direction='row'
 											fontSize='0.8rem'
 											gap={1}
 											textTransform='initial'
@@ -86,8 +87,8 @@ export default function Sidebar({ currentLink, onMenuItemClick, ...props }: Side
 					))}
 				</Stack>
 
-				<Stack alignItems='center' paddingBottom={2} paddingTop={2} spacing={1}>
-					<Typography variant='caption'>{APP_INFO.title}</Typography>
+				<Stack alignItems='center' paddingBottom={4} paddingTop={4} spacing={1}>
+					<Typography fontFamily={montserrat.style.fontFamily} variant='caption'>{APP_INFO.title}</Typography>
 					<Typography color='GrayText' variant='caption'>{pkg.version}</Typography>
 				</Stack>
 			</Stack>

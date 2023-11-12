@@ -11,13 +11,13 @@ import { themeStore } from '@gis-dev/script/states/theme';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 // eslint-disable-next-line camelcase
-import { Noto_Sans_KR, Bungee_Shade } from 'next/font/google';
+import { Noto_Sans_KR, Montserrat } from 'next/font/google';
 import { PropsWithChildren, ReactNode, useMemo } from 'react';
 
 export type AppThemeProviderProps = PropsWithChildren;
 
 export const notoSans = Noto_Sans_KR({ subsets: [ 'latin' ], weight: [ '100', '300', '400', '500', '700', '900' ] });
-export const bungeeShade = Bungee_Shade({ subsets: [ 'latin' ], weight: [ '400' ] });
+export const montserrat = Montserrat({ subsets: [ 'latin' ], weight: 'variable' });
 
 const fontFamily = [ notoSans.style.fontFamily ];
 

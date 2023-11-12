@@ -5,7 +5,7 @@
  * @since 2023.11.10 Fri 17:33:52
  */
 
-import { bungeeShade } from '@gis-dev/components/organism/global/AppThemeProvider';
+import { montserrat } from '@gis-dev/components/organism/global/AppThemeProvider';
 import { APP_INFO } from '@gis-dev/script/common/env';
 import Menu from '@mui/icons-material/Menu';
 import { useTheme } from '@mui/material/';
@@ -62,7 +62,7 @@ export default function Header({ onMenuClick, ...props }: HeaderProps): ReactNod
 				</Link>
 
 				<Link href='/'>
-					<Typography fontFamily={bungeeShade.style.fontFamily} fontWeight='bold'>{APP_INFO.title}</Typography>
+					<Typography fontFamily={montserrat.style.fontFamily} variant='h6'>{APP_INFO.title}</Typography>
 				</Link>
 			</Stack>
 		</Box>
