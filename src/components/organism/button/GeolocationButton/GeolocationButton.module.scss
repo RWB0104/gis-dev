@@ -1,0 +1,13 @@
+.icon {
+	animation: rolling linear 0.5s infinite;
+}
+
+@keyframes rolling {
+	0% {
+		rotate: 0deg;
+	}
+
+	100% {
+		rotate: 180deg;
+	}
+}
