@@ -6,8 +6,12 @@
  */
 
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
+import { sejongBuildingSource } from '@gis-dev/script/map/source';
+import { basicStyle } from '@gis-dev/script/map/style';
 import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
 import { OSM, XYZ } from 'ol/source';
+import Style from 'ol/style/Style';
 
 // OSM 레이어
 export const osmLayer = new TileLayer({
@@ -112,4 +116,12 @@ export const googleHybridyLayer = new TileLayer({
 	properties: { name: 'base-google-hybrid' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' }),
 	zIndex: 2
+});
+
+export const sejongLayer = new VectorLayer({
+	minZoom: 15,
+	properties: { name: 'wfs' },
+	source: sejongBuildingSource,
+	style: (feature): Style => basicStyle(feature, 'buld_nm'),
+	zIndex: 5
 });
