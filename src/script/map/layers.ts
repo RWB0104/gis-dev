@@ -6,8 +6,9 @@
  */
 
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
-import { sejongBuildingSource } from '@gis-dev/script/map/source';
+import { sejongBuildingSource, sejongImageSource, sejongTileSource } from '@gis-dev/script/map/source';
 import { basicStyle } from '@gis-dev/script/map/style';
+import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { OSM, XYZ } from 'ol/source';
@@ -123,5 +124,19 @@ export const sejongLayer = new VectorLayer({
 	properties: { name: 'wfs' },
 	source: sejongBuildingSource,
 	style: (feature): Style => basicStyle(feature, 'buld_nm'),
+	zIndex: 5
+});
+
+export const sejongTileWmsLayer = new TileLayer({
+	minZoom: 15,
+	properties: { name: 'wms' },
+	source: sejongTileSource,
+	zIndex: 5
+});
+
+export const sejongImageWmsLayer = new ImageLayer({
+	minZoom: 15,
+	properties: { name: 'wms' },
+	source: sejongImageSource,
 	zIndex: 5
 });
