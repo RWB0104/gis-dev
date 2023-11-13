@@ -8,10 +8,14 @@
 import MapPanel from '@gis-dev/components/organism/page/MapPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import { sejongImageWmsLayer, sejongTileWmsLayer } from '@gis-dev/script/map/layers';
+import Apps from '@mui/icons-material/Apps';
+import Image from '@mui/icons-material/Image';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Typography from '@mui/material/Typography';
 import { MouseEvent, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 export type WMSType = 'tile' | 'image';
@@ -64,12 +68,18 @@ export default function WMSPanel(): ReactNode
 				fullWidth
 				onChange={handleChange}
 			>
-				<ToggleButton color={typeState === 'tile' ? 'primary' : undefined} value='tile'>
-					sdf
+				<ToggleButton color={typeState === 'tile' ? 'primary' : undefined} disabled={typeState === 'tile'} value='tile'>
+					<Stack alignItems='center' direction='row' gap={1}>
+						<Apps fontSize='inherit' />
+						<Typography variant='caption'>Tile</Typography>
+					</Stack>
 				</ToggleButton>
 
-				<ToggleButton color={typeState === 'image' ? 'primary' : undefined} value='image'>
-					11
+				<ToggleButton color={typeState === 'image' ? 'primary' : undefined} disabled={typeState === 'image'} value='image'>
+					<Stack alignItems='center' direction='row' gap={1}>
+						<Image fontSize='inherit' />
+						<Typography variant='caption'>Image</Typography>
+					</Stack>
 				</ToggleButton>
 			</ToggleButtonGroup>
 
