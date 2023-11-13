@@ -10,8 +10,8 @@
 import BasicPanel from '@gis-dev/components/atom/BasicPanel';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import { osmLayer } from '@gis-dev/script/common/layers';
-import { seoulPosition } from '@gis-dev/script/common/positions';
+import { osmLayer } from '@gis-dev/script/map/layers';
+import { seoulPosition } from '@gis-dev/script/map/positions';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';

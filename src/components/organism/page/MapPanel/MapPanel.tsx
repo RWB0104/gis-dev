@@ -6,8 +6,8 @@
  */
 
 import PaperPanel from '@gis-dev/components/molecule/PaperPanel';
-import { googleAlterLayer, googleHybridyLayer, googleOnlyTerrainLayer, googleRoadLayer, googleSatelliteLayer, googleTerrainLayer, osmLayer, vworldBaseLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer, vworldWhiteLayer } from '@gis-dev/script/common/layers';
 import { MapContext } from '@gis-dev/script/context/map';
+import { googleAlterLayer, googleHybridyLayer, googleOnlyTerrainLayer, googleRoadLayer, googleSatelliteLayer, googleTerrainLayer, osmLayer, vworldBaseLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer, vworldWhiteLayer } from '@gis-dev/script/map/layers';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
