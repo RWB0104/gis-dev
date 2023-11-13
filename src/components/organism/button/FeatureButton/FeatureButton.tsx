@@ -40,7 +40,21 @@ export default function FeatureButton(): ReactNode
 			// 소스, 중심값 모두 유효할 경우
 			if (source && center)
 			{
-				source.addFeature(new Feature({ geometry: new Point(center) }));
+				const pixel = map.getPixelFromCoordinate(center);
+
+				const features = map.getFeaturesAtPixel(pixel, { layerFilter: (i) => i.get('name') === LAYER_NAME });
+
+				// 피쳐가 있을 경우
+				if (features.length > 0)
+				{
+					features.forEach((i) => source.removeFeature(i as Feature));
+				}
+
+				// 피쳐가 없을 경우
+				else
+				{
+					source.addFeature(new Feature({ geometry: new Point(center) }));
+				}
 			}
 		}
 	}, [ map ]);
@@ -75,13 +89,21 @@ export default function FeatureButton(): ReactNode
 			}
 		}
 
-		document.addEventListener('keyup', (e) =>
+		const handleKeyUp = (e: KeyboardEvent): void =>
 		{
+			// 스페이스바를 누를 경우
 			if (e.code === 'Space')
 			{
 				handleClick();
 			}
-		});
+		};
+
+		document.addEventListener('keyup', handleKeyUp);
+
+		return () =>
+		{
+			document.removeEventListener('keyup', handleKeyUp);
+		};
 	}, [ map, handleClick ]);
 
 	return (
