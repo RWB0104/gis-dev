@@ -22,24 +22,35 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames/bind';
 import { Coordinate } from 'ol/coordinate';
-import { ChangeEvent, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, PropsWithChildren, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 import styles from './MapPanel.module.scss';
 
 const cn = classNames.bind(styles);
 
+export type MapPanelProps = PropsWithChildren;
+
 interface MapConfigProps
 {
+	/**
+	 * 레이어명
+	 */
 	layer: string;
+
+	/**
+	 * 확장 여부
+	 */
 	extend: boolean;
 }
 
 /**
  * 지도 패널 organism 컴포넌트 반환 메서드
  *
+ * @param {MapPanelProps} param0: MapPanelProps 객체
+ *
  * @returns {ReactNode} ReactNode
  */
-export default function MapPanel(): ReactNode
+export default function MapPanel({ children }: MapPanelProps): ReactNode
 {
 	const { map } = useContext(MapContext);
 
@@ -272,6 +283,8 @@ export default function MapPanel(): ReactNode
 	return (
 		<PaperPanel>
 			<Stack padding={2} spacing={1} width={250}>
+				{children}
+
 				<FormControl size='small' fullWidth>
 					<InputLabel>레이어</InputLabel>
 
@@ -440,7 +453,6 @@ export default function MapPanel(): ReactNode
 						size='small'
 					/>
 				</Stack>
-
 			</Stack>
 		</PaperPanel>
 	);
