@@ -6,7 +6,7 @@
  */
 
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
-import { sejongBuildingSource, sejongImageSource, sejongTileSource } from '@gis-dev/script/map/source';
+import { wfsSource, wmsSource } from '@gis-dev/script/map/source';
 import { basicStyle } from '@gis-dev/script/map/style';
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
@@ -123,7 +123,7 @@ const googleHybridyLayer = new TileLayer({
 const sejongWfsLayer = new VectorLayer({
 	minZoom: 15,
 	properties: { name: 'wfs' },
-	source: sejongBuildingSource,
+	source: wfsSource.sejongBuildingSource,
 	style: (feature): Style => basicStyle(feature, 'buld_nm'),
 	zIndex: 5
 });
@@ -132,7 +132,7 @@ const sejongWfsLayer = new VectorLayer({
 const sejongTileWmsLayer = new TileLayer({
 	minZoom: 15,
 	properties: { name: 'wms' },
-	source: sejongTileSource,
+	source: wmsSource.sejongTileSource,
 	zIndex: 5
 });
 
@@ -140,7 +140,7 @@ const sejongTileWmsLayer = new TileLayer({
 const sejongImageWmsLayer = new ImageLayer({
 	minZoom: 15,
 	properties: { name: 'wms' },
-	source: sejongImageSource,
+	source: wmsSource.sejongImageSource,
 	zIndex: 5
 });
 

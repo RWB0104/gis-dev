@@ -12,7 +12,8 @@ import { bbox } from 'ol/loadingstrategy';
 import { ImageWMS, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 
-export const sejongBuildingSource = new VectorSource({
+// 세종 건물 벡터 소스
+const sejongBuildingSource = new VectorSource({
 	format: new GeoJSON(),
 	strategy: bbox,
 	url: (extent): string => urlBuilder(`${API_BASE_URL}/wfs`, {
@@ -27,7 +28,8 @@ export const sejongBuildingSource = new VectorSource({
 	})
 });
 
-export const sejongTileSource = new TileWMS({
+// 세종 건물 타일 이미지 소스
+const sejongTileSource = new TileWMS({
 	params: {
 		exceptions: 'application/json',
 		layers: 'buld_sejong'
@@ -37,7 +39,8 @@ export const sejongTileSource = new TileWMS({
 	url: `${API_BASE_URL}/wms`
 });
 
-export const sejongImageSource = new ImageWMS({
+// 세종 건물 이미지 소스
+const sejongImageSource = new ImageWMS({
 	params: {
 		exceptions: 'application/json',
 		layers: 'buld_sejong'
@@ -45,3 +48,7 @@ export const sejongImageSource = new ImageWMS({
 	serverType: 'geoserver',
 	url: `${API_BASE_URL}/wms`
 });
+
+export const wfsSource = { sejongBuildingSource };
+
+export const wmsSource = { sejongImageSource, sejongTileSource };
