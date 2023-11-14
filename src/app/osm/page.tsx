@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function OSM(): ReactNode
+export default function OSMPage(): ReactNode
 {
 	return (
 		<OSMBox />

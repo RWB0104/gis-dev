@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function MapInfo(): ReactNode
+export default function MapInfoPage(): ReactNode
 {
 	return <MapInfoBox />;
 }

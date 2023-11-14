@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function Feature(): ReactNode
+export default function FeaturePage(): ReactNode
 {
 	return (
 		<FeatureBox />

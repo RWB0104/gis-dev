@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function WFS(): ReactNode
+export default function WFSPage(): ReactNode
 {
 	return (
 		<WFSBox />

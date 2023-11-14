@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function WMS(): ReactNode
+export default function WMSPage(): ReactNode
 {
 	return (
 		<WMSBox />

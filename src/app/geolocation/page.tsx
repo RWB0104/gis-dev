@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function Geolocation(): ReactNode
+export default function GeolocationPage(): ReactNode
 {
 	return (
 		<GeolocationBox />

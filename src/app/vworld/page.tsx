@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
  *
  * @returns {ReactNode} ReactNode
  */
-export default function VWorld(): ReactNode
+export default function VWorldPage(): ReactNode
 {
 	return (
 		<VWorldBox />
