@@ -13,7 +13,7 @@ import HomeButton from '@gis-dev/components/organism/button/HomeButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import MapPanel from '@gis-dev/components/organism/page/MapPanel';
-import MapPopup from '@gis-dev/components/organism/popup/MapPopup';
+import WFSPopup from '@gis-dev/components/organism/popup/WFSPopup';
 import { selects } from '@gis-dev/script/map/interactions';
 import { wfsLayer } from '@gis-dev/script/map/layers';
 import { position4326 } from '@gis-dev/script/map/positions';
@@ -61,7 +61,7 @@ export default function WFSPopupBox(): ReactNode
 				</Stack>
 			</BasicPanel>
 
-			<MapPopup />
+			<WFSPopup />
 		</MapProvider>
 	);
 }
