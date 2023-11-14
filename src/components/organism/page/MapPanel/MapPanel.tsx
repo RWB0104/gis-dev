@@ -183,6 +183,7 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 		setCenter();
 	});
 
+	map?.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
 	map?.on('pointermove', (e) => setCursor(e.coordinate));
 
 	map?.on('moveend', () => setZoom());
