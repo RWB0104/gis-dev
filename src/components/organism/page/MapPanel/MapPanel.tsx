@@ -21,6 +21,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames/bind';
+import Link from 'next/link';
 import { Coordinate } from 'ol/coordinate';
 import { ChangeEvent, PropsWithChildren, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
@@ -358,24 +359,30 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 					<Divider />
 				</Box>
 
-				<Stack flexDirection='row' gap={1}>
-					<TextField
-						InputLabelProps={{ shrink: true }}
-						InputProps={{ classes: { input: cn('input') }, readOnly: true }}
-						label='좌표계'
-						name='epsg'
-						size='small'
-					/>
-					<TextField
-						InputLabelProps={{ shrink: true }}
-						InputProps={{ classes: { input: cn('input') }, readOnly: true }}
-						label='줌'
-						name='zoom'
-						size='small'
-					/>
+				<Stack>
+					<Stack flexDirection='row' gap={1}>
+						<TextField
+							InputLabelProps={{ shrink: true }}
+							InputProps={{ classes: { input: cn('input') }, readOnly: true }}
+							label='좌표계'
+							name='epsg'
+							size='small'
+						/>
+						<TextField
+							InputLabelProps={{ shrink: true }}
+							InputProps={{ classes: { input: cn('input') }, readOnly: true }}
+							label='줌'
+							name='zoom'
+							size='small'
+						/>
+					</Stack>
+
+					<Link href={`https://epsg.io/${map?.getView().getProjection().getCode()}`} target='_blank'>
+						<Typography color='primary' fontSize={10}>좌표계 자세히 알아보기</Typography>
+					</Link>
 				</Stack>
 
-				<Box padding={0.5}>
+				<Box padding={0.5} paddingTop={0}>
 					<Divider />
 				</Box>
 
