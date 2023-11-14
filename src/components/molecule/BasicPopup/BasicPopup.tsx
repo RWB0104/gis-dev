@@ -65,7 +65,7 @@ export default function BasicPopup({ id, header = '-', list, onClose, ...props }
 {
 	return (
 		<Paper data-component='MapPopup' id={id} {...props}>
-			<Stack gap={1} maxWidth={200} padding={1}>
+			<Stack gap={1} maxWidth={200} padding={2}>
 				<Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
 					<Typography color='primary' fontWeight='bold'>{header}</Typography>
 
@@ -80,7 +80,7 @@ export default function BasicPopup({ id, header = '-', list, onClose, ...props }
 					<Stack>
 						{list.map(({ key, value, link }, num) => (
 							<Stack alignItems='center' direction='row' gap={1} key={num}>
-								<Stack width={50}>
+								<Stack width={70}>
 									<Typography fontWeight='bold' variant='caption'>{key}</Typography>
 								</Stack>
 

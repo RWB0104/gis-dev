@@ -45,7 +45,7 @@ export default function WFSPopup(): ReactNode
 					value: featureState.get('bul_man_no') || '-'
 				},
 				{
-					key: 'ID',
+					key: '고시일자',
 					value: dateConvert(featureState.get('ntfc_de') || '-')
 				}
 			];

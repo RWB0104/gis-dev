@@ -5,6 +5,7 @@
  * @since 2023.11.14 Tue 17:18:39
  */
 
+import { useGetFeatureInfo } from '@gis-dev/api/wfs';
 import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
 import { dateConvert } from '@gis-dev/script/common/util';
 import { MapContext } from '@gis-dev/script/context/map';
@@ -25,7 +26,10 @@ export default function WMSPopup(): ReactNode
 {
 	const { map } = useContext(MapContext);
 
+	const [ urlState, setUrlState ] = useState<string | undefined>();
 	const [ featureState, setFeatureState ] = useState<FeatureLike | undefined>();
+
+	const { data } = useGetFeatureInfo(urlState || '', { enabled: urlState !== undefined });
 
 	const handleClick = useCallback(() =>
 	{
@@ -47,7 +51,7 @@ export default function WMSPopup(): ReactNode
 					value: featureState.get('bul_man_no') || '-'
 				},
 				{
-					key: 'ID',
+					key: '고시일자',
 					value: dateConvert(featureState.get('ntfc_de') || '-')
 				}
 			];
@@ -92,26 +96,37 @@ export default function WMSPopup(): ReactNode
 				// url이 유효할 경우
 				if (url)
 				{
-					const response = await fetch(url, { method: 'GET' });
-					const json = await response.json();
+					setUrlState(url);
+				}
 
-					// 피쳐가 하나도 없을 경우
-					if (json.features.length === 0)
-					{
-						setFeatureState(undefined);
-					}
-
-					// 피쳐가 있을 경우
-					else
-					{
-						const feature = new GeoJSON().readFeature(json.features[0]);
-
-						setFeatureState(feature);
-					}
+				else
+				{
+					setUrlState(undefined);
 				}
 			});
 		}
-	}, [ map ]);
+	}, [ map, setUrlState ]);
+
+	useEffect(() =>
+	{
+		// 응답이 유효할 경우
+		if (data)
+		{
+			// 피쳐가 하나도 없을 경우
+			if (data.features.length === 0)
+			{
+				setFeatureState(undefined);
+			}
+
+			// 피쳐가 있을 경우
+			else
+			{
+				const feature = new GeoJSON().readFeature(data.features[0]);
+
+				setFeatureState(feature);
+			}
+		}
+	}, [ data ]);
 
 	useEffect(() =>
 	{

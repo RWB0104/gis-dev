@@ -22,7 +22,15 @@ export type ReactQueryProviderProps = PropsWithChildren;
  */
 export default function ReactQueryProvider({ children }: ReactQueryProviderProps): ReactNode
 {
-	const client = new QueryClient();
+	const client = new QueryClient({
+		defaultOptions: {
+			queries: {
+				gcTime: Infinity,
+				refetchOnWindowFocus: false,
+				staleTime: 3600 * 1000
+			}
+		}
+	});
 
 	return (
 		<QueryClientProvider client={client} data-component='ReactQueryProvider'>
