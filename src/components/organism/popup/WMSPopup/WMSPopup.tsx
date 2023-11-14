@@ -149,6 +149,6 @@ export default function WMSPopup(): ReactNode
 	}, [ map, featureState ]);
 
 	return (
-		<BasicPopup id={POPUP_ID} list={list} onClose={handleClick} />
+		<BasicPopup header={featureState?.get('buld_nm')} id={POPUP_ID} list={list} onClose={handleClick} />
 	);
 }

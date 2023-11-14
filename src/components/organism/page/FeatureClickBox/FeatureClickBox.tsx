@@ -34,7 +34,7 @@ export default function FeatureClickBox(): ReactNode
 	const center = proj4('EPSG:4326', 'EPSG:3857', position4326.sejongPosition);
 
 	const options: MapOptions = {
-		interactions: defaults().extend([ selects.wfsHoverSelect, selects.wfsClickSelect ]),
+		interactions: defaults().extend([ selects.getWfsHoverSelect('buld_nm'), selects.getWfsClickSelect('buld_nm') ]),
 		layers: [ wfsLayer.sejongWfsLayer ],
 		view: new View({
 			center,

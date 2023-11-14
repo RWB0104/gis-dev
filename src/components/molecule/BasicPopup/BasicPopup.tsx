@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 import { MouseEventHandler, ReactNode } from 'react';
 
 export interface BasicPopupBody
@@ -17,12 +18,17 @@ export interface BasicPopupBody
 	/**
 	 * 키
 	 */
-	key: string;
+	key: string | number;
 
 	/**
 	 * 값
 	 */
-	value: string;
+	value: string | number;
+
+	/**
+	 * 링크
+	 */
+	link?: string;
 }
 
 export interface BasicPopupProps extends PaperProps
@@ -33,9 +39,9 @@ export interface BasicPopupProps extends PaperProps
 	id: string;
 
 	/**
-	 * 타이틀
+	 * 헤더
 	 */
-	title?: string;
+	header?: string | number;
 
 	/**
 	 * 리스트
@@ -55,13 +61,13 @@ export interface BasicPopupProps extends PaperProps
  *
  * @returns {ReactNode} ReactNode
  */
-export default function BasicPopup({ id, title = '-', list, onClose, ...props }: BasicPopupProps): ReactNode
+export default function BasicPopup({ id, header = '-', list, onClose, ...props }: BasicPopupProps): ReactNode
 {
 	return (
 		<Paper data-component='MapPopup' id={id} {...props}>
 			<Stack gap={1} maxWidth={200} padding={1}>
 				<Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
-					<Typography color='primary' fontWeight='bold'>{title}</Typography>
+					<Typography color='primary' fontWeight='bold'>{header}</Typography>
 
 					{onClose ? (
 						<IconButton size='small' onClick={onClose}>
@@ -72,10 +78,22 @@ export default function BasicPopup({ id, title = '-', list, onClose, ...props }:
 
 				{list ? (
 					<Stack>
-						{list.map(({ key, value }, num) => (
+						{list.map(({ key, value, link }, num) => (
 							<Stack alignItems='center' direction='row' gap={1} key={num}>
-								<Typography fontWeight='bold' variant='caption' width={70}>{key}</Typography>
-								<Typography variant='caption'>{value}</Typography>
+								<Stack width={50}>
+									<Typography fontWeight='bold' variant='caption'>{key}</Typography>
+								</Stack>
+
+								<Stack flex={1}>
+									{link ? (
+										<Typography color='primary' variant='caption'>
+											<Link href={link} target='_blank'>{value}</Link>
+										</Typography>
+
+									) : (
+										<Typography variant='caption'>{value}</Typography>
+									)}
+								</Stack>
 							</Stack>
 						))}
 					</Stack>

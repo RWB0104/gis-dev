@@ -49,6 +49,21 @@ const sejongImageSource = new ImageWMS({
 	url: `${API_BASE_URL}/wms`
 });
 
-export const wfsSource = { sejongBuildingSource };
+const transactionSource = new VectorSource({
+	format: new GeoJSON(),
+	strategy: bbox,
+	url: (extent): string => urlBuilder(`${API_BASE_URL}/wfs`, {
+		bbox: `${extent.join(',')},EPSG:3857`,
+		exceptions: 'application/json',
+		outputFormat: 'application/json',
+		request: 'GetFeature',
+		service: 'WFS',
+		srsName: 'EPSG:3857',
+		typename: 'TEST:buld_test',
+		version: '2.0.0'
+	})
+});
+
+export const wfsSource = { sejongBuildingSource, transactionSource };
 
 export const wmsSource = { sejongImageSource, sejongTileSource };

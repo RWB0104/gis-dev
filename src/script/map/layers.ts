@@ -12,6 +12,7 @@ import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { OSM, XYZ } from 'ol/source';
+import VectorSource from 'ol/source/Vector';
 import Style from 'ol/style/Style';
 
 // OSM 레이어
@@ -144,6 +145,19 @@ const sejongImageWmsLayer = new ImageLayer({
 	zIndex: 5
 });
 
+const wfsTransactionLayer = new VectorLayer({
+	minZoom: 15,
+	properties: { name: 'wfs' },
+	source: wfsSource.transactionSource,
+	style: (feature): Style => basicStyle(feature, 'name'),
+	zIndex: 5
+});
+
+const drawLayer = new VectorLayer({
+	properties: { name: 'draw' },
+	source: new VectorSource()
+});
+
 export const osmTileLayer = { osmLayer };
 
 export const vworldTileLayer = {
@@ -169,9 +183,11 @@ export const baseLayer = {
 	...googleTileLayer
 };
 
-export const wfsLayer = { sejongWfsLayer };
+export const wfsLayer = { sejongWfsLayer, wfsTransactionLayer };
 
 export const wmsLayer = {
 	sejongImageWmsLayer,
 	sejongTileWmsLayer
 };
+
+export const transactionLayer = { drawLayer };
