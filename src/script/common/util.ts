@@ -29,3 +29,23 @@ export function urlBuilder(host: string, query: QueryProps): string
 
 	return `${host}?${param}`;
 }
+
+/**
+ * 날짜 변환 메서드
+ *
+ * @param {string} text: yyyyMMdd 형태의 텍스트
+ *
+ * @returns {string} yyyy-MM-dd
+ */
+export function dateConvert(text: string): string
+{
+	const regex = /^(\d{4})(\d{2})(\d{2})$/;
+	const arr = regex.exec(text);
+
+	if (arr)
+	{
+		return `${arr[1]}-${arr[2]}-${arr[3]}`;
+	}
+
+	return text;
+}

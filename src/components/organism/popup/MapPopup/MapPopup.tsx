@@ -5,15 +5,12 @@
  * @since 2023.11.14 Tue 15:59:04
  */
 
+import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
+import { dateConvert } from '@gis-dev/script/common/util';
 import { MapContext } from '@gis-dev/script/context/map';
-import Close from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { Overlay } from 'ol';
 import { FeatureLike } from 'ol/Feature';
-import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 const POPUP_ID = 'popup';
 
@@ -32,6 +29,30 @@ export default function MapPopup(): ReactNode
 	{
 		setFeatureState(undefined);
 	}, [ setFeatureState ]);
+
+	const list: BasicPopupBody[] | undefined = useMemo(() =>
+	{
+		// 피쳐가 유효할 경우
+		if (featureState)
+		{
+			return [
+				{
+					key: 'ID',
+					value: featureState.getId() || '-'
+				},
+				{
+					key: '고유일련변호',
+					value: featureState.get('bul_man_no') || '-'
+				},
+				{
+					key: 'ID',
+					value: dateConvert(featureState.get('ntfc_de') || '-')
+				}
+			];
+		}
+
+		return undefined;
+	}, [ featureState ]);
 
 	useEffect(() =>
 	{
@@ -115,33 +136,6 @@ export default function MapPopup(): ReactNode
 	}, [ map, featureState ]);
 
 	return (
-		<Paper data-component='MapPopup' id={POPUP_ID}>
-			<Stack gap={1} maxWidth={200} padding={1}>
-				<Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
-					<Typography color='primary' fontWeight='bold'>{featureState?.get('buld_nm') || '-'}</Typography>
-
-					<IconButton size='small' onClick={handleClick}>
-						<Close fontSize='inherit' />
-					</IconButton>
-				</Stack>
-
-				<Stack>
-					<Stack alignItems='center' direction='row' gap={1}>
-						<Typography fontWeight='bold' variant='caption' width={70}>ID</Typography>
-						<Typography variant='caption'>{featureState?.getId() || '-'}</Typography>
-					</Stack>
-
-					<Stack alignItems='center' direction='row' gap={1}>
-						<Typography fontWeight='bold' variant='caption' width={70}>건물일련번호</Typography>
-						<Typography variant='caption'>{featureState?.get('bul_man_no') || '-'}</Typography>
-					</Stack>
-
-					<Stack alignItems='center' direction='row' gap={1}>
-						<Typography fontWeight='bold' variant='caption' width={70}>고시일자</Typography>
-						<Typography variant='caption'>{featureState?.get('ntfc_de') || '-'}</Typography>
-					</Stack>
-				</Stack>
-			</Stack>
-		</Paper>
+		<BasicPopup id={POPUP_ID} list={list} onClose={handleClick} />
 	);
 }
