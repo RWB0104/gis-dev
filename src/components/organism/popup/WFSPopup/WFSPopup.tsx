@@ -1,5 +1,5 @@
 /**
- * 맵 팝업 organism 컴포넌트
+ * WFS 팝업 organism 컴포넌트
  *
  * @author RWB
  * @since 2023.11.14 Tue 15:59:04
@@ -15,11 +15,11 @@ import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from
 const POPUP_ID = 'popup';
 
 /**
- * 맵 팝업 organism 컴포넌트 반환 메서드
+ * WFS 팝업 organism 컴포넌트 반환 메서드
  *
  * @returns {ReactNode} ReactNode
  */
-export default function MapPopup(): ReactNode
+export default function WFSPopup(): ReactNode
 {
 	const { map } = useContext(MapContext);
 
