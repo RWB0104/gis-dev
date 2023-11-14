@@ -7,7 +7,7 @@
 
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
 import { wfsSource, wmsSource } from '@gis-dev/script/map/source';
-import { basicStyle } from '@gis-dev/script/map/style';
+import { basicStyle, drawStyle } from '@gis-dev/script/map/style';
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -155,7 +155,9 @@ const wfsTransactionLayer = new VectorLayer({
 
 const drawLayer = new VectorLayer({
 	properties: { name: 'draw' },
-	source: new VectorSource()
+	source: new VectorSource(),
+	style: drawStyle,
+	zIndex: 6
 });
 
 export const osmTileLayer = { osmLayer };

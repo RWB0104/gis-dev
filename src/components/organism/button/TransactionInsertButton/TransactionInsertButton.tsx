@@ -21,6 +21,8 @@ import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
  */
 export default function TransactionInsertButton(): ReactNode
 {
+	const interactions = draws.drawInteraction;
+
 	const { map } = useContext(MapContext);
 
 	const [ disabledState, setDisabledState ] = useState(false);
@@ -30,27 +32,11 @@ export default function TransactionInsertButton(): ReactNode
 		// 맵이 유효할 경우
 		if (map)
 		{
-			const interactions = draws.drawInteraction;
-
-			interactions.once('drawstart', () =>
-			{
-				const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
-				source?.clear();
-			});
-
-			interactions.once('drawend', (e) =>
-			{
-				const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
-				source?.addFeature(e.feature.clone());
-
-				console.log(source?.getFeatures());
-			});
-
 			map.addInteraction(interactions);
 
 			setDisabledState(true);
 		}
-	}, [ map, setDisabledState ]);
+	}, [ map, interactions, setDisabledState ]);
 
 	const handleDrawEnd = useCallback(() =>
 	{
@@ -88,6 +74,15 @@ export default function TransactionInsertButton(): ReactNode
 			document.oncontextmenu = handleDrawEnd;
 		}
 	}, [ map, setDisabledState, handleDrawEnd ]);
+
+	useEffect(() =>
+	{
+		interactions.once('drawstart', () =>
+		{
+			const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
+			source?.clear();
+		});
+	}, [ interactions ]);
 
 	return (
 		<BasicIconButton bgcolor='dodgerblue' disabled={disabledState} onClick={handleClick}>

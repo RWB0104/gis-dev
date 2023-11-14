@@ -98,3 +98,11 @@ export function clickStyle(feature: StyleFeatureType, labelColumn: string): Styl
 		})
 	});
 }
+
+export const drawStyle = new Style({
+	fill: new Fill({ color: 'rgba(250, 112, 112, 0.6)' }),
+	stroke: new Stroke({
+		color: 'rgba(250, 112, 112, 1)',
+		width: 2
+	})
+});
