@@ -14,8 +14,8 @@ import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import MapPanel from '@gis-dev/components/organism/page/MapPanel';
 import { selects } from '@gis-dev/script/map/interactions';
-import { sejongLayer } from '@gis-dev/script/map/layers';
-import { sejongPosition } from '@gis-dev/script/map/positions';
+import { wfsLayer } from '@gis-dev/script/map/layers';
+import { position4326 } from '@gis-dev/script/map/positions';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { View } from 'ol';
@@ -31,11 +31,11 @@ import { ReactNode } from 'react';
  */
 export default function FeatureClickBox(): ReactNode
 {
-	const center = proj4('EPSG:4326', 'EPSG:3857', sejongPosition);
+	const center = proj4('EPSG:4326', 'EPSG:3857', position4326.sejongPosition);
 
 	const options: MapOptions = {
 		interactions: defaults().extend([ selects.wfsHoverSelect, selects.wfsClickSelect ]),
-		layers: [ sejongLayer ],
+		layers: [ wfsLayer.sejongWfsLayer ],
 		view: new View({
 			center,
 			projection: 'EPSG:3857',

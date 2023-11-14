@@ -7,7 +7,7 @@
 
 import PaperPanel from '@gis-dev/components/molecule/PaperPanel';
 import { MapContext } from '@gis-dev/script/context/map';
-import { vworldBaseLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer, vworldWhiteLayer } from '@gis-dev/script/map/layers';
+import { baseLayer } from '@gis-dev/script/map/layers';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import InputLabel from '@mui/material/InputLabel';
@@ -17,7 +17,20 @@ import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { ChangeEvent, ReactNode, useCallback, useContext } from 'react';
+import { ChangeEvent, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+
+interface MapConfigProps
+{
+	/**
+	 * 레이어명
+	 */
+	layer: string;
+
+	/**
+	 * 확장 여부
+	 */
+	extend: boolean;
+}
 
 /**
  * VWorld 패널 organism 컴포넌트 반환 메서드
@@ -28,47 +41,74 @@ export default function VWorldPanel(): ReactNode
 {
 	const { map } = useContext(MapContext);
 
+	const [ mapConfigState, setMapConfigState ] = useState<MapConfigProps>({
+		extend: true,
+		layer: 'base-vworld-base'
+	});
+
 	const handleChange = useCallback((e: SelectChangeEvent<string>) =>
 	{
-		// 맵이 유효할 경우
-		if (map)
-		{
-			const { value } = e.target;
-
-			map.getAllLayers()
-				.filter((layer) => (layer.get('name') as string).startsWith('base-vworld'))
-				.forEach((layer) => map.removeLayer(layer));
-
-			switch (value)
-			{
-				case 'base-vworld-white':
-					map.addLayer(vworldWhiteLayer);
-					break;
-
-				case 'base-vworld-midnight':
-					map.addLayer(vworldMidnightLayer);
-					break;
-
-				case 'base-vworld-satellite':
-					map.addLayer(vworldSatelliteLayer);
-					break;
-
-				default:
-					map.addLayer(vworldBaseLayer);
-					break;
-			}
-		}
-	}, [ map ]);
+		setMapConfigState((state) => ({
+			...state,
+			layer: e.target.value
+		}));
+	}, [ setMapConfigState ]);
 
 	const handleChecked = useCallback((e: ChangeEvent<HTMLInputElement>, checked: boolean) =>
 	{
+		setMapConfigState((state) => ({
+			...state,
+			extend: checked
+		}));
+	}, [ setMapConfigState ]);
+
+	useEffect(() =>
+	{
 		// 맵이 유효할 경우
 		if (map)
 		{
-			// 확장 레이어를 추가할 경우
-			if (checked)
+			const { layer } = mapConfigState;
+
+			map.getAllLayers()
+				.filter((i) => (i.get('name') as string).startsWith('base-vworld'))
+				.forEach((i) => map.removeLayer(i));
+
+			switch (layer)
 			{
-				map.addLayer(vworldHybridLayer);
+				case 'base-vworld-base':
+					map.addLayer(baseLayer.vworldBaseLayer);
+					break;
+
+				case 'base-vworld-white':
+					map.addLayer(baseLayer.vworldWhiteLayer);
+					break;
+
+				case 'base-vworld-midnight':
+					map.addLayer(baseLayer.vworldMidnightLayer);
+					break;
+
+				case 'base-vworld-satellite':
+					map.addLayer(baseLayer.googleSatelliteLayer);
+					break;
+
+				default:
+					map.addLayer(baseLayer.googleRoadLayer);
+					break;
+			}
+		}
+	}, [ map, mapConfigState.layer, setMapConfigState ]);
+
+	useEffect(() =>
+	{
+		// 맵이 유효할 경우
+		if (map)
+		{
+			const { extend } = mapConfigState;
+
+			// 확장 레이어를 추가할 경우
+			if (extend)
+			{
+				map.addLayer(baseLayer.vworldHybridLayer);
 			}
 
 			// 확장 레이어를 삭제할 경우
@@ -79,7 +119,7 @@ export default function VWorldPanel(): ReactNode
 					.forEach((layer) => map.removeLayer(layer));
 			}
 		}
-	}, [ map ]);
+	}, [ map, mapConfigState.extend ]);
 
 	return (
 		<PaperPanel>
@@ -87,7 +127,7 @@ export default function VWorldPanel(): ReactNode
 				<FormControl size='small' fullWidth>
 					<InputLabel>레이어</InputLabel>
 
-					<Select<string> defaultValue='base-vworld-base' label='레이어' onChange={handleChange}>
+					<Select<string> label='레이어' value={mapConfigState.layer} onChange={handleChange}>
 						<MenuItem value='base-vworld-base'>
 							<Typography variant='caption'>VWorld 기본</Typography>
 						</MenuItem>
@@ -107,7 +147,7 @@ export default function VWorldPanel(): ReactNode
 				</FormControl>
 
 				<FormControlLabel
-					control={<Switch size='small' onChange={handleChecked} />}
+					control={<Switch checked={mapConfigState.extend} size='small' onChange={handleChecked} />}
 					label={<Typography variant='caption'>VWorld 확장</Typography>}
 				/>
 			</Stack>

@@ -13,7 +13,7 @@ import HomeButton from '@gis-dev/components/organism/button/HomeButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import WMSPanel from '@gis-dev/components/organism/page/WMSPanel';
-import { sejongPosition } from '@gis-dev/script/map/positions';
+import { position4326 } from '@gis-dev/script/map/positions';
 import LocationSearching from '@mui/icons-material/LocationSearching';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -30,7 +30,7 @@ import { ReactNode } from 'react';
  */
 export default function WMSBox(): ReactNode
 {
-	const center = proj4('EPSG:4326', 'EPSG:3857', sejongPosition);
+	const center = proj4('EPSG:4326', 'EPSG:3857', position4326.sejongPosition);
 
 	const options: MapOptions = {
 		view: new View({

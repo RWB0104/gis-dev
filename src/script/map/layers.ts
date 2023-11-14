@@ -15,14 +15,14 @@ import { OSM, XYZ } from 'ol/source';
 import Style from 'ol/style/Style';
 
 // OSM 레이어
-export const osmLayer = new TileLayer({
+const osmLayer = new TileLayer({
 	properties: { name: 'base-osm' },
 	source: new OSM({ attributions: '<p>Developed by <a href="https://itcode.dev" target="_blank">RWB</a></p>' }),
 	zIndex: 1
 });
 
 // VWorld 기본 지도 레이어
-export const vworldBaseLayer = new TileLayer({
+const vworldBaseLayer = new TileLayer({
 	maxZoom: 19,
 	minZoom: 5,
 	preload: Infinity,
@@ -32,7 +32,7 @@ export const vworldBaseLayer = new TileLayer({
 });
 
 // VWorld 백지도 레이어
-export const vworldWhiteLayer = new TileLayer({
+const vworldWhiteLayer = new TileLayer({
 	maxZoom: 18,
 	minZoom: 5,
 	preload: Infinity,
@@ -42,7 +42,7 @@ export const vworldWhiteLayer = new TileLayer({
 });
 
 // VWorld 야간 지도 레이어
-export const vworldMidnightLayer = new TileLayer({
+const vworldMidnightLayer = new TileLayer({
 	maxZoom: 18,
 	minZoom: 5,
 	preload: Infinity,
@@ -52,7 +52,7 @@ export const vworldMidnightLayer = new TileLayer({
 });
 
 // VWorld 확장 지도 레이어
-export const vworldHybridLayer = new TileLayer({
+const vworldHybridLayer = new TileLayer({
 	maxZoom: 19,
 	minZoom: 5,
 	preload: Infinity,
@@ -62,7 +62,7 @@ export const vworldHybridLayer = new TileLayer({
 });
 
 // VWorld 위성 지도 레이어
-export const vworldSatelliteLayer = new TileLayer({
+const vworldSatelliteLayer = new TileLayer({
 	maxZoom: 19,
 	minZoom: 5,
 	preload: Infinity,
@@ -72,7 +72,7 @@ export const vworldSatelliteLayer = new TileLayer({
 });
 
 // Google 로드맵 레이어
-export const googleRoadLayer = new TileLayer({
+const googleRoadLayer = new TileLayer({
 	preload: Infinity,
 	properties: { name: 'base-google-road' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' }),
@@ -80,7 +80,7 @@ export const googleRoadLayer = new TileLayer({
 });
 
 // Google 지형도 레이어
-export const googleTerrainLayer = new TileLayer({
+const googleTerrainLayer = new TileLayer({
 	preload: Infinity,
 	properties: { name: 'base-google-terrain' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=p&x={x}&y={y}&z={z}' }),
@@ -88,7 +88,7 @@ export const googleTerrainLayer = new TileLayer({
 });
 
 // Google 변경 로드맵 레이어
-export const googleAlterLayer = new TileLayer({
+const googleAlterLayer = new TileLayer({
 	preload: Infinity,
 	properties: { name: 'base-google-alter' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=r&x={x}&y={y}&z={z}' }),
@@ -96,7 +96,7 @@ export const googleAlterLayer = new TileLayer({
 });
 
 // Google 위성지도 레이어
-export const googleSatelliteLayer = new TileLayer({
+const googleSatelliteLayer = new TileLayer({
 	preload: Infinity,
 	properties: { name: 'base-google-satellite' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}' }),
@@ -104,7 +104,7 @@ export const googleSatelliteLayer = new TileLayer({
 });
 
 // Google 지형 단독 지도 레이어
-export const googleOnlyTerrainLayer = new TileLayer({
+const googleOnlyTerrainLayer = new TileLayer({
 	preload: Infinity,
 	properties: { name: 'base-google-only-terrain' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=t&x={x}&y={y}&z={z}' }),
@@ -112,14 +112,15 @@ export const googleOnlyTerrainLayer = new TileLayer({
 });
 
 // Google 하이브리드 맵 레이어
-export const googleHybridyLayer = new TileLayer({
+const googleHybridyLayer = new TileLayer({
 	preload: Infinity,
 	properties: { name: 'base-google-hybrid' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' }),
 	zIndex: 2
 });
 
-export const sejongLayer = new VectorLayer({
+// 세종시 건물 WFS 레이어
+const sejongWfsLayer = new VectorLayer({
 	minZoom: 15,
 	properties: { name: 'wfs' },
 	source: sejongBuildingSource,
@@ -127,16 +128,50 @@ export const sejongLayer = new VectorLayer({
 	zIndex: 5
 });
 
-export const sejongTileWmsLayer = new TileLayer({
+// 세종시 건물 타일 WMS(WMTS) 레이어
+const sejongTileWmsLayer = new TileLayer({
 	minZoom: 15,
 	properties: { name: 'wms' },
 	source: sejongTileSource,
 	zIndex: 5
 });
 
-export const sejongImageWmsLayer = new ImageLayer({
+// 세종시 건물 이미지 WMS 레이어
+const sejongImageWmsLayer = new ImageLayer({
 	minZoom: 15,
 	properties: { name: 'wms' },
 	source: sejongImageSource,
 	zIndex: 5
 });
+
+export const osmTileLayer = { osmLayer };
+
+export const vworldTileLayer = {
+	vworldBaseLayer,
+	vworldHybridLayer,
+	vworldMidnightLayer,
+	vworldSatelliteLayer,
+	vworldWhiteLayer
+};
+
+export const googleTileLayer = {
+	googleAlterLayer,
+	googleHybridyLayer,
+	googleOnlyTerrainLayer,
+	googleRoadLayer,
+	googleSatelliteLayer,
+	googleTerrainLayer
+};
+
+export const baseLayer = {
+	...osmTileLayer,
+	...vworldTileLayer,
+	...googleTileLayer
+};
+
+export const wfsLayer = { sejongWfsLayer };
+
+export const wmsLayer = {
+	sejongImageWmsLayer,
+	sejongTileWmsLayer
+};

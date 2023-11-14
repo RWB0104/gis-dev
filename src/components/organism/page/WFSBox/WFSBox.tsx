@@ -13,8 +13,8 @@ import HomeButton from '@gis-dev/components/organism/button/HomeButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import MapPanel from '@gis-dev/components/organism/page/MapPanel';
-import { sejongLayer } from '@gis-dev/script/map/layers';
-import { sejongPosition } from '@gis-dev/script/map/positions';
+import { wfsLayer } from '@gis-dev/script/map/layers';
+import { position4326 } from '@gis-dev/script/map/positions';
 import LocationSearching from '@mui/icons-material/LocationSearching';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -31,10 +31,10 @@ import { ReactNode } from 'react';
  */
 export default function WFSBox(): ReactNode
 {
-	const center = proj4('EPSG:4326', 'EPSG:3857', sejongPosition);
+	const center = proj4('EPSG:4326', 'EPSG:3857', position4326.sejongPosition);
 
 	const options: MapOptions = {
-		layers: [ sejongLayer ],
+		layers: [ wfsLayer.sejongWfsLayer ],
 		view: new View({
 			center,
 			projection: 'EPSG:3857',

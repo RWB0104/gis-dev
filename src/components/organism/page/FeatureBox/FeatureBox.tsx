@@ -13,8 +13,7 @@ import GeolocationButton from '@gis-dev/components/organism/button/GeolocationBu
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import MapPanel from '@gis-dev/components/organism/page/MapPanel';
-import { googleRoadLayer } from '@gis-dev/script/map/layers';
-import { seoulPosition } from '@gis-dev/script/map/positions';
+import { position4326 } from '@gis-dev/script/map/positions';
 import PushPin from '@mui/icons-material/PushPin';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -32,9 +31,8 @@ import { ReactNode } from 'react';
 export default function FeatureBox(): ReactNode
 {
 	const options: MapOptions = {
-		layers: [ googleRoadLayer ],
 		view: new View({
-			center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+			center: proj4('EPSG:4326', 'EPSG:3857', position4326.seoulPosition),
 			projection: 'EPSG:3857',
 			zoom: 17
 		})

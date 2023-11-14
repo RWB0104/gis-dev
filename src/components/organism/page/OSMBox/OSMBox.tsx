@@ -10,8 +10,8 @@
 import BasicPanel from '@gis-dev/components/atom/BasicPanel';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import { osmLayer } from '@gis-dev/script/map/layers';
-import { seoulPosition } from '@gis-dev/script/map/positions';
+import { baseLayer } from '@gis-dev/script/map/layers';
+import { position4326 } from '@gis-dev/script/map/positions';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
@@ -28,9 +28,9 @@ import { ReactNode } from 'react';
 export default function OSMBox(): ReactNode
 {
 	const options: MapOptions = {
-		layers: [ osmLayer ],
+		layers: [ baseLayer.osmLayer ],
 		view: new View({
-			center: proj4('EPSG:4326', 'EPSG:3857', seoulPosition),
+			center: proj4('EPSG:4326', 'EPSG:3857', position4326.seoulPosition),
 			projection: 'EPSG:3857',
 			zoom: 17
 		})

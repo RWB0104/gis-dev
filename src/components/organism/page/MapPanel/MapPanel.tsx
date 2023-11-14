@@ -7,7 +7,7 @@
 
 import PaperPanel from '@gis-dev/components/molecule/PaperPanel';
 import { MapContext } from '@gis-dev/script/context/map';
-import { googleAlterLayer, googleHybridyLayer, googleOnlyTerrainLayer, googleRoadLayer, googleSatelliteLayer, googleTerrainLayer, osmLayer, vworldBaseLayer, vworldHybridLayer, vworldMidnightLayer, vworldSatelliteLayer, vworldWhiteLayer } from '@gis-dev/script/map/layers';
+import { baseLayer } from '@gis-dev/script/map/layers';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
@@ -201,47 +201,47 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 			switch (layer)
 			{
 				case 'base-osm':
-					map.addLayer(osmLayer);
+					map.addLayer(baseLayer.osmLayer);
 					break;
 
 				case 'base-google-terrain':
-					map.addLayer(googleTerrainLayer);
+					map.addLayer(baseLayer.googleTerrainLayer);
 					break;
 
 				case 'base-google-alter':
-					map.addLayer(googleAlterLayer);
+					map.addLayer(baseLayer.googleAlterLayer);
 					break;
 
 				case 'base-google-satellite':
-					map.addLayer(googleSatelliteLayer);
+					map.addLayer(baseLayer.googleSatelliteLayer);
 					break;
 
 				case 'base-google-only-terrain':
-					map.addLayer(googleOnlyTerrainLayer);
+					map.addLayer(baseLayer.googleOnlyTerrainLayer);
 					break;
 
 				case 'base-google-hybrid':
-					map.addLayer(googleHybridyLayer);
+					map.addLayer(baseLayer.googleHybridyLayer);
 					break;
 
 				case 'base-vworld-base':
-					map.addLayer(vworldBaseLayer);
+					map.addLayer(baseLayer.vworldBaseLayer);
 					break;
 
 				case 'base-vworld-white':
-					map.addLayer(vworldWhiteLayer);
+					map.addLayer(baseLayer.vworldWhiteLayer);
 					break;
 
 				case 'base-vworld-midnight':
-					map.addLayer(vworldMidnightLayer);
+					map.addLayer(baseLayer.vworldMidnightLayer);
 					break;
 
 				case 'base-vworld-satellite':
-					map.addLayer(vworldSatelliteLayer);
+					map.addLayer(baseLayer.googleSatelliteLayer);
 					break;
 
 				default:
-					map.addLayer(googleRoadLayer);
+					map.addLayer(baseLayer.googleRoadLayer);
 					break;
 			}
 
@@ -267,7 +267,7 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 			// 확장 레이어를 추가할 경우
 			if (extend)
 			{
-				map.addLayer(vworldHybridLayer);
+				map.addLayer(baseLayer.vworldHybridLayer);
 			}
 
 			// 확장 레이어를 삭제할 경우

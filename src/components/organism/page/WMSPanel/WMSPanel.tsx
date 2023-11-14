@@ -7,7 +7,7 @@
 
 import MapPanel from '@gis-dev/components/organism/page/MapPanel';
 import { MapContext } from '@gis-dev/script/context/map';
-import { sejongImageWmsLayer, sejongTileWmsLayer } from '@gis-dev/script/map/layers';
+import { wmsLayer } from '@gis-dev/script/map/layers';
 import Apps from '@mui/icons-material/Apps';
 import Image from '@mui/icons-material/Image';
 import Box from '@mui/material/Box';
@@ -48,13 +48,13 @@ export default function WMSPanel(): ReactNode
 			// TileWMS일 경우
 			if (typeState === 'tile')
 			{
-				map.addLayer(sejongTileWmsLayer);
+				map.addLayer(wmsLayer.sejongTileWmsLayer);
 			}
 
 			// ImageWMS일 경우
 			else
 			{
-				map.addLayer(sejongImageWmsLayer);
+				map.addLayer(wmsLayer.sejongImageWmsLayer);
 			}
 		}
 	}, [ map, typeState ]);
