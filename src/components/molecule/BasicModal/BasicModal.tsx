@@ -46,7 +46,7 @@ export default function BasicModal({ header, onConfirm, children, ...props }: Ba
 			<DialogContent>{children}</DialogContent>
 
 			<DialogActions>
-				{onConfirm ? <Button>확인</Button> : null}
+				{onConfirm ? <Button onClick={onConfirm}>확인</Button> : null}
 				{props.onClose ? <Button onClick={handleClose}>닫기</Button> : null}
 			</DialogActions>
 		</Dialog>

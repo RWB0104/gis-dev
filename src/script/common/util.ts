@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 01:25:49
  */
 
+import { Polygon } from 'ol/geom';
+
 export interface QueryProps
 {
 	/**
@@ -48,4 +50,24 @@ export function dateConvert(text: string): string
 	}
 
 	return text;
+}
+
+/**
+ * 폴리곤 XML 반환 메서드
+ *
+ * @param {Polygon} feature: Polygon 객체
+ *
+ * @returns {string} 폴리곤 XML
+ */
+export function getPolygonXml(feature: Polygon): string
+{
+	return `
+	<gml:Polygon srsName="EPSG:3857">
+		<gml:exterior>
+			<gml:LinearRing srsName="EPSG:3857">
+				<gml:posList>${feature.getFlatCoordinates().join(' ')}</gml:posList>
+			</gml:LinearRing>
+		</gml:exterior>
+	</gml:Polygon>
+	`;
 }
