@@ -2,7 +2,7 @@
  * 맵 정보 박스 organism 컴포넌트
  *
  * @author RWB
- * @since 2023.11.12 일 18:22:21
+ * @since 2023.11.12 Sun 18:22:21
  */
 
 'use client';
