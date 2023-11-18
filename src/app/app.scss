@@ -2,6 +2,11 @@
 	user-select: none;
 }
 
+html,
+body {
+	transition: 0.3s;
+}
+
 a {
 	color: inherit;
 	text-decoration: none;
