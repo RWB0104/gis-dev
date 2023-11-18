@@ -58,7 +58,7 @@ export default function ModalProvider(): ReactNode
 	}, [ modal, palette ]);
 
 	return (
-		<BasicModal header={header} open={modal !== undefined} onClose={handleClose}>
+		<BasicModal header={header} open={modal !== undefined} onClose={handleClose} onConfirm={modal?.onConfirm}>
 			{modal?.body}
 		</BasicModal>
 	);
