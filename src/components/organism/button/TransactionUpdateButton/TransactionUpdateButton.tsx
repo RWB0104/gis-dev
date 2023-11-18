@@ -5,7 +5,7 @@
  * @since 2023.11.18 Sat 02:22:13
  */
 
-import { usePatchFeature } from '@gis-dev/api/wfs';
+import { useUpdateFeature } from '@gis-dev/api/wfs';
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import TransactionUpdateModal, { TransactionUpdateModalConfirmHandler } from '@gis-dev/components/organism/page/TransactionUpdateModal';
 import { MapContext } from '@gis-dev/script/context/map';
@@ -45,7 +45,7 @@ export default function TransactionUpdateButton(): ReactNode
 	const [ featureState, setFeatureState ] = useState<FeatureStateProps>({});
 	const [ modifiedState, setModifiedState ] = useState<FeatureLike[] | undefined>();
 
-	const { mutateAsync } = usePatchFeature({
+	const { mutateAsync } = useUpdateFeature({
 		onSuccess: () =>
 		{
 			// 맵이 유효할 경우

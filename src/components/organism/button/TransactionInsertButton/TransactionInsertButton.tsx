@@ -94,13 +94,11 @@ export default function TransactionInsertButton(): ReactNode
 			}
 		});
 
-		const response = await mutateAsync({
+		await mutateAsync({
 			address: data.address,
 			features: polygons,
 			name: data.name
 		});
-
-		console.dirxml(response);
 	}, [ mutateAsync ]);
 
 	const handleClose: ModalProps['onClose'] = useCallback(() =>

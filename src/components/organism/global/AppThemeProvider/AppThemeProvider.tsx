@@ -34,6 +34,7 @@ export default function AppThemeProvider({ children }: AppThemeProviderProps): R
 
 	const themeObject = useMemo(() => createTheme(({
 		palette: { mode: theme },
+		transitions: { duration: { standard: 0.3 } },
 		typography: { fontFamily: fontFamily.join(', ') }
 	})), [ theme ]);
 
