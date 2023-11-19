@@ -242,7 +242,7 @@ export function useUpdateFeature(options?: ApiMutationOptions<Document, Response
 
 					<wfs:Property>
 						<wfs:Name>address</wfs:Name>
-						<wfs:Value>${data.name}</wfs:Value>
+						<wfs:Value>${data.address}</wfs:Value>
 					</wfs:Property>
 
 					<wfs:Property>
