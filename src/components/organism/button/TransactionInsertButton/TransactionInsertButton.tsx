@@ -7,7 +7,7 @@
 
 import { usePostFeature } from '@gis-dev/api/wfs';
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
-import TransactionInsertModal, { TransactionInsertModalConfirmHandler } from '@gis-dev/components/organism/page/TransactionInsertModal';
+import TransactionInsertModal, { TransactionInsertModalConfirmHandler } from '@gis-dev/components/organism/modal/TransactionInsertModal';
 import { MapContext } from '@gis-dev/script/context/map';
 import { draws } from '@gis-dev/script/map/interactions';
 import { transactionLayer } from '@gis-dev/script/map/layers';
