@@ -7,7 +7,7 @@
 
 import { transactionLayer } from '@gis-dev/script/map/layers';
 import { wfsSource } from '@gis-dev/script/map/source';
-import { clickStyle, hoverStyle } from '@gis-dev/script/map/style';
+import { clickStyle, hoverStyle, starbucksClickStyle, starbucksHoverStyle } from '@gis-dev/script/map/style';
 import { Collection } from 'ol';
 import { click, pointerMove } from 'ol/events/condition';
 import Feature from 'ol/Feature';
@@ -101,7 +101,27 @@ function getWfsModify(feature: Collection<Feature<Geometry>>): Modify
 	return modify;
 }
 
+function getClusterClickSelect(name: string): Select
+{
+	return new Select({
+		condition: click,
+		filter: (feature) => feature.get('features').length === 1,
+		style: (feature) => starbucksClickStyle(feature, name)
+	});
+}
+
+function getClusterHoverSelect(name: string): Select
+{
+	return new Select({
+		condition: pointerMove,
+		filter: (feature) => feature.get('features').length === 1,
+		style: (feature) => starbucksHoverStyle(feature, name)
+	});
+}
+
 export const selects = {
+	getClusterClickSelect,
+	getClusterHoverSelect,
 	getWfsClickSelect,
 	getWfsHoverSelect
 };

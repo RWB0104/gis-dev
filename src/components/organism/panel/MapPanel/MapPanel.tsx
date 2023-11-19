@@ -284,7 +284,7 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 
 	return (
 		<PaperPanel>
-			<Stack padding={2} spacing={1} width={250}>
+			<Stack gap={1} padding={2} width={250}>
 				{children}
 
 				<FormControl size='small' fullWidth>

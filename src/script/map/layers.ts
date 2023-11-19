@@ -6,8 +6,8 @@
  */
 
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
-import { wfsSource, wmsSource } from '@gis-dev/script/map/source';
-import { basicStyle, drawStyle } from '@gis-dev/script/map/style';
+import { clusterSource, wfsSource, wmsSource } from '@gis-dev/script/map/source';
+import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '@gis-dev/script/map/style';
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -145,6 +145,7 @@ const sejongImageWmsLayer = new ImageLayer({
 	zIndex: 5
 });
 
+// 트랜잭션 WFS 레이어
 const wfsTransactionLayer = new VectorLayer({
 	minZoom: 15,
 	properties: { name: 'wfs' },
@@ -153,11 +154,20 @@ const wfsTransactionLayer = new VectorLayer({
 	zIndex: 5
 });
 
+// 드로우 레이어
 const drawLayer = new VectorLayer({
 	properties: { name: 'draw' },
 	source: new VectorSource(),
 	style: drawStyle,
 	zIndex: 6
+});
+
+// 스타벅스 WFS 레이어
+const wfsStarbucksLayer = new VectorLayer({
+	properties: { name: 'wfs' },
+	source: clusterSource.starbucksClusterSource,
+	style: (feature): Style => (feature.get('features').length > 1 ? clusterBasicStyle(feature) : starbucksBasicStyle(feature, 'name')),
+	zIndex: 5
 });
 
 export const osmTileLayer = { osmLayer };
@@ -185,7 +195,11 @@ export const baseLayer = {
 	...googleTileLayer
 };
 
-export const wfsLayer = { sejongWfsLayer, wfsTransactionLayer };
+export const wfsLayer = {
+	sejongWfsLayer,
+	wfsStarbucksLayer,
+	wfsTransactionLayer
+};
 
 export const wmsLayer = {
 	sejongImageWmsLayer,

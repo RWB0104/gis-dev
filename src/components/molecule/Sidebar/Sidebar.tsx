@@ -87,7 +87,7 @@ export default function Sidebar({ currentLink, ...props }: SidebarProps): ReactN
 					))}
 				</Stack>
 
-				<Stack alignItems='center' paddingBottom={4} paddingTop={4} spacing={1}>
+				<Stack alignItems='center' gap={1} paddingBottom={4} paddingTop={4}>
 					<Typography fontFamily={montserrat.style.fontFamily} variant='caption'>{APP_INFO.title}</Typography>
 					<Typography color='GrayText' variant='caption'>{pkg.version}</Typography>
 				</Stack>

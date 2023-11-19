@@ -123,7 +123,7 @@ export default function VWorldPanel(): ReactNode
 
 	return (
 		<PaperPanel>
-			<Stack minWidth={200} padding={2} spacing={1}>
+			<Stack gap={1} minWidth={200} padding={2}>
 				<FormControl size='small' fullWidth>
 					<InputLabel>레이어</InputLabel>
 

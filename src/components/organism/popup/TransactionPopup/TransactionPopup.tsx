@@ -44,6 +44,7 @@ export default function TransactionPopup(): ReactNode
 					value: id
 				},
 				{
+					color: 'primary',
 					key: '주소',
 					link: `https://map.naver.com/p/search/${encodeURIComponent(address)}`,
 					value: address

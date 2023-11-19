@@ -9,7 +9,7 @@ import { API_BASE_URL } from '@gis-dev/script/common/env';
 import { urlBuilder } from '@gis-dev/script/common/util';
 import { GeoJSON } from 'ol/format';
 import { bbox } from 'ol/loadingstrategy';
-import { ImageWMS, TileWMS } from 'ol/source';
+import { Cluster, ImageWMS, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 
 // 세종 건물 벡터 소스
@@ -49,6 +49,7 @@ const sejongImageSource = new ImageWMS({
 	url: `${API_BASE_URL}/wms`
 });
 
+// 트랜잭션 벡터 소스
 const transactionSource = new VectorSource({
 	format: new GeoJSON(),
 	strategy: bbox,
@@ -64,6 +65,31 @@ const transactionSource = new VectorSource({
 	})
 });
 
-export const wfsSource = { sejongBuildingSource, transactionSource };
+// 스타벅스 벡터 소스
+const starbucksSource = new VectorSource({
+	format: new GeoJSON(),
+	strategy: bbox,
+	url: (extent): string => urlBuilder(`${API_BASE_URL}/wfs`, {
+		bbox: `${extent.join(',')},EPSG:3857`,
+		exceptions: 'application/json',
+		outputFormat: 'application/json',
+		request: 'GetFeature',
+		service: 'WFS',
+		srsName: 'EPSG:3857',
+		typename: 'TEST:point_starbucks',
+		version: '2.0.0'
+	})
+});
+
+// 스타벅스 클러스터 소스
+const starbucksClusterSource = new Cluster({ distance: 100, source: starbucksSource });
+
+export const wfsSource = {
+	sejongBuildingSource,
+	starbucksSource,
+	transactionSource
+};
 
 export const wmsSource = { sejongImageSource, sejongTileSource };
+
+export const clusterSource = { starbucksClusterSource };

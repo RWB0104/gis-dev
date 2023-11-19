@@ -56,7 +56,7 @@ export default function TransactionDeleteButton(): ReactNode
 		{
 			setModal({
 				body: (
-					<Stack alignItems='center' spacing={1}>
+					<Stack alignItems='center' gap={1}>
 						<Typography color='primary' fontWeight='bold'>{id}</Typography>
 						<Typography variant='caption'>정말 해당 피쳐를 삭제하시겠습니까?</Typography>
 					</Stack>

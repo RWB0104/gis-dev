@@ -6,12 +6,18 @@
  */
 
 import Close from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import classNames from 'classnames/bind';
 import Link from 'next/link';
-import { MouseEventHandler, ReactNode } from 'react';
+import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+
+import styles from './BasicPopup.module.scss';
+
+const cn = classNames.bind(styles);
 
 export interface BasicPopupBody
 {
@@ -29,6 +35,11 @@ export interface BasicPopupBody
 	 * 링크
 	 */
 	link?: string;
+
+	/**
+	 * 색상
+	 */
+	color?: CSSProperties['color'];
 }
 
 export interface BasicPopupProps extends PaperProps
@@ -42,6 +53,11 @@ export interface BasicPopupProps extends PaperProps
 	 * 헤더
 	 */
 	header?: string | number;
+
+	/**
+	 * 이미지
+	 */
+	thumb?: string;
 
 	/**
 	 * 리스트
@@ -61,11 +77,11 @@ export interface BasicPopupProps extends PaperProps
  *
  * @returns {ReactNode} ReactNode
  */
-export default function BasicPopup({ id, header = '-', list, onClose, ...props }: BasicPopupProps): ReactNode
+export default function BasicPopup({ id, header = '-', thumb, list, onClose, ...props }: BasicPopupProps): ReactNode
 {
 	return (
 		<Paper data-component='MapPopup' id={id} {...props}>
-			<Stack gap={1} maxWidth={200} padding={2}>
+			<Stack gap={1} maxWidth={250} padding={2}>
 				<Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
 					<Typography color='primary' fontWeight='bold'>{header}</Typography>
 
@@ -76,9 +92,24 @@ export default function BasicPopup({ id, header = '-', list, onClose, ...props }
 					) : null}
 				</Stack>
 
+				{thumb ? (
+					<Box
+						borderRadius={2}
+						overflow='hidden'
+						paddingTop='100%'
+						position='relative'
+					>
+						<Box height='100%' left={0} position='absolute' top={0} width='100%'>
+							<Link href={thumb} target='_blank'>
+								<img alt={thumb} className={cn('image')} height='100%' src={thumb} width='100%' />
+							</Link>
+						</Box>
+					</Box>
+				) : null}
+
 				{list ? (
-					<Stack>
-						{list.map(({ key, value, link }, num) => (
+					<Stack gap={1}>
+						{list.map(({ key, value, link, color }, num) => (
 							<Stack alignItems='center' direction='row' gap={1} key={num}>
 								<Stack width={70}>
 									<Typography fontWeight='bold' variant='caption'>{key}</Typography>
@@ -86,12 +117,11 @@ export default function BasicPopup({ id, header = '-', list, onClose, ...props }
 
 								<Stack flex={1}>
 									{link ? (
-										<Typography color='primary' variant='caption'>
+										<Typography color={color} variant='caption'>
 											<Link href={link} target='_blank'>{value}</Link>
 										</Typography>
-
 									) : (
-										<Typography variant='caption'>{value}</Typography>
+										<Typography color={color} variant='caption'>{value}</Typography>
 									)}
 								</Stack>
 							</Stack>
