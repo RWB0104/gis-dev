@@ -13,7 +13,7 @@ import { wfsLayer } from '@gis-dev/script/map/layers';
 import Edit from '@mui/icons-material/Edit';
 import { ModalProps } from '@mui/material/Modal';
 import { FeatureLike } from 'ol/Feature';
-import { Geometry, Polygon } from 'ol/geom';
+import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
 import Modify from 'ol/interaction/Modify';
 import Select, { SelectEvent } from 'ol/interaction/Select';
 import { ObjectEvent } from 'ol/Object';
@@ -67,12 +67,32 @@ export default function TransactionUpdateButton(): ReactNode
 		{
 			const geometry = i.getGeometry();
 
-			if (geometry && geometry.getType() === 'Polygon')
+			// 지오메트리가 유효할 경우
+			if (geometry)
 			{
-				const polygon = geometry as Polygon;
-				polygons.push(polygon);
+				// 폴리곤일 경우
+				if (geometry.getType() === 'Polygon')
+				{
+					const polygon = geometry as Polygon;
+
+					polygons.push(polygon);
+				}
+
+				// 멀티폴리곤일 경우
+				else if (geometry.getType() === 'MultiPolygon')
+				{
+					const multiPolygon = geometry as MultiPolygon;
+
+					multiPolygon.getPolygons().forEach((i) => polygons.push(i));
+				}
 			}
 		});
+
+		// 폴리곤이 하나도 없을 경우
+		if (polygons.length === 0)
+		{
+			return;
+		}
 
 		await mutateAsync({
 			address: data.address,
