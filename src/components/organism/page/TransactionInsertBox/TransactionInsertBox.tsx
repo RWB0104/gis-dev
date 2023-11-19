@@ -13,7 +13,7 @@ import HomeButton from '@gis-dev/components/organism/button/HomeButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import TransactionInsertButton from '@gis-dev/components/organism/button/TransactionInsertButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import MapPanel from '@gis-dev/components/organism/page/MapPanel';
+import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import TransactionPopup from '@gis-dev/components/organism/popup/TransactionPopup';
 import { selects } from '@gis-dev/script/map/interactions';
 import { wfsLayer } from '@gis-dev/script/map/layers';

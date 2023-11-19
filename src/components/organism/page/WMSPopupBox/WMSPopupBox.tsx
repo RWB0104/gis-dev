@@ -12,7 +12,7 @@ import GeolocationButton from '@gis-dev/components/organism/button/GeolocationBu
 import HomeButton from '@gis-dev/components/organism/button/HomeButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import WMSPanel from '@gis-dev/components/organism/page/WMSPanel';
+import WMSPanel from '@gis-dev/components/organism/panel/WMSPanel';
 import WMSPopup from '@gis-dev/components/organism/popup/WMSPopup';
 import { position4326 } from '@gis-dev/script/map/positions';
 import LocationSearching from '@mui/icons-material/LocationSearching';

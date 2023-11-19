@@ -12,7 +12,7 @@ import FeatureButton from '@gis-dev/components/organism/button/FeatureButton';
 import GeolocationButton from '@gis-dev/components/organism/button/GeolocationButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import MapPanel from '@gis-dev/components/organism/page/MapPanel';
+import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import { position4326 } from '@gis-dev/script/map/positions';
 import PushPin from '@mui/icons-material/PushPin';
 import Stack from '@mui/material/Stack';

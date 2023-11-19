@@ -10,7 +10,7 @@
 import BasicPanel from '@gis-dev/components/atom/BasicPanel';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import VWorldPanel from '@gis-dev/components/organism/page/VWorldPanel';
+import VWorldPanel from '@gis-dev/components/organism/panel/VWorldPanel';
 import { baseLayer } from '@gis-dev/script/map/layers';
 import { position4326 } from '@gis-dev/script/map/positions';
 import Stack from '@mui/material/Stack';

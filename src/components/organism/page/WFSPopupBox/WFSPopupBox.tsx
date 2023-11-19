@@ -12,7 +12,7 @@ import GeolocationButton from '@gis-dev/components/organism/button/GeolocationBu
 import HomeButton from '@gis-dev/components/organism/button/HomeButton';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import MapPanel from '@gis-dev/components/organism/page/MapPanel';
+import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import WFSPopup from '@gis-dev/components/organism/popup/WFSPopup';
 import { selects } from '@gis-dev/script/map/interactions';
 import { wfsLayer } from '@gis-dev/script/map/layers';
