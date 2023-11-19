@@ -130,6 +130,8 @@ export default function TransactionUpdateButton(): ReactNode
 
 	const handleClick = useCallback(() =>
 	{
+		map?.getOverlayById('popup').setPosition(undefined);
+
 		setInteractionActive(true);
 	}, [ map, setInteractionActive ]);
 
