@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 18:00:12
  */
 
-import TransactionInsertBox from '@gis-dev/components/organism/page/TransactionInsertBox';
+import TransactionInsertBox from '@gis-dev/components/organism/box/TransactionInsertBox';
 import { ReactNode } from 'react';
 
 /**

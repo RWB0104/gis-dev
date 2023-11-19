@@ -5,7 +5,7 @@
  * @since 2023.11.19 Sun 02:38:06
  */
 
-import TransactionDeleteBox from '@gis-dev/components/organism/page/TransactionDeleteBox';
+import TransactionDeleteBox from '@gis-dev/components/organism/box/TransactionDeleteBox';
 import { ReactNode } from 'react';
 
 /**

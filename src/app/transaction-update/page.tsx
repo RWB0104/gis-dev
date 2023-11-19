@@ -5,7 +5,7 @@
  * @since 2023.11.18 Sat 02:08:13
  */
 
-import TransactionUpdateBox from '@gis-dev/components/organism/page/TransactionUpdateBox';
+import TransactionUpdateBox from '@gis-dev/components/organism/box/TransactionUpdateBox';
 import { ReactNode } from 'react';
 
 /**

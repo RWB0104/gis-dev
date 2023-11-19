@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 11:03:02
  */
 
-import FeatureClickBox from '@gis-dev/components/organism/page/FeatureClickBox';
+import FeatureClickBox from '@gis-dev/components/organism/box/FeatureClickBox';
 import { ReactNode } from 'react';
 
 /**

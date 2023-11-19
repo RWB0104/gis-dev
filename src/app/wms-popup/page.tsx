@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 16:10:23
  */
 
-import WMSPopupBox from '@gis-dev/components/organism/page/WMSPopupBox';
+import WMSPopupBox from '@gis-dev/components/organism/box/WMSPopupBox';
 import { ReactNode } from 'react';
 
 /**

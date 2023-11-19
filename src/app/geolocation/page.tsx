@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 18:18:09
  */
 
-import GeolocationBox from '@gis-dev/components/organism/page/GeolocationBox';
+import GeolocationBox from '@gis-dev/components/organism/box/GeolocationBox';
 import { ReactNode } from 'react';
 
 /**

@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 02:22:39
  */
 
-import WMSBox from '@gis-dev/components/organism/page/WMSBox';
+import WMSBox from '@gis-dev/components/organism/box/WMSBox';
 import { ReactNode } from 'react';
 
 /**

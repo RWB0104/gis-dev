@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 00:59:33
  */
 
-import WFSBox from '@gis-dev/components/organism/page/WFSBox';
+import WFSBox from '@gis-dev/components/organism/box/WFSBox';
 import { ReactNode } from 'react';
 
 /**

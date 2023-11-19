@@ -5,7 +5,7 @@
  * @since 2023.11.11 Sat 02:51:01
  */
 
-import OSMBox from '@gis-dev/components/organism/page/OSMBox';
+import OSMBox from '@gis-dev/components/organism/box/OSMBox';
 import { ReactNode } from 'react';
 
 /**

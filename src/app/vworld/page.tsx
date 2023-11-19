@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 02:09:25
  */
 
-import VWorldBox from '@gis-dev/components/organism/page/VWorldBox';
+import VWorldBox from '@gis-dev/components/organism/box/VWorldBox';
 import { ReactNode } from 'react';
 
 /**

@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 03:39:15
  */
 
-import MapInfoBox from '@gis-dev/components/organism/page/MapInfoBox';
+import MapInfoBox from '@gis-dev/components/organism/box/MapInfoBox';
 import { ReactNode } from 'react';
 
 /**
