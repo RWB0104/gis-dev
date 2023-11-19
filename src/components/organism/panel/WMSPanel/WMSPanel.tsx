@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 02:36:45
  */
 
-import MapPanel from '@gis-dev/components/organism/page/MapPanel';
+import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import { wmsLayer } from '@gis-dev/script/map/layers';
 import Apps from '@mui/icons-material/Apps';
