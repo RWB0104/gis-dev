@@ -7,13 +7,10 @@
 
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
 import { clusterSource, wfsSource, wmsSource } from '@gis-dev/script/map/source';
-import { basicStyle, clusterBasicStyle, drawStyle, getWebGLStyle, starbucksBasicStyle } from '@gis-dev/script/map/style';
-import { Point } from 'ol/geom';
-import Heatmap from 'ol/layer/Heatmap';
+import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '@gis-dev/script/map/style';
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import WebGLPointsLayer from 'ol/layer/WebGLPoints';
 import { OSM, XYZ } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import Style from 'ol/style/Style';
@@ -173,23 +170,6 @@ const wfsStarbucksClusterLayer = new VectorLayer({
 	zIndex: 5
 });
 
-// 스타벅스 히트맵 WFS 레이어
-const wfsStarbucksHeatLayer = new Heatmap({
-	blur: 20,
-	properties: { name: 'wfs' },
-	radius: 20,
-	source: wfsSource.starbucksSource as VectorSource<Point>,
-	zIndex: 5
-});
-
-// 도시 WebGL WFS 레이어
-const wfsCityWebGLLayer = new WebGLPointsLayer({
-	properties: { name: 'wfs' },
-	source: wfsSource.wfsCitySource,
-	style: getWebGLStyle(),
-	zIndex: 5
-});
-
 // 도시 벡터 WFS 레이어
 const wfsCityVectorLayer = new VectorLayer({
 	properties: { name: 'wfs' },
@@ -225,9 +205,7 @@ export const baseLayer = {
 export const wfsLayer = {
 	sejongWfsLayer,
 	wfsCityVectorLayer,
-	wfsCityWebGLLayer,
 	wfsStarbucksClusterLayer,
-	wfsStarbucksHeatLayer,
 	wfsTransactionLayer
 };
 

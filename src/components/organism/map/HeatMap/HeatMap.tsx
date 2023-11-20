@@ -8,10 +8,13 @@
 'use client';
 
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
-import { wfsLayer } from '@gis-dev/script/map/layers';
 import { position3857 } from '@gis-dev/script/map/positions';
+import { wfsSource } from '@gis-dev/script/map/source';
 import { View } from 'ol';
+import { Point } from 'ol/geom';
+import Heatmap from 'ol/layer/Heatmap';
 import { MapOptions } from 'ol/Map';
+import VectorSource from 'ol/source/Vector';
 import { PropsWithChildren, ReactNode } from 'react';
 
 /**
@@ -24,7 +27,15 @@ import { PropsWithChildren, ReactNode } from 'react';
 export default function HeatMap({ children }: PropsWithChildren): ReactNode
 {
 	const options: MapOptions = {
-		layers: [ wfsLayer.wfsStarbucksHeatLayer ],
+		layers: [
+			new Heatmap({
+				blur: 20,
+				properties: { name: 'wfs' },
+				radius: 20,
+				source: wfsSource.starbucksSource as VectorSource<Point>,
+				zIndex: 5
+			})
+		],
 		view: new View({
 			center: position3857.seoulPosition,
 			projection: 'EPSG:3857',
