@@ -1,0 +1,12 @@
+.backdrop {
+	backdrop-filter: blur(10px);
+	z-index: 10002;
+}
+
+.image {
+	object-fit: contain;
+
+	&.close {
+		display: none;
+	}
+}
