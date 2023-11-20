@@ -1,0 +1,54 @@
+/**
+ * 피쳐 template 컴포넌트
+ *
+ * @author RWB
+ * @since 2023.11.20 Mon 16:58:58
+ */
+
+import BasicPanel from '@gis-dev/components/atom/BasicPanel';
+import FeatureButton from '@gis-dev/components/organism/button/FeatureButton';
+import GeolocationButton from '@gis-dev/components/organism/button/GeolocationButton';
+import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
+import SeoulMap from '@gis-dev/components/organism/map/SeoulMap';
+import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
+import PushPin from '@mui/icons-material/PushPin';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Link from 'next/link';
+import { ReactNode } from 'react';
+
+/**
+ * 피쳐 template 컴포넌트 반환 메서드
+ *
+ * @returns {ReactNode} ReactNode
+ */
+export default function FeatureTemplate(): ReactNode
+{
+	return (
+		<SeoulMap>
+			<MapPanel />
+
+			<BasicPanel right={20} top={20}>
+				<Stack>
+					<HowToPlayButton defaultOpen>
+						<Stack justifyContent='center'>
+							<Typography variant='caption'>지도위에 다양한 마커를 표시하여 지도가 제공하는 정보를 강화할 수 있습니다.</Typography>
+							<Typography variant='caption'>이 페이지에선 버튼을 클릭하여 현재 바라보는 지도 중심에 마커를 추가하는 간단한 기능을 사용해볼 수 있습니다.</Typography>
+							<Typography variant='caption'>우측 상단의 <PushPin fontSize='inherit' htmlColor='dodgerblue' /> 버튼 혹은 스페이스바를 눌러 마커를 추가해보세요.</Typography>
+							<br />
+
+							<Typography variant='caption'>이렇게 지도 상에 표현되는 요소를 Feature라고 합니다.</Typography>
+							<Typography variant='caption'>Feature들은 상호작용이 가능한 객체로, 클릭 이벤트와 같은 다양한 상호작용을 할 수 있습니다.</Typography>
+							<br />
+
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/04/04/gis-guide-for-programmer-14' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+						</Stack>
+					</HowToPlayButton>
+
+					<GeolocationButton />
+					<FeatureButton />
+				</Stack>
+			</BasicPanel>
+		</SeoulMap>
+	);
+}
