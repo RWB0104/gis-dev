@@ -11,6 +11,7 @@ import RenderFeature from 'ol/render/Feature';
 import Circle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import Icon from 'ol/style/Icon';
+import { LiteralStyle } from 'ol/style/literal';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import Text from 'ol/style/Text';
@@ -224,4 +225,58 @@ export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, 
 			text: feature.get('features')[0].get(labelColumn)
 		})
 	});
+}
+
+/**
+ * WebGL 스타일 반환 메서드
+ *
+ * @returns {LiteralStyle} 스타일
+ */
+export function getWebGLStyle(): LiteralStyle
+{
+	return {
+		'circle-displacement': [
+			0,
+			0
+		],
+		'circle-fill-color': [
+			'match',
+			[
+				'get',
+				'hover'
+			],
+			1,
+			'#ff3f3f',
+			'#006688'
+		],
+		'circle-opacity': [
+			'interpolate',
+			[
+				'linear'
+			],
+			[
+				'get',
+				'population'
+			],
+			40000,
+			0.6,
+			2000000,
+			0.92
+		],
+		'circle-radius': [
+			'interpolate',
+			[
+				'linear'
+			],
+			[
+				'get',
+				'population'
+			],
+			40000,
+			4,
+			2000000,
+			14
+		],
+		'circle-rotate-with-view': false
+	};
 }

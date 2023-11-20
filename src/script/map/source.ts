@@ -8,6 +8,7 @@
 import { API_BASE_URL } from '@gis-dev/script/common/env';
 import { urlBuilder } from '@gis-dev/script/common/util';
 import { GeoJSON } from 'ol/format';
+import { Point } from 'ol/geom';
 import { bbox } from 'ol/loadingstrategy';
 import { Cluster, ImageWMS, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
@@ -84,10 +85,17 @@ const starbucksSource = new VectorSource({
 // 스타벅스 클러스터 소스
 const starbucksClusterSource = new Cluster({ distance: 100, source: starbucksSource });
 
+// 도시 벡터 소스
+const wfsCitySource = new VectorSource<Point>({
+	format: new GeoJSON(),
+	url: 'https://openlayers.org/en/latest/examples/data/geojson/world-cities.geojson'
+});
+
 export const wfsSource = {
 	sejongBuildingSource,
 	starbucksSource,
-	transactionSource
+	transactionSource,
+	wfsCitySource
 };
 
 export const wmsSource = { sejongImageSource, sejongTileSource };
