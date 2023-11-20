@@ -8,6 +8,8 @@
 import { VWORLD_KEY } from '@gis-dev/script/common/env';
 import { clusterSource, wfsSource, wmsSource } from '@gis-dev/script/map/source';
 import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '@gis-dev/script/map/style';
+import { Point } from 'ol/geom';
+import Heatmap from 'ol/layer/Heatmap';
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -163,10 +165,19 @@ const drawLayer = new VectorLayer({
 });
 
 // 스타벅스 WFS 레이어
-const wfsStarbucksLayer = new VectorLayer({
+const wfsStarbucksClusterLayer = new VectorLayer({
 	properties: { name: 'wfs' },
 	source: clusterSource.starbucksClusterSource,
 	style: (feature): Style => (feature.get('features').length > 1 ? clusterBasicStyle(feature) : starbucksBasicStyle(feature, 'name')),
+	zIndex: 5
+});
+
+// 스타벅스 히트맵 WFS 레이어
+const wfsStarbucksHeatLayer = new Heatmap({
+	blur: 20,
+	properties: { name: 'wfs' },
+	radius: 20,
+	source: wfsSource.starbucksSource as VectorSource<Point>,
 	zIndex: 5
 });
 
@@ -197,7 +208,8 @@ export const baseLayer = {
 
 export const wfsLayer = {
 	sejongWfsLayer,
-	wfsStarbucksLayer,
+	wfsStarbucksClusterLayer,
+	wfsStarbucksHeatLayer,
 	wfsTransactionLayer
 };
 

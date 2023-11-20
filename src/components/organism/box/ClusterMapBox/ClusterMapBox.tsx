@@ -36,7 +36,7 @@ export default function ClusterMapBox(): ReactNode
 
 	const options: MapOptions = {
 		interactions: defaults().extend([ selects.getClusterClickSelect('name'), selects.getClusterHoverSelect('name') ]),
-		layers: [ wfsLayer.wfsStarbucksLayer ],
+		layers: [ wfsLayer.wfsStarbucksClusterLayer ],
 		view: new View({
 			center,
 			projection: 'EPSG:3857',
