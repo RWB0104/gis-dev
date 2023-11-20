@@ -8,8 +8,8 @@
 import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import { wfsLayer } from '@gis-dev/script/map/layers';
-import Apps from '@mui/icons-material/Apps';
-import Image from '@mui/icons-material/Image';
+import BlurOn from '@mui/icons-material/BlurOn';
+import Grain from '@mui/icons-material/Grain';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
@@ -82,14 +82,14 @@ export default function WebGLPanel(): ReactNode
 			>
 				<ToggleButton color={typeState === 'webgl' ? 'primary' : undefined} disabled={typeState === 'webgl'} value='webgl'>
 					<Stack alignItems='center' direction='row' gap={1}>
-						<Apps fontSize='inherit' />
+						<BlurOn fontSize='inherit' />
 						<Typography variant='caption'>WebGL</Typography>
 					</Stack>
 				</ToggleButton>
 
 				<ToggleButton color={typeState === 'vector' ? 'primary' : undefined} disabled={typeState === 'vector'} value='vector'>
 					<Stack alignItems='center' direction='row' gap={1}>
-						<Image fontSize='inherit' />
+						<Grain fontSize='inherit' />
 						<Typography variant='caption'>Vector</Typography>
 					</Stack>
 				</ToggleButton>
