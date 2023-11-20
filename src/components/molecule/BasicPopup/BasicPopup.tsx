@@ -100,6 +100,8 @@ export default function BasicPopup({ id, header = '-', thumb, list, onClose, onT
 
 				{thumb ? (
 					<Box
+						border='1px solid'
+						borderColor='ActiveBorder'
 						borderRadius={2}
 						overflow='hidden'
 						paddingTop='100%'
@@ -116,7 +118,7 @@ export default function BasicPopup({ id, header = '-', thumb, list, onClose, onT
 				{list ? (
 					<Stack gap={1}>
 						{list.map(({ key, value, link, color }, num) => (
-							<Stack alignItems='center' direction='row' gap={1} key={num}>
+							<Stack direction='row' gap={1} key={num}>
 								<Stack width={70}>
 									<Typography fontWeight='bold' variant='caption'>{key}</Typography>
 								</Stack>
