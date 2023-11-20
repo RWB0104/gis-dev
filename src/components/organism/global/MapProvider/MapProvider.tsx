@@ -5,6 +5,8 @@
  * @since 2023.11.11 Sat 12:11:27
  */
 
+'use client';
+
 import BasicMap, { BasicMapProps } from '@gis-dev/components/molecule/BasicMap';
 import { MapContext } from '@gis-dev/script/context/map';
 import Box from '@mui/material/Box';

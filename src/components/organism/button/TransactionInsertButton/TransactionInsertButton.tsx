@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 18:34:32
  */
 
+'use client';
+
 import { usePostFeature } from '@gis-dev/api/wfs';
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import TransactionInsertModal, { TransactionInsertModalConfirmHandler } from '@gis-dev/components/organism/modal/TransactionInsertModal';

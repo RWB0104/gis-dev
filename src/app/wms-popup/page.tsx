@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 16:10:23
  */
 
-import WMSPopupBox from '@gis-dev/components/organism/box/WMSPopupBox';
+import WMSPopupTemplate from '@gis-dev/components/template/page/WMSPopupTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function WMSPopupPage(): ReactNode
 {
 	return (
-		<WMSPopupBox />
+		<WMSPopupTemplate />
 	);
 }

@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 03:39:15
  */
 
-import MapInfoBox from '@gis-dev/components/organism/box/MapInfoBox';
+import MapInfoTemplate from '@gis-dev/components/template/page/MapInfoTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -15,5 +15,5 @@ import { ReactNode } from 'react';
  */
 export default function MapInfoPage(): ReactNode
 {
-	return <MapInfoBox />;
+	return <MapInfoTemplate />;
 }

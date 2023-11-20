@@ -5,7 +5,7 @@
  * @since 2023.11.20 Mon 11:52:43
  */
 
-import HeatMapBox from '@gis-dev/components/organism/box/HeatMapBox';
+import HeatMapTemplate from '@gis-dev/components/template/page/HeatMapTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function HeatMap(): ReactNode
 {
 	return (
-		<HeatMapBox />
+		<HeatMapTemplate />
 	);
 }

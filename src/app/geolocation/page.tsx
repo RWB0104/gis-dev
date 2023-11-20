@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 18:18:09
  */
 
-import GeolocationBox from '@gis-dev/components/organism/box/GeolocationBox';
+import GeolocationTemplate from '@gis-dev/components/template/page/GeolocationTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function GeolocationPage(): ReactNode
 {
 	return (
-		<GeolocationBox />
+		<GeolocationTemplate />
 	);
 }

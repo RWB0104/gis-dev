@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 13:11:14
  */
 
-import WFSPopupBox from '@gis-dev/components/organism/box/WFSPopupBox';
+import WFSPopupTemplate from '@gis-dev/components/template/page/WFSPopupTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function WFSPopupPage(): ReactNode
 {
 	return (
-		<WFSPopupBox />
+		<WFSPopupTemplate />
 	);
 }

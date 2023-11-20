@@ -5,7 +5,7 @@
  * @since 2023.11.20 Mon 13:13:27
  */
 
-import WebGLBox from '@gis-dev/components/organism/box/WebGLBox';
+import WebGLTemplate from '@gis-dev/components/template/page/WebGLTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function WebGLPage(): ReactNode
 {
 	return (
-		<WebGLBox />
+		<WebGLTemplate />
 	);
 }

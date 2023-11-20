@@ -5,6 +5,8 @@
  * @since 2023.11.12 Sun 03:42:14
  */
 
+'use client';
+
 import PaperPanel from '@gis-dev/components/molecule/PaperPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import { baseLayer } from '@gis-dev/script/map/layers';
@@ -22,6 +24,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
+import { MapBrowserEvent } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import { ChangeEvent, PropsWithChildren, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
@@ -178,16 +181,46 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 		setCursor([ x, y ]);
 	});
 
-	map?.on('postrender', () =>
+	useEffect(() =>
 	{
-		setExtent();
-		setCenter();
-	});
+		const handle = (): void =>
+		{
+			setExtent();
+			setCenter();
+		};
 
-	map?.on('pointermove', (e) => map.getViewport().style.cursor = map.hasFeatureAtPixel(e.pixel) ? 'pointer' : '');
-	map?.on('pointermove', (e) => setCursor(e.coordinate));
+		map?.on('postrender', handle);
 
-	map?.on('moveend', () => setZoom());
+		return () =>
+		{
+			map?.un('postrender', handle);
+		};
+	}, [ map, setExtent, setCenter ]);
+
+	useEffect(() =>
+	{
+		const handle = (e: MapBrowserEvent<UIEvent>): void =>
+		{
+			setCursor(e.coordinate);
+		};
+
+		map?.on('pointermove', handle);
+
+		return () =>
+		{
+			map?.un('pointermove', handle);
+		};
+	}, [ map, setCursor ]);
+
+	useEffect(() =>
+	{
+		map?.on('moveend', setZoom);
+
+		return () =>
+		{
+			map?.un('moveend', setZoom);
+		};
+	}, [ map, setZoom ]);
 
 	useEffect(() =>
 	{

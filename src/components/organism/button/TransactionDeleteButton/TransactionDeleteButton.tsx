@@ -5,6 +5,8 @@
  * @since 2023.11.19 Sun 02:45:06
  */
 
+'use client';
+
 import { useDeleteFeature } from '@gis-dev/api/wfs';
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import { MapContext } from '@gis-dev/script/context/map';

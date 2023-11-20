@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 02:22:39
  */
 
-import WMSBox from '@gis-dev/components/organism/box/WMSBox';
+import WMSTemplate from '@gis-dev/components/template/page/WMSTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function WMSPage(): ReactNode
 {
 	return (
-		<WMSBox />
+		<WMSTemplate />
 	);
 }

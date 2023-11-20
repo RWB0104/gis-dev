@@ -5,7 +5,7 @@
  * @since 2023.11.19 Sun 23:26:24
  */
 
-import ClusterMapBox from '@gis-dev/components/organism/box/ClusterMapBox';
+import ClusterMapTemplate from '@gis-dev/components/template/page/ClusterMapTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function ClusterMap(): ReactNode
 {
 	return (
-		<ClusterMapBox />
+		<ClusterMapTemplate />
 	);
 }

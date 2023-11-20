@@ -5,6 +5,8 @@
  * @since 2023.11.20 Mon 02:35:55
  */
 
+'use client';
+
 import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import Box from '@mui/material/Box';

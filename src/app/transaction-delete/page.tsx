@@ -5,7 +5,7 @@
  * @since 2023.11.19 Sun 02:38:06
  */
 
-import TransactionDeleteBox from '@gis-dev/components/organism/box/TransactionDeleteBox';
+import TransactionDeleteTemplate from '@gis-dev/components/template/page/TransactionDeleteTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function TransactionDeletePage(): ReactNode
 {
 	return (
-		<TransactionDeleteBox />
+		<TransactionDeleteTemplate />
 	);
 }

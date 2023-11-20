@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 02:36:45
  */
 
+'use client';
+
 import MapPanel from '@gis-dev/components/organism/panel/MapPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import { wmsLayer } from '@gis-dev/script/map/layers';

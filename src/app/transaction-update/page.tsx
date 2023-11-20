@@ -5,7 +5,7 @@
  * @since 2023.11.18 Sat 02:08:13
  */
 
-import TransactionUpdateBox from '@gis-dev/components/organism/box/TransactionUpdateBox';
+import TransactionUpdateTemplate from '@gis-dev/components/template/page/TransactionUpdateTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function TransactionUpdatePage(): ReactNode
 {
 	return (
-		<TransactionUpdateBox />
+		<TransactionUpdateTemplate />
 	);
 }

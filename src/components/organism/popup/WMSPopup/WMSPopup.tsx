@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 17:18:39
  */
 
+'use client';
+
 import { useGetFeatureInfo } from '@gis-dev/api/wfs';
 import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
 import { dateConvert } from '@gis-dev/script/common/util';

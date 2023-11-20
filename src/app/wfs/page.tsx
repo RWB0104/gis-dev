@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 00:59:33
  */
 
-import WFSBox from '@gis-dev/components/organism/box/WFSBox';
+import WFSTemplate from '@gis-dev/components/template/page/WFSTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function WFSPage(): ReactNode
 {
 	return (
-		<WFSBox />
+		<WFSTemplate />
 	);
 }

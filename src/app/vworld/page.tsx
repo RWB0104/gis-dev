@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 02:09:25
  */
 
-import VWorldBox from '@gis-dev/components/organism/box/VWorldBox';
+import VWorldTemplate from '@gis-dev/components/template/page/VWorldTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function VWorldPage(): ReactNode
 {
 	return (
-		<VWorldBox />
+		<VWorldTemplate />
 	);
 }

@@ -5,6 +5,8 @@
  * @since 2023.11.12 Sun 19:51:06
  */
 
+'use client';
+
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import { MapContext } from '@gis-dev/script/context/map';
 import { modalStore } from '@gis-dev/script/states/modal';

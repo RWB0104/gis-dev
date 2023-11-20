@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 18:10:32
  */
 
+'use client';
+
 import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
 import { MapContext } from '@gis-dev/script/context/map';
 import { Overlay } from 'ol';

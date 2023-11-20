@@ -5,6 +5,8 @@
  * @since 2023.11.12 Sun 03:18:01
  */
 
+'use client';
+
 import PaperPanel from '@gis-dev/components/molecule/PaperPanel';
 import { MapContext } from '@gis-dev/script/context/map';
 import { baseLayer } from '@gis-dev/script/map/layers';

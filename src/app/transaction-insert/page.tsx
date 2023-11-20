@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 18:00:12
  */
 
-import TransactionInsertBox from '@gis-dev/components/organism/box/TransactionInsertBox';
+import TransactionInsertTemplate from '@gis-dev/components/template/page/TransactionInsertTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function TransactionInsertPage(): ReactNode
 {
 	return (
-		<TransactionInsertBox />
+		<TransactionInsertTemplate />
 	);
 }

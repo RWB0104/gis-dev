@@ -5,6 +5,8 @@
  * @since 2023.11.20 Mon 01:54:45
  */
 
+'use client';
+
 import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
 import ImageViewer from '@gis-dev/components/molecule/ImageViewer';
 import { MapContext } from '@gis-dev/script/context/map';

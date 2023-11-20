@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 02:02:30
  */
 
+'use client';
+
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import { MapContext } from '@gis-dev/script/context/map';
 import Home from '@mui/icons-material/Home';

@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 15:59:04
  */
 
+'use client';
+
 import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
 import { dateConvert } from '@gis-dev/script/common/util';
 import { MapContext } from '@gis-dev/script/context/map';

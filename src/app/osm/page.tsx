@@ -5,7 +5,7 @@
  * @since 2023.11.11 Sat 02:51:01
  */
 
-import OSMBox from '@gis-dev/components/organism/box/OSMBox';
+import OSMTemplate from '@gis-dev/components/template/page/OSMTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function OSMPage(): ReactNode
 {
 	return (
-		<OSMBox />
+		<OSMTemplate />
 	);
 }

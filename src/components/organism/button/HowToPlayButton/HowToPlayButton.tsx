@@ -5,6 +5,8 @@
  * @since 2023.11.12 Sun 01:49:10
  */
 
+'use client';
+
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import { modalStore } from '@gis-dev/script/states/modal';
 import QuestionMark from '@mui/icons-material/QuestionMark';

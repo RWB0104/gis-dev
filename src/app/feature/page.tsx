@@ -5,7 +5,7 @@
  * @since 2023.11.12 Sun 23:40:00
  */
 
-import FeatureBox from '@gis-dev/components/organism/box/FeatureBox';
+import FeatureTemplate from '@gis-dev/components/template/page/FeatureTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function FeaturePage(): ReactNode
 {
 	return (
-		<FeatureBox />
+		<FeatureTemplate />
 	);
 }

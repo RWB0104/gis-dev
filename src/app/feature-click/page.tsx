@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 11:03:02
  */
 
-import FeatureClickBox from '@gis-dev/components/organism/box/FeatureClickBox';
+import FeatureClickTemplate from '@gis-dev/components/template/page/FeatureClickTemplate';
 import { ReactNode } from 'react';
 
 /**
@@ -16,6 +16,6 @@ import { ReactNode } from 'react';
 export default function FeatureClickPage(): ReactNode
 {
 	return (
-		<FeatureClickBox />
+		<FeatureClickTemplate />
 	);
 }
