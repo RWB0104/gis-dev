@@ -6,10 +6,11 @@
  */
 
 import BasicPopup, { BasicPopupBody } from '@gis-dev/components/molecule/BasicPopup';
+import ImageViewer from '@gis-dev/components/molecule/ImageViewer';
 import { MapContext } from '@gis-dev/script/context/map';
 import { Overlay } from 'ol';
 import { FeatureLike } from 'ol/Feature';
-import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { MouseEventHandler, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 const POPUP_ID = 'popup';
 
@@ -23,11 +24,22 @@ export default function StarbucksPopup(): ReactNode
 	const { map } = useContext(MapContext);
 
 	const [ featureState, setFeatureState ] = useState<FeatureLike | undefined>();
+	const [ imageState, setImageState ] = useState<string | undefined>();
 
 	const handleClick = useCallback(() =>
 	{
 		setFeatureState(undefined);
 	}, [ setFeatureState ]);
+
+	const handleThumbClick: MouseEventHandler<HTMLButtonElement> = useCallback(() =>
+	{
+		setImageState(`https://www.starbucks.co.kr/${featureState?.get('thumbnail')}`);
+	}, [ featureState, setImageState ]);
+
+	const handleClose = useCallback(() =>
+	{
+		setImageState(undefined);
+	}, [ setImageState ]);
 
 	const list: BasicPopupBody[] | undefined = useMemo(() =>
 	{
@@ -158,12 +170,17 @@ export default function StarbucksPopup(): ReactNode
 	}, [ map, featureState ]);
 
 	return (
-		<BasicPopup
-			header={featureState?.get('name') || '-'}
-			id={POPUP_ID}
-			list={list}
-			thumb={`https://www.starbucks.co.kr/${featureState?.get('thumbnail')}`}
-			onClose={handleClick}
-		/>
+		<>
+			<BasicPopup
+				header={featureState?.get('name') || '-'}
+				id={POPUP_ID}
+				list={list}
+				thumb={`https://www.starbucks.co.kr/${featureState?.get('thumbnail')}`}
+				onClose={handleClick}
+				onThumbClick={handleThumbClick}
+			/>
+
+			<ImageViewer image={imageState} onClick={handleClose} />
+		</>
 	);
 }

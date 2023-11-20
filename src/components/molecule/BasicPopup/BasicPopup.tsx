@@ -7,6 +7,7 @@
 
 import Close from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
@@ -68,6 +69,11 @@ export interface BasicPopupProps extends PaperProps
 	 * 닫기 이벤트 메서드
 	 */
 	onClose?: MouseEventHandler<HTMLButtonElement>;
+
+	/**
+	 * 이미지 클릭 이벤트 메서드
+	 */
+	onThumbClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 /**
@@ -77,7 +83,7 @@ export interface BasicPopupProps extends PaperProps
  *
  * @returns {ReactNode} ReactNode
  */
-export default function BasicPopup({ id, header = '-', thumb, list, onClose, ...props }: BasicPopupProps): ReactNode
+export default function BasicPopup({ id, header = '-', thumb, list, onClose, onThumbClick, ...props }: BasicPopupProps): ReactNode
 {
 	return (
 		<Paper data-component='MapPopup' id={id} {...props}>
@@ -100,9 +106,9 @@ export default function BasicPopup({ id, header = '-', thumb, list, onClose, ...
 						position='relative'
 					>
 						<Box height='100%' left={0} position='absolute' top={0} width='100%'>
-							<Link href={thumb} target='_blank'>
+							<ButtonBase className={cn('button')} onClick={onThumbClick}>
 								<img alt={thumb} className={cn('image')} height='100%' src={thumb} width='100%' />
-							</Link>
+							</ButtonBase>
 						</Box>
 					</Box>
 				) : null}
