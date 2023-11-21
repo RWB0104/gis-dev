@@ -101,6 +101,13 @@ function getWfsModify(feature: Collection<Feature<Geometry>>): Modify
 	return modify;
 }
 
+/**
+ * 클러스터 클릭 상호작용 반환 메서드
+ *
+ * @param {string} name: 라벨 컬럼
+ *
+ * @returns {Select} Select 객체
+ */
 function getClusterClickSelect(name: string): Select
 {
 	return new Select({
@@ -110,6 +117,13 @@ function getClusterClickSelect(name: string): Select
 	});
 }
 
+/**
+ * 클러스터 호버 상호작용 반환 메서드
+ *
+ * @param {string} name: 라벨 컬럼
+ *
+ * @returns {Select} Select 객체
+ */
 function getClusterHoverSelect(name: string): Select
 {
 	return new Select({

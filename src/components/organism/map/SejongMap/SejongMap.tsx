@@ -31,7 +31,7 @@ export default function SejongMap({ children }: PropsWithChildren): ReactNode
 	}), [ children ]);
 
 	return (
-		<MapProvider options={options}>
+		<MapProvider options={options} hasCursor>
 			{children}
 		</MapProvider>
 	);

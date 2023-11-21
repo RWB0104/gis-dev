@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 13:11:14
  */
 
+'use client';
+
 import WFSPopupTemplate from '@gis-dev/components/template/page/WFSPopupTemplate';
 import { ReactNode } from 'react';
 

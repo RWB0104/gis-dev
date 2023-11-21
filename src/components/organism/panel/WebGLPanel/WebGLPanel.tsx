@@ -36,13 +36,6 @@ export default function WebGLPanel(): ReactNode
 
 	const [ typeState, setTypeState ] = useState<LayerType>('webgl');
 
-	const wfsCityWebGLLayer = useMemo(() => new WebGLPointsLayer({
-		properties: { name: 'wfs-webgl' },
-		source: wfsSource.wfsCitySource,
-		style: getWebGLStyle(),
-		zIndex: 5
-	}), []);
-
 	const handleChange = useCallback((event: MouseEvent<HTMLElement>, value: LayerType) =>
 	{
 		setTypeState(value);
@@ -70,19 +63,26 @@ export default function WebGLPanel(): ReactNode
 				webgl?.setVisible(false);
 			}
 		}
-	}, [ map, typeState, wfsCityWebGLLayer ]);
+	}, [ map, typeState ]);
 
 	useEffect(() =>
 	{
 		if (map)
 		{
+			const wfsCityWebGLLayer = useMemo(() => new WebGLPointsLayer({
+				properties: { name: 'wfs-webgl' },
+				source: wfsSource.wfsCitySource,
+				style: getWebGLStyle(),
+				zIndex: 5
+			}), []);
+
 			const { wfsCityVectorLayer } = wfsLayer;
 			wfsCityVectorLayer.setVisible(false);
 
 			map.addLayer(wfsCityWebGLLayer);
 			map.addLayer(wfsCityVectorLayer);
 		}
-	}, [ map, wfsCityWebGLLayer ]);
+	}, [ map ]);
 
 	return (
 		<MapPanel>
