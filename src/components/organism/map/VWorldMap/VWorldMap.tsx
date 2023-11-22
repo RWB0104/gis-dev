@@ -9,10 +9,8 @@
 
 import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import { baseLayer } from '@gis-dev/script/map/layers';
-import { position3857 } from '@gis-dev/script/map/positions';
-import { View } from 'ol';
-import { MapOptions } from 'ol/Map';
-import { PropsWithChildren, ReactNode, useMemo } from 'react';
+import { views } from '@gis-dev/script/map/view';
+import { PropsWithChildren, ReactNode } from 'react';
 
 /**
  * VWorld 맵 organism 컴포넌트 반환 메서드
@@ -23,17 +21,12 @@ import { PropsWithChildren, ReactNode, useMemo } from 'react';
  */
 export default function VWorldMap({ children }: PropsWithChildren): ReactNode
 {
-	const options: MapOptions = useMemo(() => ({
-		layers: [ baseLayer.osmLayer ],
-		view: new View({
-			center: position3857.seoulPosition,
-			projection: 'EPSG:3857',
-			zoom: 17
-		})
-	}), [ children ]);
-
 	return (
-		<MapProvider options={options} hasCursor>
+		<MapProvider
+			layers={[ baseLayer.osmLayer ]}
+			view={views.seoulView}
+			hasCursor
+		>
 			{children}
 		</MapProvider>
 	);

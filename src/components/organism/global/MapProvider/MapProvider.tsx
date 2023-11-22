@@ -10,12 +10,12 @@
 import BasicMap, { BasicMapProps } from '@gis-dev/components/molecule/BasicMap';
 import { MapContext } from '@gis-dev/script/context/map';
 import Box from '@mui/material/Box';
-import { Map } from 'ol';
+import { Map, MapBrowserEvent } from 'ol';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 export type MapProviderInitHandler = (map: Map) => void;
 
-export interface MapProviderProps extends Pick<BasicMapProps, 'options' | 'hasCursor' | 'children'>
+export interface MapProviderProps extends Pick<BasicMapProps, 'interactions' | 'layers' | 'overlays' | 'view' | 'hasCursor' | 'children'>
 {
 	/**
 	 * 초기 설정 메서드
@@ -30,7 +30,7 @@ export interface MapProviderProps extends Pick<BasicMapProps, 'options' | 'hasCu
  *
  * @returns {ReactNode} ReactNode
  */
-export default function MapProvider({ options, hasCursor, onInit, children }: MapProviderProps): ReactNode
+export default function MapProvider({ interactions, layers, overlays, view, hasCursor, onInit, children }: MapProviderProps): ReactNode
 {
 	const [ mapState, setMapState ] = useState<Map>();
 
@@ -48,10 +48,40 @@ export default function MapProvider({ options, hasCursor, onInit, children }: Ma
 		}
 	}, [ context.map, onInit ]);
 
+	useEffect(() =>
+	{
+		const handle = (e: MapBrowserEvent<UIEvent>): void =>
+		{
+			mapState?.getAllLayers().forEach((layer) =>
+			{
+				const name: string | undefined = layer.get('name');
+
+				// WFS 레이어일 경우
+				if (name?.startsWith('wfs'))
+				{
+					mapState.getViewport().style.cursor = mapState.hasFeatureAtPixel(e.pixel) ? 'pointer' : '';
+				}
+			});
+		};
+
+		mapState?.on('pointermove', handle);
+
+		return () =>
+		{
+			mapState?.un('pointermove', handle);
+		};
+	}, [ mapState ]);
+
 	return (
 		<MapContext.Provider value={context}>
 			<Box data-component='MapProvider' height='100%' position='relative' width='100%'>
-				<BasicMap hasCursor={hasCursor} options={options} />
+				<BasicMap
+					hasCursor={hasCursor}
+					interactions={interactions}
+					layers={layers}
+					overlays={overlays}
+					view={view}
+				/>
 
 				{children}
 			</Box>

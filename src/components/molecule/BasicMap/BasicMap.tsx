@@ -12,8 +12,12 @@ import Add from '@mui/icons-material/Add';
 import Box, { BoxProps } from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import classNames from 'classnames/bind';
-import { Map } from 'ol';
-import { MapOptions } from 'ol/Map';
+import { Collection, Map, Overlay, View } from 'ol';
+import { defaults } from 'ol/interaction/defaults';
+import Interaction from 'ol/interaction/Interaction';
+import BaseLayer from 'ol/layer/Base';
+import LayerGroup from 'ol/layer/Group';
+import { ViewOptions } from 'ol/View';
 import { ReactNode, useContext, useEffect, useRef } from 'react';
 
 import styles from './BasicMap.module.scss';
@@ -22,12 +26,32 @@ import 'ol/ol.css';
 
 const cn = classNames.bind(styles);
 
+export type BasicMapInteractions = Interaction[];
+export type BasicMapLayers = BaseLayer[] | Collection<BaseLayer> | LayerGroup;
+export type BasicMapOverlays = Collection<Overlay> | Overlay[];
+export type BasicMapView = View | Promise<ViewOptions>;
+
 export interface BasicMapProps extends BoxProps
 {
 	/**
-	 * 맵 옵션
+	 * 상호작용 배열
 	 */
-	options: MapOptions;
+	interactions?: BasicMapInteractions;
+
+	/**
+	 * 레이어 배열
+	 */
+	layers?: BasicMapLayers;
+
+	/**
+	 * 오버레이
+	 */
+	overlays?: BasicMapOverlays;
+
+	/**
+	 * 뷰
+	 */
+	view?: BasicMapView;
 
 	/**
 	 * 커서 여부
@@ -42,7 +66,7 @@ export interface BasicMapProps extends BoxProps
  *
  * @returns {ReactNode} ReactNode
  */
-export default function BasicMap({ options, hasCursor, children, ...props }: BasicMapProps): ReactNode
+export default function BasicMap({ interactions, layers, overlays, view, hasCursor, children, ...props }: BasicMapProps): ReactNode
 {
 	const { setMap } = useContext(MapContext);
 
@@ -50,23 +74,27 @@ export default function BasicMap({ options, hasCursor, children, ...props }: Bas
 
 	useEffect(() =>
 	{
+		const interactionsList = interactions ? defaults().extend(interactions) : undefined;
+
+		const map = new Map({
+			interactions: interactionsList,
+			layers,
+			overlays,
+			view
+		});
+
 		// DOM이 유효하지 않을 경우
-		if (ref.current === null)
+		if (ref.current !== null)
 		{
-			return;
+			map.setTarget(ref.current);
+			setMap?.(map);
 		}
 
-		const map = new Map(options);
-
-		map.setTarget(ref.current);
-		setMap?.(map);
-
-		// eslint-disable-next-line consistent-return
 		return (): void =>
 		{
 			map.setTarget(undefined);
 		};
-	}, [ options, ref, setMap ]);
+	}, [ interactions, layers, overlays, view, ref, setMap ]);
 
 	return (
 		<Box

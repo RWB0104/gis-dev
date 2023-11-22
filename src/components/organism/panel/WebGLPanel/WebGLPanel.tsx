@@ -21,7 +21,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 import WebGLPointsLayer from 'ol/layer/WebGLPoints';
-import { MouseEvent, ReactNode, useCallback, useContext, useEffect, useState, useMemo } from 'react';
+import { MouseEvent, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 export type LayerType = 'webgl' | 'vector';
 
@@ -69,12 +69,12 @@ export default function WebGLPanel(): ReactNode
 	{
 		if (map)
 		{
-			const wfsCityWebGLLayer = useMemo(() => new WebGLPointsLayer({
+			const wfsCityWebGLLayer = new WebGLPointsLayer({
 				properties: { name: 'wfs-webgl' },
 				source: wfsSource.wfsCitySource,
 				style: getWebGLStyle(),
 				zIndex: 5
-			}), []);
+			});
 
 			const { wfsCityVectorLayer } = wfsLayer;
 			wfsCityVectorLayer.setVisible(false);

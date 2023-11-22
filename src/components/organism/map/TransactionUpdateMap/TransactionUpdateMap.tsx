@@ -7,13 +7,11 @@
 
 'use client';
 
-import MapProvider, { MapProviderInitHandler } from '@gis-dev/components/organism/global/MapProvider';
+import MapProvider from '@gis-dev/components/organism/global/MapProvider';
 import { modifys, selects, snaps } from '@gis-dev/script/map/interactions';
 import { wfsLayer } from '@gis-dev/script/map/layers';
-import { position3857 } from '@gis-dev/script/map/positions';
-import { View } from 'ol';
-import { MapOptions } from 'ol/Map';
-import { PropsWithChildren, ReactNode, useCallback, useMemo } from 'react';
+import { views } from '@gis-dev/script/map/view';
+import { PropsWithChildren, ReactNode, useMemo } from 'react';
 
 /**
  * 트랜잭션 수정 맵 organism 컴포넌트 반환 메서드
@@ -24,7 +22,7 @@ import { PropsWithChildren, ReactNode, useCallback, useMemo } from 'react';
  */
 export default function TransactionUpdateMap({ children }: PropsWithChildren): ReactNode
 {
-	const handleInit: MapProviderInitHandler = useCallback((map) =>
+	const interactions = useMemo(() =>
 	{
 		const { getWfsSnap } = snaps;
 		const { getWfsModify } = modifys;
@@ -37,27 +35,16 @@ export default function TransactionUpdateMap({ children }: PropsWithChildren): R
 		wfsSnap.setActive(false);
 		wfsModify.setActive(false);
 
-		map.addInteraction(clickSelect);
-		map.addInteraction(wfsSnap);
-		map.addInteraction(wfsModify);
+		return [ clickSelect, wfsSnap, wfsModify ];
 	}, []);
 
-	const options: MapOptions = useMemo(() =>
-	{
-		wfsLayer.wfsTransactionLayer.getSource()?.refresh();
-
-		return {
-			layers: [ wfsLayer.wfsTransactionLayer ],
-			view: new View({
-				center: position3857.seoulPosition,
-				projection: 'EPSG:3857',
-				zoom: 17
-			})
-		};
-	}, [ children ]);
-
 	return (
-		<MapProvider options={options} hasCursor onInit={handleInit}>
+		<MapProvider
+			interactions={interactions}
+			layers={[ wfsLayer.wfsTransactionLayer ]}
+			view={views.seoulView}
+			hasCursor
+		>
 			{children}
 		</MapProvider>
 	);

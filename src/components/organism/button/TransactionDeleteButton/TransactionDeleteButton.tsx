@@ -10,13 +10,14 @@
 import { useDeleteFeature } from '@gis-dev/api/wfs';
 import BasicIconButton from '@gis-dev/components/atom/BasicIconButton';
 import { MapContext } from '@gis-dev/script/context/map';
+import { selects } from '@gis-dev/script/map/interactions';
 import { modalStore } from '@gis-dev/script/states/modal';
 import Delete from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { FeatureLike } from 'ol/Feature';
-import Select, { SelectEvent } from 'ol/interaction/Select';
-import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { SelectEvent } from 'ol/interaction/Select';
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 /**
  * 트랜잭션 삭제 버튼 organism 컴포넌트 반환 메서드
@@ -49,6 +50,9 @@ export default function TransactionDeleteButton(): ReactNode
 		}
 	});
 
+	const hover = useMemo(() => selects.getWfsHoverSelect('name'), []);
+	const click = useMemo(() => selects.getWfsClickSelect('name'), []);
+
 	const handleClick = useCallback(() =>
 	{
 		const id = featureState?.getId();
@@ -75,20 +79,24 @@ export default function TransactionDeleteButton(): ReactNode
 
 	useEffect(() =>
 	{
-		const select = map?.getInteractions().getArray().find((i) => i.get('name') === 'clickSelect') as Select | undefined;
+		map?.addInteraction(hover);
+		map?.addInteraction(click);
+	}, [ map, hover, click ]);
 
+	useEffect(() =>
+	{
 		const selectHandle = (e: SelectEvent): void =>
 		{
 			setFeatureState(e.selected.length > 0 ? e.selected[0] : undefined);
 		};
 
-		select?.on('select', selectHandle);
+		click?.on('select', selectHandle);
 
 		return () =>
 		{
-			select?.un('select', selectHandle);
+			click?.un('select', selectHandle);
 		};
-	}, [ map, featureState, setFeatureState ]);
+	}, [ map, click, featureState, setFeatureState ]);
 
 	return (
 		<BasicIconButton bgcolor={featureState ? 'crimson' : 'gainsboro'} disabled={featureState === undefined} onClick={handleClick}>

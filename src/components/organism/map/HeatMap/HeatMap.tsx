@@ -8,12 +8,10 @@
 'use client';
 
 import MapProvider, { MapProviderInitHandler } from '@gis-dev/components/organism/global/MapProvider';
-import { position3857 } from '@gis-dev/script/map/positions';
 import { wfsSource } from '@gis-dev/script/map/source';
-import { View } from 'ol';
+import { views } from '@gis-dev/script/map/view';
 import { Point } from 'ol/geom';
 import Heatmap from 'ol/layer/Heatmap';
-import { MapOptions } from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
 import { PropsWithChildren, ReactNode, useCallback } from 'react';
 
@@ -28,25 +26,23 @@ export default function HeatMap({ children }: PropsWithChildren): ReactNode
 {
 	const handleInit: MapProviderInitHandler = useCallback((map) =>
 	{
-		map.addLayer(new Heatmap({
+		const heatmap = new Heatmap({
 			blur: 20,
 			properties: { name: 'wfs' },
 			radius: 20,
 			source: wfsSource.starbucksSource as VectorSource<Point>,
 			zIndex: 5
-		}));
+		});
+
+		map.addLayer(heatmap);
 	}, []);
 
-	const options: MapOptions = {
-		view: new View({
-			center: position3857.seoulPosition,
-			projection: 'EPSG:3857',
-			zoom: 13
-		})
-	};
-
 	return (
-		<MapProvider options={options} hasCursor onInit={handleInit}>
+		<MapProvider
+			view={views.seoulMiddleView}
+			hasCursor
+			onInit={handleInit}
+		>
 			{children}
 		</MapProvider>
 	);
