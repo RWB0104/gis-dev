@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	basePath: '/gis-dev',
+	output: 'export'
+};
 
 module.exports = nextConfig;
