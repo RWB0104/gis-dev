@@ -28,18 +28,19 @@ export default function MapInfoTemplate(): ReactNode
 			<BasicPanel right={20} top={20}>
 				<HowToPlayButton defaultOpen>
 					<Stack>
-						<Typography variant='caption'>OSM을 보면서 어딘가 아쉬운 점은 없었나요?</Typography>
-						<Typography variant='caption'>사실 OSM은 국내에서 주력으로 쓰기 좋은 지도는 아닙니다.</Typography>
-						<Typography variant='caption'>오픈 소스의 자유로움으로 인해, 정보가 디테일하지 않을 뿐더러, 디자인도 투박합니다.</Typography>
+						<Typography variant='caption'>지도를 사용하다보면, 지도의 여러 정보가 필요한 순간이 반드시 생기게 됩니다.</Typography>
+						<Typography variant='caption'>우측 하단의 패널은 지도에서 자주 사용할만한 정보를 모아 표시해주고 있습니다.</Typography>
+						<Typography variant='caption'>주요 정보는 아래와 같습니다.</Typography>
 						<br />
 
-						<Typography variant='caption'>VWorld는 국내에 특화된 타일맵을 OpenAPI 형태로 제공하고 있습니다.</Typography>
-						<Typography variant='caption'>국가에서 제공하는 지도로, 비교적 정확한 정보와 사용자 친화적인 디자인을 가지고 있습니다.</Typography>
-						<Typography variant='caption'>이를 통해 국내 친화적인 지도 서비스를 제공하는 것이 가능합니다.</Typography>
+						<Typography variant='caption'>🌍 EPSG 좌표계</Typography>
+						<Typography variant='caption'>🔍 현재 줌 레벨</Typography>
+						<Typography variant='caption'>🗺️ 바운더리 좌표</Typography>
+						<Typography variant='caption'>📍 중심 좌표</Typography>
+						<Typography variant='caption'>🖱️ 마우스 커서 좌표</Typography>
 						<br />
 
-						<Typography variant='caption'>VWorld에서는 기본적인 지도는 물론, 백지도, 위성지도와 같은 다양한 레이어를 제공합니다.</Typography>
-						<Typography variant='caption'>우측 하단 메뉴에서 지도를 변경해보세요.</Typography>
+						<Typography variant='caption'>마우스 좌표를 제외한 대부분의 정보는 View 객체에서 얻을 수 있습니다.</Typography>
 						<br />
 
 						<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/03/21/gis-guide-for-programmer-11' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>

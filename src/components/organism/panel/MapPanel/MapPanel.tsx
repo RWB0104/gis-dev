@@ -401,6 +401,7 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 							name='epsg'
 							size='small'
 						/>
+
 						<TextField
 							InputLabelProps={{ shrink: true }}
 							InputProps={{ classes: { input: cn('input') }, readOnly: true }}
@@ -410,7 +411,7 @@ export default function MapPanel({ children }: MapPanelProps): ReactNode
 						/>
 					</Stack>
 
-					<Link href={`https://epsg.io/${map?.getView().getProjection().getCode()}`} target='_blank'>
+					<Link href={`https://epsg.io/${map?.getView().getProjection().getCode().replace('EPSG:', '')}`} target='_blank'>
 						<Typography color='primary' fontSize={10}>좌표계 자세히 알아보기</Typography>
 					</Link>
 				</Stack>

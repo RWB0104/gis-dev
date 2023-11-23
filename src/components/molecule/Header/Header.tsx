@@ -13,7 +13,6 @@ import Box, { BoxProps } from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Image from 'next/image';
 import Link from 'next/link';
 import { MouseEventHandler, ReactNode } from 'react';
 
@@ -57,7 +56,7 @@ export default function Header({ onMenuClick, ...props }: HeaderProps): ReactNod
 
 				<Link href='/'>
 					<Stack justifyContent='center'>
-						<Image alt={APP_INFO.title} height={24} src={APP_INFO.image} width={24} />
+						<img alt={APP_INFO.title} height={24} src={APP_INFO.image} width={24} />
 					</Stack>
 				</Link>
 

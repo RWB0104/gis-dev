@@ -35,6 +35,7 @@ export default function FeatureTemplate(): ReactNode
 							<Typography variant='caption'>지도위에 다양한 마커를 표시하여 지도가 제공하는 정보를 강화할 수 있습니다.</Typography>
 							<Typography variant='caption'>이 페이지에선 버튼을 클릭하여 현재 바라보는 지도 중심에 마커를 추가하는 간단한 기능을 사용해볼 수 있습니다.</Typography>
 							<Typography variant='caption'>우측 상단의 <PushPin fontSize='inherit' htmlColor='dodgerblue' /> 버튼 혹은 스페이스바를 눌러 마커를 추가해보세요.</Typography>
+							<Typography variant='caption'>지도가 완전히 정지된 후 피쳐가 추가되니, 사용 시 참고해주세요.</Typography>
 							<br />
 
 							<Typography variant='caption'>이렇게 지도 상에 표현되는 요소를 Feature라고 합니다.</Typography>

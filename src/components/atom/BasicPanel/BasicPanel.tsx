@@ -41,6 +41,15 @@ export interface BasicPanelProps extends BoxProps
 export default function BasicPanel({ top, bottom = 20, left, right = 20, ...props }: BasicPanelProps): ReactNode
 {
 	return (
-		<Box bottom={bottom} left={left} position='absolute' right={right} top={top} {...props} />
+		<Box
+			bottom={bottom}
+			data-component='BasicPanel'
+			height='fit-content'
+			left={left}
+			position='absolute'
+			right={right}
+			top={top}
+			{...props}
+		/>
 	);
 }

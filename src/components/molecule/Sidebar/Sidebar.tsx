@@ -15,7 +15,6 @@ import Divider from '@mui/material/Divider';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, MouseEventHandler, ReactNode } from 'react';
 
@@ -52,7 +51,7 @@ export default function Sidebar({ currentLink, ...props }: SidebarProps): ReactN
 				width='100%'
 			>
 				<Stack alignItems='center' padding={4} width='100%'>
-					<Image alt={APP_INFO.title} height={100} src={APP_INFO.image} width={100} />
+					<img alt={APP_INFO.title} height={100} src={APP_INFO.image} width={100} />
 				</Stack>
 
 				<Stack width='100%'>
