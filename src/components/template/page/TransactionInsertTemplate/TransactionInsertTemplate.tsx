@@ -49,7 +49,7 @@ export default function TransactionInsertTemplate(): ReactNode
 							<Typography variant='caption'>그린 좌표와 입력한 정보를 토대로 XML를 구성하고, 이를 통해 API를 사용하게 됩니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/30/gis-guide-for-programmer-20' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/30/gis-guide-for-programmer-20' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 20. WFS Transaction으로 데이터 추가하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

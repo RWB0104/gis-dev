@@ -41,7 +41,7 @@ export default function WFSPopupTemplate(): ReactNode
 							<Typography variant='caption'>클릭 시 해당 위치에 피쳐가 있는지 계산하고, 있을 경우 해당 피쳐의 정보를 토대로 팝업을 띄워줍니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/25/gis-guide-for-programmer-18' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/25/gis-guide-for-programmer-18' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 18. WFS에 팝업 붙이기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

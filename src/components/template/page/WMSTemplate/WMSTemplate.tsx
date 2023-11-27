@@ -48,7 +48,7 @@ export default function WMSTemplate(): ReactNode
 							<Typography variant='caption'>🪟 Tile - 이미지를 정해진 크기만큼 잘라 여러개의 이미지를 제공합니다. Image 방식의 큰 지도를 잘게 자르므로, 요청 당 용량과 시간을 줄일 수 있습니다. 하지만 요청 횟수가 상대적으로 많아집니다. 이러한 방식을 타일맵이라 하며, 대부분의 지도 서비스에서는 배경지도를 타일맵으로 제공하고 있습니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/16/gis-guide-for-programmer-16' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/16/gis-guide-for-programmer-16' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 16. WMS GetImage를 사용하여 지도에 이미지 표시하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

@@ -47,7 +47,7 @@ export default function TransactionDeleteTemplate(): ReactNode
 							<Typography variant='caption'>이 예시에서는 클릭한 도형 하나만 삭제할 수 있지만, XML 구성에 따라 특정 조건에 일치하는 모든 도형을 제거할 수도 있습니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/31/gis-guide-for-programmer-22' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/31/gis-guide-for-programmer-22' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 22. WFS Transaction으로 데이터 삭제하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

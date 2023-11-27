@@ -46,7 +46,7 @@ export default function HeatMapTemplate(): ReactNode
 							<Typography variant='caption'>우측 하단의 패널에서 해당 옵션을 조절하여 변화를 확인해보세요.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/06/02/gis-guide-for-programmer-24' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/06/02/gis-guide-for-programmer-24' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 24. Heat Map 표현하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

@@ -43,7 +43,7 @@ export default function WMSPopupTemplate(): ReactNode
 							<Typography variant='caption'>이 예시에서는 팝업보단 GetFeatureInfo API 기능을 익혀두시는 걸 추천합니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/28/gis-guide-for-programmer-19' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/28/gis-guide-for-programmer-19' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 19. WMS에 팝업 붙이기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

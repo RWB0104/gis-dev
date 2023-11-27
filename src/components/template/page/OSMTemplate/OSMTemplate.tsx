@@ -31,7 +31,7 @@ export default function OSMTemplate(): ReactNode
 						<Typography variant='caption'>직접 지도를 조작하여 OSM 지도를 체험해보세요.</Typography>
 						<br />
 
-						<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/03/19/gis-guide-for-programmer-10' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+						<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/03/19/gis-guide-for-programmer-10' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 10. Open Street Map(OSM) 맵 만들기</Typography></Link>를 참조해주세요.</Typography>
 					</Stack>
 				</HowToPlayButton>
 			</BasicPanel>

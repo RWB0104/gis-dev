@@ -48,7 +48,7 @@ export default function TransactionUpdateTemplate(): ReactNode
 							<Typography variant='caption'>Modify는 Feature를 수정할 수 있으며, Snap은 그리기 노드가 Feature에 적절히 붙을 수 있도록 유도하는 자석기능입니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/31/gis-guide-for-programmer-21' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/31/gis-guide-for-programmer-21' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 21. WFS Transaction으로 데이터 수정하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

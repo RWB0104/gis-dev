@@ -40,7 +40,7 @@ export default function FeatureClickTemplate(): ReactNode
 							<Typography variant='caption'>각 이벤트 시의 스타일을 재정의하여, 각 이벤트에 따른 변화를 시각적으로 표현할 수 있습니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/21/gis-guide-for-programmer-17' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/21/gis-guide-for-programmer-17' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 17. WFS 객체에 상호작용 추가하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 

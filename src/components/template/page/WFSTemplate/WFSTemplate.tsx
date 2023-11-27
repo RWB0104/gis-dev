@@ -46,7 +46,7 @@ export default function WFSTemplate(): ReactNode
 							<Typography variant='caption'>소스코드 상에서 원하는 스타일을 지정하여 표현해줄 수 있습니다.</Typography>
 							<br />
 
-							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/15/gis-guide-for-programmer-15' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>이 문서</Typography></Link>를 참조해주세요.</Typography>
+							<Typography variant='caption'>자세한 설명은 <Link href='https://blog.itcode.dev/projects/2022/05/15/gis-guide-for-programmer-15' target='_blank'><Typography color='hotpink' component='span' fontWeight='bold' variant='inherit'>OpenLayers를 여행하는 개발자를 위한 안내서 - 15. WFS GetFeature를 사용하여 지도에 객체 표시하기</Typography></Link>를 참조해주세요.</Typography>
 						</Stack>
 					</HowToPlayButton>
 
