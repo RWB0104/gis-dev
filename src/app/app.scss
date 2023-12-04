@@ -23,3 +23,9 @@ a {
 .fullheight {
 	height: 100%;
 }
+
+.mapbadge {
+	translate: -50% 0%;
+	pointer-events: none;
+	opacity: 0.75;
+}
