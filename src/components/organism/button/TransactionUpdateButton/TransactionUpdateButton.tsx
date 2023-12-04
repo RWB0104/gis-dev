@@ -14,6 +14,8 @@ import { MapContext } from '@gis-dev/script/context/map';
 import { wfsLayer } from '@gis-dev/script/map/layers';
 import Edit from '@mui/icons-material/Edit';
 import { ModalProps } from '@mui/material/Modal';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { FeatureLike } from 'ol/Feature';
 import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
 import Modify from 'ol/interaction/Modify';
@@ -44,6 +46,7 @@ export default function TransactionUpdateButton(): ReactNode
 {
 	const { map } = useContext(MapContext);
 
+	const [ interactionState, setInteractionState ] = useState(false);
 	const [ featureState, setFeatureState ] = useState<FeatureStateProps>({});
 	const [ modifiedState, setModifiedState ] = useState<FeatureLike[] | undefined>();
 
@@ -112,30 +115,12 @@ export default function TransactionUpdateButton(): ReactNode
 		setModifiedState(undefined);
 	}, [ setModifiedState ]);
 
-	const setInteractionActive = useCallback((isActive: boolean) =>
-	{
-		// 맵이 유효할 경우
-		if (map)
-		{
-			const allows = [ 'snap', 'modify' ];
-
-			map.getInteractions().forEach((i) =>
-			{
-				// 대상에 해당될 경우
-				if (allows.includes(i.get('name')))
-				{
-					i.setActive(isActive);
-				}
-			});
-		}
-	}, [ map ]);
-
 	const handleClick = useCallback(() =>
 	{
 		map?.getOverlayById('popup').setPosition(undefined);
 
-		setInteractionActive(true);
-	}, [ map, setInteractionActive ]);
+		setInteractionState(true);
+	}, [ map, setInteractionState ]);
 
 	useEffect(() =>
 	{
@@ -167,8 +152,26 @@ export default function TransactionUpdateButton(): ReactNode
 
 	useEffect(() =>
 	{
-		setInteractionActive(false);
-	}, [ featureState, setInteractionActive ]);
+		// 맵이 유효할 경우
+		if (map)
+		{
+			const allows = [ 'snap', 'modify' ];
+
+			map.getInteractions().forEach((i) =>
+			{
+				// 대상에 해당될 경우
+				if (allows.includes(i.get('name')))
+				{
+					i.setActive(interactionState);
+				}
+			});
+		}
+	}, [ map, interactionState ]);
+
+	useEffect(() =>
+	{
+		setInteractionState(false);
+	}, [ featureState, setInteractionState ]);
 
 	return (
 		<>
@@ -182,6 +185,20 @@ export default function TransactionUpdateButton(): ReactNode
 			</BasicIconButton>
 
 			<TransactionUpdateModal features={modifiedState} onClose={handleClose} onConfirm={handleConfirm} />
+
+			{interactionState ? (
+				<Stack
+					bgcolor='black'
+					borderRadius={100}
+					className='mapbadge'
+					left='50%'
+					padding='1px 10px'
+					position='fixed'
+					top={60}
+				>
+					<Typography color='white' variant='caption'>도형 바깥을 눌러 종료하세요.</Typography>
+				</Stack>
+			) : null}
 		</>
 	);
 }

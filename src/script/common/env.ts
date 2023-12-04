@@ -28,7 +28,25 @@ export interface MenuList
 	divide?: boolean;
 }
 
-export const APP_INFO = { image: '/gis-dev/logo.png', title: 'OpenLayers Box' };
+export const APP_INFO = {
+	author: {
+		email: 'psj2716@mensakorea.org',
+		nickname: 'RWB',
+		social: {
+			github: {
+				link: 'https://github.com/RWB0104',
+				name: 'Kapoo'
+			},
+			linkedin: {
+				link: 'https://www.linkedin.com/in/itcode/',
+				name: 'RWB'
+			}
+		}
+	},
+	description: 'OpenLayers Sandbox',
+	image: '/gis-dev/logo.png',
+	title: 'OpenLayers Box'
+};
 export const API_BASE_URL = 'https://api.itcode.dev/geoserver';
 export const VWORLD_KEY = '0834AFA9-AB19-30C2-8902-0E3790CDBB2F';
 

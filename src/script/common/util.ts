@@ -5,6 +5,8 @@
  * @since 2023.11.14 Tue 01:25:49
  */
 
+import { APP_INFO } from '@gis-dev/script/common/env';
+import { Metadata } from 'next';
 import { Polygon } from 'ol/geom';
 
 export interface QueryProps
@@ -13,6 +15,34 @@ export interface QueryProps
 	 * 데이터
 	 */
 	[key: string]: string | number | boolean | undefined;
+}
+
+export interface MetadataProps
+{
+	/**
+	 * 제목
+	 */
+	title: string;
+
+	/**
+	 * 설명
+	 */
+	description?: string;
+
+	/**
+	 * 키워드
+	 */
+	keywords?: string[];
+
+	/**
+	 * URL
+	 */
+	url?: string;
+
+	/**
+	 * 커버 이미지
+	 */
+	image?: string;
 }
 
 /**
@@ -70,4 +100,39 @@ export function getPolygonXml(feature: Polygon): string
 		</gml:exterior>
 	</gml:Polygon>
 	`;
+}
+
+/**
+ * 메타데이터 반환 메서드
+ *
+ * @param {MetadataProps} param0: MetadataProps 객체
+ *
+ * @returns {Metadata} 메타데이터
+ */
+export function getMetadata({ title, description, keywords, url = '', image = 'https://user-images.githubusercontent.com/50317129/260221872-30486c85-667f-4919-8445-3499b318748d.png' }: MetadataProps): Metadata
+{
+	const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/gis-dev' : 'https://project.itcode.dev/gis-dev';
+	const authors = Object.values(APP_INFO.author.social).map(({ link, name }) => ({ name, url: link }));
+
+	return {
+		authors,
+		description: description || APP_INFO.description,
+		icons: [
+			'/favicon.ico',
+			{ rel: 'shortcut icon', url: '/favicon.ico' },
+			{ rel: 'apple-touch-icon', url: '/favicon.ico' }
+		],
+		keywords,
+		metadataBase: new URL(baseUrl),
+		openGraph: {
+			description,
+			images: image,
+			locale: 'ko-KR',
+			siteName: APP_INFO.title,
+			title: `${title} - ${APP_INFO.title}`,
+			type: 'website',
+			url: `${baseUrl}${url}`
+		},
+		title: `${title} - ${APP_INFO.title}`
+	};
 }

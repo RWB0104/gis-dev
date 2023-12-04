@@ -15,6 +15,8 @@ import { draws } from '@gis-dev/script/map/interactions';
 import { transactionLayer } from '@gis-dev/script/map/layers';
 import Add from '@mui/icons-material/Add';
 import { ModalProps } from '@mui/material/Modal';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { FeatureLike } from 'ol/Feature';
 import { Geometry, Polygon } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
@@ -77,7 +79,12 @@ export default function TransactionInsertButton(): ReactNode
 			const features = source?.getFeatures();
 
 			setDisabledState(false);
-			setFeaturesState(features);
+
+			// 그려진 피쳐가 있을 경우
+			if (features && features.length > 0)
+			{
+				setFeaturesState(features);
+			}
 		}
 	}, [ map, setFeaturesState ]);
 
@@ -150,6 +157,20 @@ export default function TransactionInsertButton(): ReactNode
 			</BasicIconButton>
 
 			<TransactionInsertModal features={featuresState} onClose={handleClose} onConfirm={handleConfirm} />
+
+			{disabledState ? (
+				<Stack
+					bgcolor='black'
+					borderRadius={100}
+					className='mapbadge'
+					left='50%'
+					padding='1px 10px'
+					position='fixed'
+					top={60}
+				>
+					<Typography color='white' variant='caption'>ESC 혹은 오른쪽 마우스 버튼을 눌러 종료하세요.</Typography>
+				</Stack>
+			) : null}
 		</>
 	);
 }

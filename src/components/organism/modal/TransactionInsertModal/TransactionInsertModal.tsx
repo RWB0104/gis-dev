@@ -101,7 +101,6 @@ export default function TransactionInsertModal({ features, onConfirm, ...props }
 							</InputAdornment>
 						)
 					}}
-					required
 					onChange={handleChange}
 				/>
 
@@ -117,7 +116,6 @@ export default function TransactionInsertModal({ features, onConfirm, ...props }
 							</InputAdornment>
 						)
 					}}
-					required
 					onChange={handleChange}
 				/>
 			</Stack>

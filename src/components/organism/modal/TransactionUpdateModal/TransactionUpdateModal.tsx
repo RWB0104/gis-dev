@@ -129,7 +129,6 @@ export default function TransactionUpdateModal({ features, onConfirm, ...props }
 							</InputAdornment>
 						)
 					}}
-					required
 					onChange={handleChange}
 				/>
 
@@ -145,7 +144,6 @@ export default function TransactionUpdateModal({ features, onConfirm, ...props }
 							</InputAdornment>
 						)
 					}}
-					required
 					onChange={handleChange}
 				/>
 			</Stack>
