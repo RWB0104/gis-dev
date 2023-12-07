@@ -5,10 +5,8 @@
  * @since 2023.10.18 Wed 18:40:21
  */
 
+import HomeTemplate from '@gis-dev/components/template/page/HomeTemplate';
 import { getMetadata } from '@gis-dev/script/common/util';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Link from 'next/link';
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({ title: '홈' });
@@ -21,10 +19,6 @@ export const metadata = getMetadata({ title: '홈' });
 export default function App(): ReactNode
 {
 	return (
-		<Stack gap={10}>
-			<Link href='/osm'>
-				<Typography>osm</Typography>
-			</Link>
-		</Stack>
+		<HomeTemplate />
 	);
 }
