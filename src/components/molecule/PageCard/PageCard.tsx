@@ -6,7 +6,6 @@
  */
 
 import { CardActionArea } from '@mui/material';
-import Box from '@mui/material/Box';
 import Card, { CardProps } from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -53,18 +52,13 @@ export default function PageCard({ link, title, description, thumbnail, classNam
 {
 	return (
 		<Card className={cn('card', className)} data-component='PageCard' {...props}>
-			<Link href={link}>
-				<CardActionArea>
-					<Box overflow='hidden'>
-						<CardMedia
-							alt={title}
-							component='img'
-							height={320}
-							image={thumbnail}
-						/>
-					</Box>
+			<Link className='fullheight' href={link}>
+				<CardActionArea className={cn('action')}>
+					<CardMedia className={cn('media')}>
+						<img alt={title} src={thumbnail} />
+					</CardMedia>
 
-					<CardContent>
+					<CardContent className='fullheight'>
 						<Typography gutterBottom>
 							{title}
 						</Typography>

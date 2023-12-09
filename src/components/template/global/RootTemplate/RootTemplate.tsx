@@ -28,7 +28,7 @@ export default function RootTemplate({ children, ...props }: RootTemplateProps):
 		<GoogleAnalyticsProvider>
 			<ReactQueryProvider>
 				<AppThemeProvider>
-					<Stack data-component='RootTemplate' height='100vh' width='100%' {...props}>
+					<Stack data-component='RootTemplate' minHeight='100vh' width='100%' {...props}>
 						<Navigation />
 
 						{children}

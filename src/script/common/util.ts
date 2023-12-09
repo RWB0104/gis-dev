@@ -109,7 +109,7 @@ export function getPolygonXml(feature: Polygon): string
  *
  * @returns {Metadata} 메타데이터
  */
-export function getMetadata({ title, description, keywords, url = '', image = 'https://user-images.githubusercontent.com/50317129/260221872-30486c85-667f-4919-8445-3499b318748d.png' }: MetadataProps): Metadata
+export function getMetadata({ title, description, keywords, url = '', image = APP_INFO.thumbnail }: MetadataProps): Metadata
 {
 	const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/gis-dev' : 'https://project.itcode.dev/gis-dev';
 	const authors = Object.values(APP_INFO.author.social).map(({ link, name }) => ({ name, url: link }));
@@ -118,9 +118,9 @@ export function getMetadata({ title, description, keywords, url = '', image = 'h
 		authors,
 		description: description || APP_INFO.description,
 		icons: [
-			'/favicon.ico',
-			{ rel: 'shortcut icon', url: '/favicon.ico' },
-			{ rel: 'apple-touch-icon', url: '/favicon.ico' }
+			'/gis-dev/favicon.ico',
+			{ rel: 'shortcut icon', url: '/gis-dev/favicon.ico' },
+			{ rel: 'apple-touch-icon', url: '/gis-dev/favicon.ico' }
 		],
 		keywords,
 		metadataBase: new URL(baseUrl),
