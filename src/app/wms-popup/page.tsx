@@ -9,12 +9,11 @@ import WMSPopupTemplate from '@gis-dev/components/template/page/WMSPopupTemplate
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'WMS를 활용한 팝업';
+import { MENU_WMS_POPUP } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'GeoServer', 'WMS', 'Overlay' ],
-	title
+	menu: MENU_WMS_POPUP
 });
 
 /**

@@ -9,12 +9,11 @@ import WFSPopupTemplate from '@gis-dev/components/template/page/WFSPopupTemplate
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'WFS를 활용한 팝업';
+import { MENU_WFS_POPUP } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'GeoServer', 'WFS', 'Overlay' ],
-	title
+	menu: MENU_WFS_POPUP
 });
 
 /**

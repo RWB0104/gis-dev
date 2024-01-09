@@ -9,12 +9,11 @@ import GeolocationTemplate from '@gis-dev/components/template/page/GeolocationTe
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = '지오로케이션';
+import { MENU_GEOLOCATION } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'Geolocation' ],
-	title
+	menu: MENU_GEOLOCATION
 });
 
 /**

@@ -9,12 +9,11 @@ import WMSTemplate from '@gis-dev/components/template/page/WMSTemplate';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'WMS';
+import { MENU_WMS } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'GeoServer', 'WMS' ],
-	title
+	menu: MENU_WMS
 });
 
 /**

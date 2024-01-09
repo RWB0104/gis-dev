@@ -9,12 +9,11 @@ import TransactionDeleteTemplate from '@gis-dev/components/template/page/Transac
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'WFS-T 삭제';
+import { MENU_TRANSACTION_DELETE } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'WFS', 'Transaction', 'Delete' ],
-	title
+	menu: MENU_TRANSACTION_DELETE
 });
 
 /**

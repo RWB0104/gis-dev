@@ -9,12 +9,11 @@ import VWorldTemplate from '@gis-dev/components/template/page/VWorldTemplate';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'V-World 지도';
+import { MENU_VWORLD } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'VectorLayer', 'VWorld' ],
-	title
+	menu: MENU_VWORLD
 });
 
 /**

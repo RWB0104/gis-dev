@@ -9,12 +9,11 @@ import FeatureClickTemplate from '@gis-dev/components/template/page/FeatureClick
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = '맵 피쳐 상호작용';
+import { MENU_FEATURE_CLICK } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'Feature', 'Interaction' ],
-	title
+	menu: MENU_FEATURE_CLICK
 });
 
 /**

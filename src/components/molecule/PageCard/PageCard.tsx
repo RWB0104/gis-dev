@@ -58,7 +58,7 @@ export default function PageCard({ link, title, description, thumbnail, classNam
 						<img alt={title} src={thumbnail} />
 					</CardMedia>
 
-					<CardContent className='fullheight'>
+					<CardContent className='fullwidth fullheight'>
 						<Typography gutterBottom>
 							{title}
 						</Typography>

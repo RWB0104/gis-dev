@@ -9,12 +9,11 @@ import MapInfoTemplate from '@gis-dev/components/template/page/MapInfoTemplate';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = '맵 정보';
+import { MENU_MAP_INFO } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'Coordination', 'EPSG', 'Zoom' ],
-	title
+	menu: MENU_MAP_INFO
 });
 
 /**

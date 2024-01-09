@@ -9,7 +9,7 @@
 
 import BasicMap, { BasicMapProps } from '@gis-dev/components/molecule/BasicMap';
 import { MapContext } from '@gis-dev/script/context/map';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import { Map, MapBrowserEvent } from 'ol';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
@@ -74,7 +74,7 @@ export default function MapProvider({ interactions, layers, overlays, view, hasC
 
 	return (
 		<MapContext.Provider value={context}>
-			<Box data-component='MapProvider' height='100%' position='relative' width='100%'>
+			<Stack data-component='MapProvider' flex={1} height='100%' position='relative' width='100%'>
 				<BasicMap
 					hasCursor={hasCursor}
 					interactions={interactions}
@@ -84,7 +84,7 @@ export default function MapProvider({ interactions, layers, overlays, view, hasC
 				/>
 
 				{children}
-			</Box>
+			</Stack>
 		</MapContext.Provider>
 	);
 }

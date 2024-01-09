@@ -9,12 +9,11 @@ import OSMTemplate from '@gis-dev/components/template/page/OSMTemplate';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'OSM 지도';
+import { MENU_OSM } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'VectorLayer', 'OSM' ],
-	title
+	menu: MENU_OSM
 });
 
 /**

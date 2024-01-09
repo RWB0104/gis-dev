@@ -101,9 +101,9 @@ export default function BasicMap({ interactions, layers, overlays, view, hasCurs
 			bgcolor='gainsboro'
 			data-component='BasicMap'
 			height='100%'
+			position='absolute'
 			ref={ref}
 			width='100%'
-			zIndex={1}
 			{...props}
 		>
 			{hasCursor ? (

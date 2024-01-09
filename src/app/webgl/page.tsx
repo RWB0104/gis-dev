@@ -9,12 +9,11 @@ import WebGLTemplate from '@gis-dev/components/template/page/WebGLTemplate';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'WebGL을 활용한 맵';
+import { MENU_WEBGL } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'WebGL' ],
-	title
+	menu: MENU_WEBGL
 });
 
 /**

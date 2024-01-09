@@ -9,12 +9,11 @@ import TransactionInsertTemplate from '@gis-dev/components/template/page/Transac
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
 
-const title = 'WFS-T 추가';
+import { MENU_TRANSACTION_INSERT } from '../../script/common/env';
 
 export const metadata = getMetadata({
-	description: `OpenLayers ${title} 예시 페이지`,
 	keywords: [ 'OpenLayers', 'WFS', 'Transaction', 'Insert' ],
-	title
+	menu: MENU_TRANSACTION_INSERT
 });
 
 /**

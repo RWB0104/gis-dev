@@ -5,7 +5,7 @@
  * @since 2023.11.14 Tue 01:25:49
  */
 
-import { APP_INFO } from '@gis-dev/script/common/env';
+import { APP_INFO, Menu } from '@gis-dev/script/common/env';
 import { Metadata } from 'next';
 import { Polygon } from 'ol/geom';
 
@@ -20,29 +20,14 @@ export interface QueryProps
 export interface MetadataProps
 {
 	/**
-	 * 제목
+	 * 메뉴
 	 */
-	title: string;
+	menu: Menu;
 
 	/**
-	 * 설명
-	 */
-	description?: string;
-
-	/**
-	 * 키워드
+	 * 키워드 배열
 	 */
 	keywords?: string[];
-
-	/**
-	 * URL
-	 */
-	url?: string;
-
-	/**
-	 * 커버 이미지
-	 */
-	image?: string;
 }
 
 /**
@@ -109,14 +94,16 @@ export function getPolygonXml(feature: Polygon): string
  *
  * @returns {Metadata} 메타데이터
  */
-export function getMetadata({ title, description, keywords, url = '', image = APP_INFO.thumbnail }: MetadataProps): Metadata
+export function getMetadata({ menu, keywords }: MetadataProps): Metadata
 {
 	const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/gis-dev' : 'https://project.itcode.dev/gis-dev';
 	const authors = Object.values(APP_INFO.author.social).map(({ link, name }) => ({ name, url: link }));
 
+	const title = `${menu.title} - ${APP_INFO.title}`;
+
 	return {
 		authors,
-		description: description || APP_INFO.description,
+		description: menu.description || APP_INFO.description,
 		icons: [
 			'/gis-dev/favicon.ico',
 			{ rel: 'shortcut icon', url: '/gis-dev/favicon.ico' },
@@ -125,14 +112,14 @@ export function getMetadata({ title, description, keywords, url = '', image = AP
 		keywords,
 		metadataBase: new URL(baseUrl),
 		openGraph: {
-			description,
-			images: image,
+			description: menu.description,
+			images: menu.thumbnail,
 			locale: 'ko-KR',
 			siteName: APP_INFO.title,
-			title: `${title} - ${APP_INFO.title}`,
+			title,
 			type: 'website',
-			url: `${baseUrl}${url}`
+			url: `${baseUrl}${menu.link}`
 		},
-		title: `${title} - ${APP_INFO.title}`
+		title
 	};
 }
