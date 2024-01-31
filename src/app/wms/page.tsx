@@ -6,10 +6,9 @@
  */
 
 import WMSTemplate from '@gis-dev/components/template/page/WMSTemplate';
+import { MENU_WMS } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_WMS } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'GeoServer', 'WMS' ],

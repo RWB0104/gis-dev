@@ -6,10 +6,9 @@
  */
 
 import WFSPopupTemplate from '@gis-dev/components/template/page/WFSPopupTemplate';
+import { MENU_WFS_POPUP } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_WFS_POPUP } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'GeoServer', 'WFS', 'Overlay' ],

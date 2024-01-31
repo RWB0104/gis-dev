@@ -6,10 +6,9 @@
  */
 
 import MapInfoTemplate from '@gis-dev/components/template/page/MapInfoTemplate';
+import { MENU_MAP_INFO } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_MAP_INFO } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'Coordination', 'EPSG', 'Zoom' ],

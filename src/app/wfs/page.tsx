@@ -6,10 +6,9 @@
  */
 
 import WFSTemplate from '@gis-dev/components/template/page/WFSTemplate';
+import { MENU_WFS } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_WFS } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'GeoServer', 'WFS' ],

@@ -6,10 +6,9 @@
  */
 
 import GeolocationTemplate from '@gis-dev/components/template/page/GeolocationTemplate';
+import { MENU_GEOLOCATION } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_GEOLOCATION } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'Geolocation' ],

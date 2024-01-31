@@ -6,10 +6,9 @@
  */
 
 import HomeTemplate from '@gis-dev/components/template/page/HomeTemplate';
+import { MENU_HOME } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_HOME } from '../script/common/env';
 
 export const metadata = getMetadata({ menu: MENU_HOME });
 

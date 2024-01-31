@@ -6,10 +6,9 @@
  */
 
 import TransactionUpdateTemplate from '@gis-dev/components/template/page/TransactionUpdateTemplate';
+import { MENU_TRANSACTION_UPDATE } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_TRANSACTION_UPDATE } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'WFS', 'Transaction', 'Update' ],

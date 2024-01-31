@@ -6,10 +6,9 @@
  */
 
 import VWorldTemplate from '@gis-dev/components/template/page/VWorldTemplate';
+import { MENU_VWORLD } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_VWORLD } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'VectorLayer', 'VWorld' ],

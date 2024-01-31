@@ -6,10 +6,9 @@
  */
 
 import FeatureTemplate from '@gis-dev/components/template/page/FeatureTemplate';
+import { MENU_FEATURE } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_FEATURE } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'Feature' ],

@@ -6,10 +6,9 @@
  */
 
 import OSMTemplate from '@gis-dev/components/template/page/OSMTemplate';
+import { MENU_OSM } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
 import { ReactNode } from 'react';
-
-import { MENU_OSM } from '../../script/common/env';
 
 export const metadata = getMetadata({
 	keywords: [ 'OpenLayers', 'VectorLayer', 'OSM' ],
