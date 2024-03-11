@@ -1,0 +1,108 @@
+#speed-wagon {
+	position: fixed;
+
+	top: 0px;
+	left: 0px;
+
+	width: 100%;
+	height: 100%;
+
+	padding: 10px;
+
+	background-color: rgba($color: black, $alpha: 0.7);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.wrap {
+		background-color: white;
+		border: 1px solid grey;
+		border-radius: 10px;
+		box-sizing: border-box;
+
+		max-width: 640px;
+		min-width: 360px;
+
+		&>div {
+			padding: 20px;
+		}
+
+		.help {
+			text-align: center;
+
+			h3 {
+				font-size: 1.3rem;
+			}
+		}
+
+		.he-said {
+			border-top: 1px solid gainsboro;
+			border-bottom: 1px solid gainsboro;
+
+			font-size: 0.85rem;
+
+			p {
+				padding: 3px 0px;
+
+				svg {
+					vertical-align: top;
+				}
+			}
+
+			ul {
+				margin: 10px 0px;
+				padding-left: 20px;
+			}
+
+			span {
+				color: dodgerblue;
+			}
+
+			a {
+				color: crimson;
+				font-weight: bold;
+
+				cursor: pointer;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+
+		.i-said {
+			button {
+				$color: deeppink;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 10px;
+
+				width: 100%;
+				padding: 10px;
+
+				border: 1px solid $color;
+				border-radius: 5px;
+				background-color: $color;
+				color: white;
+
+				transition: 0.3s;
+
+				cursor: pointer;
+
+				&:hover {
+					background-color: transparent;
+					color: $color;
+
+					transition: 0.3s;
+				}
+			}
+		}
+	}
+
+	&[data-show=false] {
+		display: none;
+	}
+}

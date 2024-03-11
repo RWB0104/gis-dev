@@ -1,0 +1,50 @@
+#wms {
+	.map-wrapper {
+		.map-panel {
+			.item {
+				width: 100%;
+
+				button {
+					display: inline-flex;
+					justify-content: center;
+					align-items: center;
+					gap: 10px;
+
+					padding: 5px 10px;
+					background-color: white;
+					border: 1px solid gainsboro;
+					box-sizing: border-box;
+
+					width: 50%;
+
+					font-size: 12px;
+
+					cursor: pointer;
+
+					transition: 0.3s;
+
+					&:first-child {
+						border-bottom-left-radius: 5px;
+						border-top-left-radius: 5px;
+					}
+
+					&:last-child {
+						border-bottom-right-radius: 5px;
+						border-top-right-radius: 5px;
+					}
+
+					&:not([data-selected=true]):hover {
+						box-shadow: 0px 0px 3px dodgerblue inset;
+					}
+
+					&[data-selected=true] {
+						background-color: dodgerblue;
+						color: white;
+
+						transition: 0.3s;
+					}
+				}
+			}
+		}
+	}
+}
