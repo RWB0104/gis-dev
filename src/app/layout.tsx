@@ -6,6 +6,7 @@
  */
 
 import RootTemplate from '@gis-dev/components/template/global/RootTemplate';
+
 import type { Metadata } from 'next';
 import { PropsWithChildren, ReactNode } from 'react';
 

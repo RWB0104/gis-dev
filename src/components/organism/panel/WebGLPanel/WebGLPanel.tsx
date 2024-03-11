@@ -12,6 +12,7 @@ import { MapContext } from '@gis-dev/script/context/map';
 import { wfsLayer } from '@gis-dev/script/map/layers';
 import { wfsSource } from '@gis-dev/script/map/source';
 import { getWebGLStyle } from '@gis-dev/script/map/style';
+
 import BlurOn from '@mui/icons-material/BlurOn';
 import Grain from '@mui/icons-material/Grain';
 import Box from '@mui/material/Box';

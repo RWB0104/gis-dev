@@ -8,6 +8,7 @@
 import TransactionUpdateTemplate from '@gis-dev/components/template/page/TransactionUpdateTemplate';
 import { MENU_TRANSACTION_UPDATE } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
+
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({

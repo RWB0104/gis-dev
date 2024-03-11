@@ -8,6 +8,7 @@
 import { transactionLayer } from '@gis-dev/script/map/layers';
 import { wfsSource } from '@gis-dev/script/map/source';
 import { clickStyle, hoverStyle, starbucksClickStyle, starbucksHoverStyle } from '@gis-dev/script/map/style';
+
 import { Collection } from 'ol';
 import { click, pointerMove } from 'ol/events/condition';
 import Feature from 'ol/Feature';

@@ -8,6 +8,7 @@
 'use client';
 
 import { themeStore } from '@gis-dev/script/states/theme';
+
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 // eslint-disable-next-line camelcase

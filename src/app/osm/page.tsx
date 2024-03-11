@@ -8,6 +8,7 @@
 import OSMTemplate from '@gis-dev/components/template/page/OSMTemplate';
 import { MENU_OSM } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
+
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({

@@ -8,6 +8,7 @@
 import HeatMapTemplate from '@gis-dev/components/template/page/HeatMapTemplate';
 import { MENU_HEAT_MAP } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
+
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({

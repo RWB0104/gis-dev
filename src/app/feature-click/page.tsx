@@ -8,6 +8,7 @@
 import FeatureClickTemplate from '@gis-dev/components/template/page/FeatureClickTemplate';
 import { MENU_FEATURE_CLICK } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
+
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({

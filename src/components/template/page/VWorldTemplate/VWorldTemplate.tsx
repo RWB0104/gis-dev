@@ -9,6 +9,7 @@ import BasicPanel from '@gis-dev/components/atom/BasicPanel';
 import HowToPlayButton from '@gis-dev/components/organism/button/HowToPlayButton';
 import VWorldMap from '@gis-dev/components/organism/map/VWorldMap';
 import VWorldPanel from '@gis-dev/components/organism/panel/VWorldPanel';
+
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';

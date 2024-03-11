@@ -6,6 +6,7 @@
  */
 
 import { APP_INFO, Menu } from '@gis-dev/script/common/env';
+
 import { Metadata } from 'next';
 import { Polygon } from 'ol/geom';
 

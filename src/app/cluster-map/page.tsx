@@ -8,6 +8,7 @@
 import ClusterMapTemplate from '@gis-dev/components/template/page/ClusterMapTemplate';
 import { MENU_CLUSTER_MAP } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
+
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({

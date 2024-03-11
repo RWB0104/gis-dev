@@ -8,6 +8,7 @@
 import GeolocationTemplate from '@gis-dev/components/template/page/GeolocationTemplate';
 import { MENU_GEOLOCATION } from '@gis-dev/script/common/env';
 import { getMetadata } from '@gis-dev/script/common/util';
+
 import { ReactNode } from 'react';
 
 export const metadata = getMetadata({

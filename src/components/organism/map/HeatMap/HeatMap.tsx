@@ -10,6 +10,7 @@
 import MapProvider, { MapProviderInitHandler } from '@gis-dev/components/organism/global/MapProvider';
 import { wfsSource } from '@gis-dev/script/map/source';
 import { views } from '@gis-dev/script/map/view';
+
 import Heatmap from 'ol/layer/Heatmap';
 import { PropsWithChildren, ReactNode, useCallback } from 'react';
 
