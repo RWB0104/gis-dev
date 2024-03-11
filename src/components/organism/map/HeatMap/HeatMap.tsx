@@ -10,9 +10,7 @@
 import MapProvider, { MapProviderInitHandler } from '@gis-dev/components/organism/global/MapProvider';
 import { wfsSource } from '@gis-dev/script/map/source';
 import { views } from '@gis-dev/script/map/view';
-import { Point } from 'ol/geom';
 import Heatmap from 'ol/layer/Heatmap';
-import VectorSource from 'ol/source/Vector';
 import { PropsWithChildren, ReactNode, useCallback } from 'react';
 
 /**
@@ -30,7 +28,7 @@ export default function HeatMap({ children }: PropsWithChildren): ReactNode
 			blur: 20,
 			properties: { name: 'wfs' },
 			radius: 20,
-			source: wfsSource.starbucksSource as VectorSource<Point>,
+			source: wfsSource.starbucksSource,
 			zIndex: 5
 		});
 

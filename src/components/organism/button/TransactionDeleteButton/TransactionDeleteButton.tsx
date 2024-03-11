@@ -45,7 +45,7 @@ export default function TransactionDeleteButton(): ReactNode
 				layer?.getSource()?.refresh();
 
 				const popup = map.getOverlayById('popup');
-				popup.setPosition(undefined);
+				popup?.setPosition(undefined);
 			}
 		}
 	});

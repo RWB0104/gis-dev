@@ -17,11 +17,10 @@ import { ModalProps } from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { FeatureLike } from 'ol/Feature';
-import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
+import { MultiPolygon, Polygon } from 'ol/geom';
 import Modify from 'ol/interaction/Modify';
 import Select, { SelectEvent } from 'ol/interaction/Select';
 import { ObjectEvent } from 'ol/Object';
-import VectorSource from 'ol/source/Vector';
 import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 interface FeatureStateProps
@@ -109,7 +108,7 @@ export default function TransactionUpdateButton(): ReactNode
 
 	const handleClose: ModalProps['onClose'] = useCallback(() =>
 	{
-		const source: VectorSource<Geometry> | null = wfsLayer.wfsTransactionLayer.getSource();
+		const source = wfsLayer.wfsTransactionLayer.getSource();
 		source?.refresh();
 
 		setModifiedState(undefined);
@@ -117,7 +116,7 @@ export default function TransactionUpdateButton(): ReactNode
 
 	const handleClick = useCallback(() =>
 	{
-		map?.getOverlayById('popup').setPosition(undefined);
+		map?.getOverlayById('popup')?.setPosition(undefined);
 
 		setInteractionState(true);
 	}, [ map, setInteractionState ]);

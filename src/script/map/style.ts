@@ -11,10 +11,10 @@ import RenderFeature from 'ol/render/Feature';
 import Circle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import Icon from 'ol/style/Icon';
-import { LiteralStyle } from 'ol/style/literal';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import Text from 'ol/style/Text';
+import { WebGLStyle } from 'ol/style/webgl';
 
 export type StyleFeatureType = RenderFeature | Feature<Geometry>;
 
@@ -230,9 +230,9 @@ export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, 
 /**
  * WebGL 스타일 반환 메서드
  *
- * @returns {LiteralStyle} 스타일
+ * @returns {WebGLStyle} 스타일
  */
-export function getWebGLStyle(): LiteralStyle
+export function getWebGLStyle(): WebGLStyle
 {
 	return {
 		'circle-displacement': [

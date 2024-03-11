@@ -153,20 +153,20 @@ export default function StarbucksPopup(): ReactNode
 				{
 					const [ minX, minY, maxX, maxY ] = geom.getExtent();
 
-					overlay.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
+					overlay?.setPosition([ (maxX + minX) / 2, (maxY + minY) / 2 ]);
 				}
 
 				// 아닐 경우
 				else
 				{
-					overlay.setPosition(undefined);
+					overlay?.setPosition(undefined);
 				}
 			}
 
 			// 아닐 경우
 			else
 			{
-				overlay.setPosition(undefined);
+				overlay?.setPosition(undefined);
 			}
 		}
 	}, [ map, featureState ]);

@@ -18,8 +18,7 @@ import { ModalProps } from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { FeatureLike } from 'ol/Feature';
-import { Geometry, Polygon } from 'ol/geom';
-import VectorSource from 'ol/source/Vector';
+import { Polygon } from 'ol/geom';
 import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
 /**
@@ -42,7 +41,7 @@ export default function TransactionInsertButton(): ReactNode
 				const layer = map.getAllLayers().find((i) => i.get('name') === 'wfs');
 				layer?.getSource()?.refresh();
 
-				const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
+				const source = transactionLayer.drawLayer.getSource();
 				source?.clear();
 
 				setFeaturesState(undefined);
@@ -58,7 +57,7 @@ export default function TransactionInsertButton(): ReactNode
 		// 맵이 유효할 경우
 		if (map)
 		{
-			const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
+			const source = transactionLayer.drawLayer.getSource();
 			source?.clear();
 
 			interactions.set('name', 'draw');
@@ -75,7 +74,7 @@ export default function TransactionInsertButton(): ReactNode
 		{
 			map.removeInteraction(interactions);
 
-			const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
+			const source = transactionLayer.drawLayer.getSource();
 			const features = source?.getFeatures();
 
 			setDisabledState(false);
@@ -112,7 +111,7 @@ export default function TransactionInsertButton(): ReactNode
 
 	const handleClose: ModalProps['onClose'] = useCallback(() =>
 	{
-		const source: VectorSource<Geometry> | null = transactionLayer.drawLayer.getSource();
+		const source = transactionLayer.drawLayer.getSource();
 		source?.clear();
 
 		setFeaturesState(undefined);
