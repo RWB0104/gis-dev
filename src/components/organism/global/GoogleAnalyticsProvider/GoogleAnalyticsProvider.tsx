@@ -5,6 +5,8 @@
  * @since 2023.11.10 Fri 16:10:06
  */
 
+'use client';
+
 import { PropsWithChildren, ReactNode } from 'react';
 import ReactGA from 'react-ga4';
 
