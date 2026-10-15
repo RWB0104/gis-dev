@@ -11,6 +11,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.5.15
         version: 2.5.15
+      '@gis-dev/typescript-pack':
+        specifier: workspace:*
+        version: link:packages/repo-group/typescript-pack
       '@itcode-dev/biome-config':
         specifier: ^1.1.1
         version: 1.1.1(@biomejs/biome@2.5.15)
@@ -20,6 +23,8 @@ importers:
       typescript:
         specifier: 7.0.2
         version: 7.0.2
+
+  packages/repo-group/typescript-pack: {}
 
 packages:
 
