@@ -62,7 +62,7 @@
 			"formatter": {
 				"enabled": false
 			},
-			"includes": ["./packages/global-ui-group/headless-ui-pack/**/*.{ts,tsx}"],
+			"includes": ["./packages/global-ui-group/shadcn-ui-pack/**/*.{ts,tsx}"],
 			"linter": {
 				"enabled": false
 			}
