@@ -1,0 +1,9 @@
+{
+	"name": "@types/gis-dev",
+	"scripts": {
+		"check-types": "tsc",
+		"lint": "biome check"
+	},
+	"type": "module",
+	"types": "./types/index.d.ts"
+}
