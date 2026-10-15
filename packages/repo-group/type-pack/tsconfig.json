@@ -1,0 +1,4 @@
+{
+	"extends": "@gis-dev/typescript-pack/base.json",
+	"include": ["./types/**/*.d.ts"]
+}
