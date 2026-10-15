@@ -21,6 +21,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.5.15
         version: 2.5.15
+      '@gis-dev/test-pack':
+        specifier: workspace:*
+        version: link:packages/repo-group/test-pack
       '@gis-dev/typescript-pack':
         specifier: workspace:*
         version: link:packages/repo-group/typescript-pack

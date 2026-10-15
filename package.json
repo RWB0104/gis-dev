@@ -6,6 +6,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.15",
+		"@gis-dev/test-pack": "workspace:*",
 		"@gis-dev/typescript-pack": "workspace:*",
 		"@itcode-dev/biome-config": "^1.1.1",
 		"@testing-library/jest-dom": "^7.0.1",
