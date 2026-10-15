@@ -1,0 +1,5 @@
+{
+	"exclude": ["node_modules"],
+	"extends": ["@gis-dev/typescript-pack/nextjs.json"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts"]
+}

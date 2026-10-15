@@ -1,0 +1,13 @@
+{
+	"devDependencies": {
+		"babel-plugin-react-compiler": "1.0.0",
+		"typescript": "^5"
+	},
+	"name": "@gis-dev/root",
+	"scripts": {
+		"build": "next build",
+		"dev": "next dev",
+		"start": "next start"
+	},
+	"version": "0.1.0"
+}
