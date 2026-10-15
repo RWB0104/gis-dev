@@ -1,0 +1,15 @@
+{
+	"exports": {
+		"./*": "./src/*/index.ts"
+	},
+	"imports": {
+		"#/*": "./src/*/index.ts",
+		"#/package": "./package.json"
+	},
+	"name": "@gis-dev/test-pack",
+	"scripts": {
+		"check-types": "tsc",
+		"lint": "biome check"
+	},
+	"type": "module"
+}
