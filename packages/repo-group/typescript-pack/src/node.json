@@ -1,0 +1,8 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"erasableSyntaxOnly": true,
+		"types": ["gis-dev", "vitest/globals", "node"]
+	},
+	"extends": "./base.json"
+}

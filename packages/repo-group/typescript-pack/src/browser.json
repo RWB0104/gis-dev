@@ -1,0 +1,8 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"lib": ["es2022", "DOM", "DOM.Iterable"],
+		"types": ["gis-dev", "vitest/globals"]
+	},
+	"extends": "./base.json"
+}

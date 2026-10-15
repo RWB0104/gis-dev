@@ -1,0 +1,7 @@
+{
+	"exports": {
+		"./*.json": "./src/*.json"
+	},
+	"name": "@gis-dev/typescript-pack",
+	"type": "module"
+}
