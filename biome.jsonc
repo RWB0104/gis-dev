@@ -1,0 +1,104 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							[":BUN:", ":NODE:"],
+							":BLANK_LINE:",
+							[":PACKAGE:", "!@gis-dev/**"],
+							":BLANK_LINE:",
+							"@gis-dev/**",
+							":BLANK_LINE:",
+							":ALIAS:",
+							":BLANK_LINE:",
+							":PATH:"
+						]
+					}
+				}
+			}
+		}
+	},
+	"extends": ["@itcode-dev/biome-config"],
+	"files": {
+		"includes": ["!**/coverage"]
+	},
+	"linter": {
+		"rules": {
+			"correctness": {
+				"noSolidDestructuredProps": "off",
+				"noUndeclaredDependencies": "off",
+				"noUnresolvedImports": "off",
+				"useQwikValidLexicalScope": "off"
+			},
+			"nursery": {
+				"noUnusedClasses": "off",
+				"useExplicitReturnType": "off"
+			},
+			"performance": {
+				"noImgElement": "off"
+			},
+			"security": {
+				"noSecrets": "off"
+			},
+			"suspicious": {
+				"noUnknownAttribute": {
+					"level": "error",
+					"options": {
+						"ignore": ["hrefLang"]
+					}
+				}
+			}
+		}
+	},
+	"overrides": [
+		{
+			"assist": {
+				"enabled": false
+			},
+			"formatter": {
+				"enabled": false
+			},
+			"includes": ["./packages/global-ui-group/headless-ui-pack/**/*.{ts,tsx}"],
+			"linter": {
+				"enabled": false
+			}
+		},
+		{
+			"includes": ["**/*.d.ts"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["**/*.spec.{ts,tsx}"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUndeclaredVariables": "off"
+					}
+				}
+			}
+		},
+		{
+			"assist": {
+				"enabled": false
+			},
+			"includes": ["./packages/external-group/api-pack/src/generated/**/*"],
+			"linter": {
+				"enabled": false
+			}
+		}
+	],
+	"root": true,
+	"vcs": {
+		"useIgnoreFile": false
+	}
+}
