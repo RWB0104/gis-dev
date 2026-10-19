@@ -36,3 +36,6 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+packages/external-group/api-pack/src/generated/**/*.ts
+packages/external-group/api-pack/oas.yaml
