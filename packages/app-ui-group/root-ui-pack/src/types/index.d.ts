@@ -1,0 +1,8 @@
+/**
+ * 타입 인덱스 모듈
+ *
+ * @author RWB
+ * @since 2026.10.20 화 17:46:38
+ */
+
+declare module '*.css';
