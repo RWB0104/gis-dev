@@ -1,0 +1,4 @@
+{
+	"extends": "@gis-dev/typescript-pack/react.json",
+	"include": ["./src/**/*.ts", "./src/**/*.tsx"]
+}

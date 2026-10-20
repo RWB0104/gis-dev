@@ -1,0 +1,7 @@
+@import "@gis-dev/shadcn-ui-pack/globals.css";
+
+@source "../../../../../{apps,packages}/**/*.tsx";
+
+@source not "**/node_modules";
+@source not "**/.next";
+@source not "**/dist";
