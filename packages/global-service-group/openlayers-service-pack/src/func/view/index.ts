@@ -5,6 +5,8 @@
  * @since 2026.10.19 월 19:47:02
  */
 
+'use client';
+
 import { View } from 'ol';
 
 import { position } from '#/func/position';
