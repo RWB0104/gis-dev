@@ -8,11 +8,20 @@
 import TileLayer from 'ol/layer/Tile';
 import { XYZ } from 'ol/source';
 
+// Google 로드맵 레이어
+export const googleRoadLayer = new TileLayer({
+	preload: Number.POSITIVE_INFINITY,
+	properties: { name: 'base-google-road' },
+	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' }),
+	zIndex: 2
+});
+
 // Google 지형도 레이어
 export const googleTerrainLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-terrain' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=p&x={x}&y={y}&z={z}' }),
+	visible: false,
 	zIndex: 2
 });
 
@@ -21,6 +30,7 @@ export const googleAlterLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-alter' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=r&x={x}&y={y}&z={z}' }),
+	visible: false,
 	zIndex: 2
 });
 
@@ -29,6 +39,7 @@ export const googleSatelliteLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-satellite' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}' }),
+	visible: false,
 	zIndex: 2
 });
 
@@ -37,6 +48,7 @@ export const googleOnlyTerrainLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-only-terrain' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=t&x={x}&y={y}&z={z}' }),
+	visible: false,
 	zIndex: 2
 });
 
@@ -45,5 +57,6 @@ export const googleHybridyLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-hybrid' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' }),
+	visible: false,
 	zIndex: 2
 });

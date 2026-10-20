@@ -9,6 +9,7 @@ import {
 	googleAlterLayer,
 	googleHybridyLayer,
 	googleOnlyTerrainLayer,
+	googleRoadLayer,
 	googleSatelliteLayer,
 	googleTerrainLayer
 } from '#/func/layer/google';
@@ -16,12 +17,13 @@ import { osmLayer } from '#/func/layer/osm';
 import { drawLayer, sejongWfsLayer, wfsCityVectorLayer, wfsStarbucksClusterLayer, wfsTransactionLayer } from '#/func/layer/wfs';
 import { sejongImageWmsLayer, sejongTileWmsLayer } from '#/func/layer/wms';
 
-const osmTileLayer = { osmLayer };
+export const osmTileLayer = { osmLayer };
 
-const googleTileLayer = {
+export const googleTileLayer = {
 	googleAlterLayer,
 	googleHybridyLayer,
 	googleOnlyTerrainLayer,
+	googleRoadLayer,
 	googleSatelliteLayer,
 	googleTerrainLayer
 };

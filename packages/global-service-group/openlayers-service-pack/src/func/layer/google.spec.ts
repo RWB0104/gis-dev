@@ -11,6 +11,7 @@ import {
 	googleAlterLayer,
 	googleHybridyLayer,
 	googleOnlyTerrainLayer,
+	googleRoadLayer,
 	googleSatelliteLayer,
 	googleTerrainLayer
 } from './google';
@@ -39,6 +40,12 @@ describe('[@gis-dev/openlayers-service-pack] layer/google', () => {
 	describe('googleOnlyTerrainLayer 테스트', () => {
 		it('name base-google-only-terrain인 TileLayer다', () => {
 			expect(googleOnlyTerrainLayer.get('name')).toBe('base-google-only-terrain');
+		});
+	});
+
+	describe('googleRoadLayer 테스트', () => {
+		it('name base-google-road인 TileLayer다', () => {
+			expect(googleRoadLayer.get('name')).toBe('base-google-road');
 		});
 	});
 
