@@ -37,5 +37,7 @@ yarn-error.log*
 .DS_Store
 *.pem
 
+apps/root/next-env.d.ts
+
 packages/external-group/api-pack/src/generated/**/*.ts
 packages/external-group/api-pack/oas.yaml
