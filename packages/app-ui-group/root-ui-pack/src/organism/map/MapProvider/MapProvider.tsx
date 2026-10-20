@@ -7,6 +7,8 @@
 
 'use client';
 
+import 'ol/ol.css';
+
 import type { MapOptions } from 'ol/Map';
 import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useRef } from 'react';
 
