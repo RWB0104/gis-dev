@@ -11,3 +11,5 @@ type Updater<T> = T | Func<T, T>;
 type Theme = 'light' | 'dark';
 
 type PropsWithoutChildren<T> = Omit<T, 'children'>;
+
+type DateSource = string | number | Date;
