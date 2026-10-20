@@ -7,7 +7,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { API_URL, EPSG } from '#/const/index';
+import { API_URL, EPSG } from '#/const';
 
 describe('[@gis-dev/util-pack] const', () => {
 	describe('API_URL 테스트', () => {

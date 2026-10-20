@@ -3,7 +3,7 @@
 		"./*": "./src/*/index.ts"
 	},
 	"imports": {
-		"#/*": "./src/*.ts",
+		"#/*": "./src/*/index.ts",
 		"#/package": "./package.json"
 	},
 	"name": "@gis-dev/util-pack",

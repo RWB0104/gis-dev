@@ -7,7 +7,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { urlBuilder } from '#/url/index';
+import { urlBuilder } from '#/url';
 
 describe('[@gis-dev/util-pack] url', () => {
 	describe('urlBuilder 테스트', () => {
