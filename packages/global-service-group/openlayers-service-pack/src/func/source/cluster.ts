@@ -7,6 +7,6 @@
 
 import { Cluster } from 'ol/source';
 
-import { starbucksSource } from '#/source/wfs';
+import { starbucksSource } from '#/func/source/wfs';
 
 export const starbucksClusterSource = new Cluster({ distance: 100, source: starbucksSource });

@@ -5,9 +5,9 @@
  * @since 2026.10.19 월 12:58:50
  */
 
-import { starbucksClusterSource } from '#/source/cluster';
-import { sejongBuildingSource, starbucksSource, transactionSource, wfsCitySource } from '#/source/wfs';
-import { sejongImageSource, sejongTileSource } from '#/source/wms';
+import { starbucksClusterSource } from '#/func/source/cluster';
+import { sejongBuildingSource, starbucksSource, transactionSource, wfsCitySource } from '#/func/source/wfs';
+import { sejongImageSource, sejongTileSource } from '#/func/source/wms';
 
 export const wfsSource = {
 	sejongBuildingSource,

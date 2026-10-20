@@ -8,7 +8,14 @@
 		"./*": "./src/*/index.ts"
 	},
 	"imports": {
-		"#/*": "./src/*.ts",
+		"#/*": "./src/*/index.ts",
+		"#/func/layer/google": "./src/func/layer/google.ts",
+		"#/func/layer/osm": "./src/func/layer/osm.ts",
+		"#/func/layer/wfs": "./src/func/layer/wfs.ts",
+		"#/func/layer/wms": "./src/func/layer/wms.ts",
+		"#/func/source/cluster": "./src/func/source/cluster.ts",
+		"#/func/source/wfs": "./src/func/source/wfs.ts",
+		"#/func/source/wms": "./src/func/source/wms.ts",
 		"#/package": "./package.json"
 	},
 	"name": "@gis-dev/openlayers-service-pack",

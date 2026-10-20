@@ -7,7 +7,7 @@
 
 import { View } from 'ol';
 
-import { position } from '#/position/index';
+import { position } from '#/func/position';
 
 // 서울시 기준 View
 export const seoulView = new View({

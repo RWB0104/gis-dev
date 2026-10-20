@@ -8,7 +8,7 @@
 import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 
-import { wmsSource } from '#/source/index';
+import { wmsSource } from '#/func/source';
 
 // 세종시 건물 타일 WMS(WMTS) 레이어
 export const sejongTileWmsLayer = new TileLayer({

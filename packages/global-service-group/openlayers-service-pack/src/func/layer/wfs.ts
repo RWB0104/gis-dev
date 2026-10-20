@@ -9,8 +9,8 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import type { Style } from 'ol/style';
 
-import { clusterSource, wfsSource } from '#/source/index';
-import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '#/style/index';
+import { clusterSource, wfsSource } from '#/func/source';
+import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '#/func/style';
 
 // 세종시 건물 WFS 레이어
 export const sejongWfsLayer = new VectorLayer({

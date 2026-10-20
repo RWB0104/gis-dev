@@ -11,10 +11,10 @@ import {
 	googleOnlyTerrainLayer,
 	googleSatelliteLayer,
 	googleTerrainLayer
-} from '#/layer/google';
-import { osmLayer } from '#/layer/osm';
-import { drawLayer, sejongWfsLayer, wfsCityVectorLayer, wfsStarbucksClusterLayer, wfsTransactionLayer } from '#/layer/wfs';
-import { sejongImageWmsLayer, sejongTileWmsLayer } from '#/layer/wms';
+} from '#/func/layer/google';
+import { osmLayer } from '#/func/layer/osm';
+import { drawLayer, sejongWfsLayer, wfsCityVectorLayer, wfsStarbucksClusterLayer, wfsTransactionLayer } from '#/func/layer/wfs';
+import { sejongImageWmsLayer, sejongTileWmsLayer } from '#/func/layer/wms';
 
 const osmTileLayer = { osmLayer };
 
