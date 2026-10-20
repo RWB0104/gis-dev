@@ -1,0 +1,32 @@
+{
+	"dependencies": {
+		"@asteasolutions/zod-to-openapi": "^9.1.0",
+		"@gis-dev/util-pack": "workspace:*",
+		"axios": "^1.20.0",
+		"xmlbuilder2": "^4.0.3",
+		"yaml": "^2.9.1",
+		"zod": "^4.6.7",
+		"zod-geojson": "^1.7.1"
+	},
+	"devDependencies": {
+		"@types/geojson": "^7946.0.16",
+		"orval": "^8.30.0"
+	},
+	"exports": {
+		"./*": "./src/*.ts"
+	},
+	"imports": {
+		"#/config": "./src/config/index.ts",
+		"#/oas/*": "./src/oas/*.ts",
+		"#/package": "./package.json"
+	},
+	"name": "@gis-dev/api-pack",
+	"scripts": {
+		"api": "pnpm api:oas && pnpm api:code",
+		"api:code": "orval",
+		"api:oas": "bun ./src/oas/index.ts",
+		"check-types": "tsc",
+		"lint": "biome check"
+	},
+	"type": "module"
+}
