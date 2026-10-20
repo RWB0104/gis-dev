@@ -1,0 +1,20 @@
+{
+	"dependencies": {
+		"@gis-dev/api-pack": "workspace:*",
+		"@gis-dev/util-pack": "workspace:*",
+		"proj4": "^2.22.0"
+	},
+	"exports": {
+		"./*": "./src/*/index.ts"
+	},
+	"imports": {
+		"#/*": "./src/*.ts",
+		"#/package": "./package.json"
+	},
+	"name": "@gis-dev/openlayers-service-pack",
+	"scripts": {
+		"check-types": "tsc",
+		"lint": "biome check"
+	},
+	"type": "module"
+}
