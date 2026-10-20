@@ -4,3 +4,5 @@
  * @author RWB
  * @since 2026.10.15 목 14:36:59
  */
+
+/// <reference path="./common.d.ts" />
