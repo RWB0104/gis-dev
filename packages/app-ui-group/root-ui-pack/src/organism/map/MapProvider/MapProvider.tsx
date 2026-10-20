@@ -14,6 +14,8 @@ import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
 import { useMap } from '@gis-dev/openlayers-service-pack/hooks/map';
 import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
 
+const CROSS_HAIR_CLS = cn('-translate-1/2 pointer-events-none absolute top-1/2 left-1/2 z-10 bg-neutral-500/70');
+
 export interface MapProviderProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
 	/**
 	 * 옵션
@@ -28,7 +30,7 @@ export interface MapProviderProps extends DetailedHTMLProps<HTMLAttributes<HTMLE
  *
  * @returns {React.JSX.Element} JSX
  */
-export default function MapProvider({ options, className, ...props }: MapProviderProps): React.JSX.Element {
+export default function MapProvider({ options, className, children, ...props }: MapProviderProps): React.JSX.Element {
 	const map = useMap(options);
 
 	const ref = useRef<HTMLElement>(null);
@@ -51,12 +53,17 @@ export default function MapProvider({ options, className, ...props }: MapProvide
 			}}
 		>
 			<section
-				className={cn('h-dvh w-full', className)}
+				className={cn('relative h-dvh w-full', className)}
 				data-testid="MapProvider"
 				ref={ref}
 				suppressHydrationWarning
 				{...props}
-			/>
+			>
+				<div className={cn(CROSS_HAIR_CLS, 'h-0.5 w-4')} />
+				<div className={cn(CROSS_HAIR_CLS, 'h-4 w-0.5')} />
+
+				{children}
+			</section>
 		</MapContext>
 	);
 }
