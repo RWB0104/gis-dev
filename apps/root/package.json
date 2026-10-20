@@ -1,5 +1,9 @@
 {
+	"dependencies": {
+		"@gis-dev/root-ui-pack": "workspace:*"
+	},
 	"devDependencies": {
+		"@tailwindcss/postcss": "^4",
 		"babel-plugin-react-compiler": "1.0.0",
 		"typescript": "^5"
 	},
