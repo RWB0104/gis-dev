@@ -1,0 +1,3 @@
+{
+	"tailwindCSS.experimental.configFile": "packages/global-ui-group/shadcn-ui-pack/src/styles/globals.css"
+}
