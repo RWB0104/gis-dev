@@ -12,6 +12,7 @@ export default defineConfig({
 		coverage: {
 			exclude: [
 				'packages/repo-group/test-pack/src/**/*.ts',
+				'packages/external-group/api-pack/src/oas/index.ts',
 				'packages/external-group/api-pack/src/generated/**/*.ts',
 				'packages/global-ui-group/shadcn-ui-pack/src/**/*.{tsx,ts}'
 			],
