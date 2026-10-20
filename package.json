@@ -29,6 +29,7 @@
 	"packageManager": "pnpm@11.25.0",
 	"private": true,
 	"scripts": {
+		"api": "turbo run api",
 		"build": "turbo run build",
 		"check-types": "turbo run check-types",
 		"dev": "turbo run dev",
