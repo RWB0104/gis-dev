@@ -1,6 +1,7 @@
 {
 	"dependencies": {
-		"@gis-dev/root-ui-pack": "workspace:*"
+		"@gis-dev/root-ui-pack": "workspace:*",
+		"@gis-dev/shadcn-ui-pack": "workspace:*"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4",

@@ -81,6 +81,9 @@ importers:
       '@gis-dev/root-ui-pack':
         specifier: workspace:*
         version: link:../../packages/app-ui-group/root-ui-pack
+      '@gis-dev/shadcn-ui-pack':
+        specifier: workspace:*
+        version: link:../../packages/global-ui-group/shadcn-ui-pack
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
