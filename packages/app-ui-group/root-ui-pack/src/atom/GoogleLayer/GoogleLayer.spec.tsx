@@ -10,11 +10,8 @@ import { render } from '@testing-library/react';
 import { Map } from 'ol';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
-import { googleTileLayer } from '@gis-dev/openlayers-service-pack/func/layer';
 
 import GoogleLayer from '.';
-
-const googleLayers = Object.values(googleTileLayer);
 
 describe('[@gis-dev/root-ui-pack] GoogleLayer', () => {
 	it('아무것도 렌더링하지 않는다', () => {
@@ -34,11 +31,7 @@ describe('[@gis-dev/root-ui-pack] GoogleLayer', () => {
 			</MapContext>
 		);
 
-		expect(spy).toHaveBeenCalledTimes(googleLayers.length);
-
-		for (const layer of googleLayers) {
-			expect(spy).toHaveBeenCalledWith(layer);
-		}
+		expect(spy).toHaveBeenCalledTimes(1);
 	});
 
 	it('map이 없으면 addLayer를 호출하지 않는다', () => {

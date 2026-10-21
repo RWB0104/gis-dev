@@ -19,9 +19,7 @@ export default function GoogleLayer(): null {
 	const { map } = use(MapContext);
 
 	useEffect(() => {
-		Object.entries(googleTileLayer).forEach(([_, v]) => {
-			map?.addLayer(v);
-		});
+		map?.addLayer(googleTileLayer.googleRoadLayer);
 	}, [map]);
 
 	return null;
