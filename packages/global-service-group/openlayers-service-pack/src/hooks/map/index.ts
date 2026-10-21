@@ -5,9 +5,12 @@
  * @since 2026.10.20 화 12:18:38
  */
 
+import type { MapBrowserEvent, MapEvent } from 'ol';
 import type { MapOptions } from 'ol/Map';
 import OlMap from 'ol/Map';
-import { useEffect, useRef, useState } from 'react';
+import { type RefObject, use, useEffect, useEffectEvent, useRef, useState } from 'react';
+
+import { MapContext } from '#/context/map';
 
 /**
  * 맵 훅 메서드
@@ -37,4 +40,103 @@ export function useMap(options?: MapOptions): OlMap | undefined {
 	}, []);
 
 	return mapState;
+}
+
+export interface UseMapInfoParams {
+	/**
+	 * BBOX
+	 */
+	bbox: RefObject<HTMLElement | null>;
+
+	/**
+	 * 중심 좌표
+	 */
+	center: RefObject<HTMLElement | null>;
+
+	/**
+	 * 커서
+	 */
+	cursor: RefObject<HTMLElement | null>;
+
+	/**
+	 * SRS
+	 */
+	srs: RefObject<HTMLElement | null>;
+
+	/**
+	 * 줌
+	 */
+	zoom: RefObject<HTMLElement | null>;
+}
+
+/**
+ * 맵 정보 훅 메서드
+ *
+ * @param {UseMapInfoParams} param0 UseMapInfoParams
+ */
+export function useMapInfo({ bbox, center, cursor, srs, zoom }: UseMapInfoParams): void {
+	const { map } = use(MapContext);
+
+	const handlePosition = useEffectEvent((m: OlMap) => {
+		if (bbox.current === null || center.current === null) {
+			return;
+		}
+
+		const [minX = 0, minY = 0, maxX = 0, maxY = 0] = m.getView().calculateExtent();
+		bbox.current.textContent = `${minX}\n${minY}\n\n${maxX}\n${maxY}`;
+
+		const [x, y] = [(minX + maxX) / 2, (minY + maxY) / 2];
+		center.current.textContent = `${x}\n${y}`;
+	});
+
+	const handleCursor = useEffectEvent((e: MapBrowserEvent<KeyboardEvent | PointerEvent | WheelEvent>) => {
+		if (cursor.current === null) {
+			return;
+		}
+
+		const [x, y] = e.coordinate;
+
+		cursor.current.textContent = `${x}\n${y}`;
+	});
+
+	const handleSrs = useEffectEvent((m: OlMap) => {
+		if (srs.current === null) {
+			return;
+		}
+
+		const epsg = m.getView().getProjection().getCode();
+		srs.current.textContent = epsg;
+	});
+
+	const handleZoom = useEffectEvent((m: OlMap) => {
+		if (zoom.current === null) {
+			return;
+		}
+
+		const level = m.getView().getZoom();
+		zoom.current.textContent = `${level?.toFixed(4)}`;
+	});
+
+	useEffect(() => {
+		if (map === undefined) {
+			return;
+		}
+
+		handlePosition(map);
+		handleSrs(map);
+		handleZoom(map);
+
+		const handleRender = (e: MapEvent) => {
+			handlePosition(e.map);
+			handleZoom(e.map);
+		};
+
+		map.on('postrender', handleRender);
+		map.on('pointermove', handleCursor);
+
+		return () => {
+			map.un('postrender', handleRender);
+			map.un('pointermove', handleCursor);
+		};
+	}, [map]);
 }
