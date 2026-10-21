@@ -21,7 +21,6 @@ export const googleTerrainLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-terrain' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=p&x={x}&y={y}&z={z}' }),
-	visible: false,
 	zIndex: 2
 });
 
@@ -30,7 +29,6 @@ export const googleAlterLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-alter' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=r&x={x}&y={y}&z={z}' }),
-	visible: false,
 	zIndex: 2
 });
 
@@ -39,7 +37,6 @@ export const googleSatelliteLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-satellite' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}' }),
-	visible: false,
 	zIndex: 2
 });
 
@@ -48,8 +45,7 @@ export const googleOnlyTerrainLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-only-terrain' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=t&x={x}&y={y}&z={z}' }),
-	visible: false,
-	zIndex: 2
+	zIndex: 3
 });
 
 // Google 하이브리드 맵 레이어
@@ -57,6 +53,5 @@ export const googleHybridyLayer = new TileLayer({
 	preload: Number.POSITIVE_INFINITY,
 	properties: { name: 'base-google-hybrid' },
 	source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' }),
-	visible: false,
 	zIndex: 2
 });

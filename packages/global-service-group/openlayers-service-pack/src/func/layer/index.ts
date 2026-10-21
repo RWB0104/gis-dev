@@ -8,7 +8,6 @@
 import {
 	googleAlterLayer,
 	googleHybridyLayer,
-	googleOnlyTerrainLayer,
 	googleRoadLayer,
 	googleSatelliteLayer,
 	googleTerrainLayer
@@ -22,7 +21,6 @@ export const osmTileLayer = { osmLayer };
 export const googleTileLayer = {
 	googleAlterLayer,
 	googleHybridyLayer,
-	googleOnlyTerrainLayer,
 	googleRoadLayer,
 	googleSatelliteLayer,
 	googleTerrainLayer

@@ -15,7 +15,6 @@ describe('[@gis-dev/openlayers-service-pack] layer', () => {
 					'osmLayer',
 					'googleAlterLayer',
 					'googleHybridyLayer',
-					'googleOnlyTerrainLayer',
 					'googleSatelliteLayer',
 					'googleTerrainLayer'
 				])
