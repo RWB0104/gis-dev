@@ -1,8 +1,7 @@
 {
 	"dependencies": {
 		"@gis-dev/api-pack": "workspace:*",
-		"@gis-dev/util-pack": "workspace:*",
-		"proj4": "^2.22.0"
+		"@gis-dev/util-pack": "workspace:*"
 	},
 	"exports": {
 		"./*": "./src/*/index.ts"
