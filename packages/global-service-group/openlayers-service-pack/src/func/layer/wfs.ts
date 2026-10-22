@@ -7,7 +7,9 @@
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import type { Style } from 'ol/style';
+import { Circle, Style } from 'ol/style';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
 
 import { clusterSource, wfsSource } from '#/func/source';
 import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '#/func/style';
@@ -52,4 +54,21 @@ export const wfsCityVectorLayer = new VectorLayer({
 	properties: { name: 'wfs' },
 	source: wfsSource.wfsCitySource,
 	zIndex: 5
+});
+
+// feature 레이어
+export const wfsFeatureVectorLayer = new VectorLayer({
+	properties: { name: 'feature' },
+	source: new VectorSource(),
+	style: new Style({
+		image: new Circle({
+			fill: new Fill({ color: 'dodgerblue' }),
+			radius: 7,
+			stroke: new Stroke({
+				color: 'black',
+				width: 2
+			})
+		})
+	}),
+	zIndex: 10
 });

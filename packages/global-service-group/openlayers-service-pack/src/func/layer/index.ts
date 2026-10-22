@@ -13,7 +13,14 @@ import {
 	googleTerrainLayer
 } from '#/func/layer/google';
 import { osmLayer } from '#/func/layer/osm';
-import { drawLayer, sejongWfsLayer, wfsCityVectorLayer, wfsStarbucksClusterLayer, wfsTransactionLayer } from '#/func/layer/wfs';
+import {
+	drawLayer,
+	sejongWfsLayer,
+	wfsCityVectorLayer,
+	wfsFeatureVectorLayer,
+	wfsStarbucksClusterLayer,
+	wfsTransactionLayer
+} from '#/func/layer/wfs';
 import { sejongImageWmsLayer, sejongTileWmsLayer } from '#/func/layer/wms';
 
 export const osmTileLayer = { osmLayer };
@@ -44,5 +51,6 @@ export const wmsLayer = {
 };
 
 export const transactionLayer = {
-	drawLayer
+	drawLayer,
+	wfsFeatureVectorLayer
 };
