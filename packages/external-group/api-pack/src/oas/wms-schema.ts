@@ -10,6 +10,8 @@
 import type { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
+import { geoJsonFeatureCollectionSchema } from './geojson-schema';
+
 const wmsGetMapRequestBaseSchema = z.object({
 	bbox: z.string(),
 	bgcolor: z.string().nullish(),
@@ -56,6 +58,29 @@ const wmsGetMapRequestBaseSchema = z.object({
 	width: z.number()
 });
 
+const wmsGetFeatureInfoRequestBaseSchema = z.object({
+	bbox: z.string(),
+	exceptions: z
+		.enum([
+			'application/vnd.ogc.se_xml',
+			'application/vnd.ogc.se_inimage',
+			'application/vnd.ogc.se_blank',
+			'application/vnd.gs.wms_partial',
+			'application/json',
+			'text/javascript'
+		])
+		.nullish(),
+	feature_count: z.number().nullish(),
+	height: z.number(),
+	info_format: z.string().nullish(),
+	layers: z.string(),
+	query_layers: z.string(),
+	request: z.enum(['GetFeatureInfo']),
+	service: z.enum(['WMS']),
+	styles: z.string(),
+	width: z.number()
+});
+
 export const wmsGetMapV1xRequestSchema = wmsGetMapRequestBaseSchema
 	.extend({
 		srs: z.string(),
@@ -69,6 +94,24 @@ export const wmsGetMapV13RequestSchema = wmsGetMapRequestBaseSchema
 		version: z.enum(['1.3.0'])
 	})
 	.openapi('WmsGetMapV13Request');
+
+export const wmsGetFeatureInfoV1xRequestSchema = wmsGetFeatureInfoRequestBaseSchema
+	.extend({
+		srs: z.string(),
+		version: z.enum(['1.0.0', '1.1.0', '1.1.1']),
+		x: z.number(),
+		y: z.number()
+	})
+	.openapi('wmsGetFeatureInfoV1xRequest');
+
+export const wmsGetFeatureInfoV13RequestSchema = wmsGetFeatureInfoRequestBaseSchema
+	.extend({
+		crs: z.string(),
+		i: z.number(),
+		j: z.number(),
+		version: z.enum(['1.3.0'])
+	})
+	.openapi('wmsGetFeatureInfoV13Request');
 
 /**
  * WMS 스키마 등록 메서드
@@ -92,7 +135,7 @@ export function registWmsSchema(registry: OpenAPIRegistry): void {
 				description: '200 OK'
 			}
 		},
-		summary: 'WMS 1.x.0 API',
+		summary: 'WMS GetMap 1.x.0 API',
 		tags: ['wms']
 	});
 
@@ -112,7 +155,49 @@ export function registWmsSchema(registry: OpenAPIRegistry): void {
 				description: '200 OK'
 			}
 		},
-		summary: 'WMS 1.3.0 API',
+		summary: 'WMS GetMap 1.3.0 API',
+		tags: ['wms']
+	});
+
+	registry.registerPath({
+		method: 'get',
+		operationId: 'getFeatureInfoV1x',
+		path: '/wms?_v=getFeatureInfoV1x',
+		request: {
+			query: wmsGetFeatureInfoV1xRequestSchema
+		},
+		responses: {
+			200: {
+				content: {
+					'application/json': {
+						schema: geoJsonFeatureCollectionSchema
+					}
+				},
+				description: '200 OK'
+			}
+		},
+		summary: 'WMS GetFeatureInfo 1.x.0 API',
+		tags: ['wms']
+	});
+
+	registry.registerPath({
+		method: 'get',
+		operationId: 'getFeatureInfoV13',
+		path: '/wms?_v=getFeatureInfoV13',
+		request: {
+			query: wmsGetFeatureInfoV13RequestSchema
+		},
+		responses: {
+			200: {
+				content: {
+					'application/json': {
+						schema: geoJsonFeatureCollectionSchema
+					}
+				},
+				description: '200 OK'
+			}
+		},
+		summary: 'WMS GetFeatureInfo 1.3.0 API',
 		tags: ['wms']
 	});
 }
