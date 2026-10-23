@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"@gis-dev/api-pack": "workspace:*",
 		"@gis-dev/openlayers-service-pack": "workspace:*",
 		"@gis-dev/shadcn-ui-pack": "workspace:*",
 		"@tanstack/react-query-devtools": "^5.104.4"

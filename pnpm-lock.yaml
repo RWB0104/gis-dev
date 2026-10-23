@@ -100,6 +100,9 @@ importers:
 
   packages/app-ui-group/root-ui-pack:
     dependencies:
+      '@gis-dev/api-pack':
+        specifier: workspace:*
+        version: link:../../external-group/api-pack
       '@gis-dev/openlayers-service-pack':
         specifier: workspace:*
         version: link:../../global-service-group/openlayers-service-pack
