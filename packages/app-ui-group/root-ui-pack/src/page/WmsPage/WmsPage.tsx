@@ -9,7 +9,6 @@ import { sejongView } from '@gis-dev/openlayers-service-pack/func/view';
 
 import GeolocationButton from '#/atom/GeolocationButton';
 import GoogleLayer from '#/atom/GoogleLayer';
-import WmsLayer from '#/atom/WmsLayer';
 import GuideDialog from '#/molecule/GuideDialog';
 import MapController from '#/organism/map/MapController';
 import MapProvider from '#/organism/map/MapProvider';
@@ -33,7 +32,6 @@ export default function WmsPage(): React.JSX.Element {
 			</MapController>
 
 			<GoogleLayer />
-			<WmsLayer />
 
 			<InteractionTemplate>
 				<GeolocationButton />
