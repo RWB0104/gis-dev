@@ -7,8 +7,9 @@
 
 import { renderHook } from '@testing-library/react';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Map, MapEvent, View } from 'ol';
+import { Collection, Map, MapEvent, View } from 'ol';
 import type BaseEvent from 'ol/events/Event';
+import { DragPan, type Interaction, Select } from 'ol/interaction';
 import TileLayer from 'ol/layer/Tile';
 import { createElement, type ReactNode, type RefObject } from 'react';
 
@@ -94,6 +95,78 @@ describe('[@gis-dev/openlayers-service-pack] map', () => {
 
 			expect(map.getLayers().getLength()).toBe(0);
 			expect(disposeSpy).toHaveBeenCalledOnce();
+		});
+
+		it('interactions를 넘기지 않으면 기본 인터렉션을 사용한다', () => {
+			const { result } = renderHook(() => useMap({ controls: [] }));
+
+			expect(
+				result.current
+					?.getInteractions()
+					.getArray()
+					.some((i) => i instanceof DragPan)
+			).toBe(true);
+		});
+
+		it('options 없이도 기본 인터렉션을 사용한다', () => {
+			const { result } = renderHook(() => useMap());
+
+			expect(
+				result.current
+					?.getInteractions()
+					.getArray()
+					.some((i) => i instanceof DragPan)
+			).toBe(true);
+		});
+
+		it('interactions 배열을 기본 인터렉션에 추가한다', () => {
+			const select = new Select();
+
+			const { result } = renderHook(() => useMap({ interactions: [select] }));
+
+			const interactions = result.current?.getInteractions().getArray() ?? [];
+
+			expect(interactions).toContain(select);
+			expect(interactions.some((i) => i instanceof DragPan)).toBe(true);
+		});
+
+		it('interactions Collection의 항목을 기본 인터렉션에 추가한다', () => {
+			const select = new Select();
+
+			const { result } = renderHook(() => useMap({ interactions: new Collection<Interaction>([select]) }));
+
+			const interactions = result.current?.getInteractions().getArray() ?? [];
+
+			expect(interactions).toContain(select);
+			expect(interactions.some((i) => i instanceof DragPan)).toBe(true);
+		});
+
+		it('넘겨받은 interactions Collection을 변경하지 않는다', () => {
+			const collection = new Collection<Interaction>([new Select()]);
+
+			const { unmount } = renderHook(() => useMap({ interactions: collection }));
+
+			unmount();
+
+			expect(collection.getLength()).toBe(1);
+		});
+
+		it('같은 interactions 옵션으로 맵을 다시 만들어도 인터렉션이 유지된다', () => {
+			const options = { interactions: [new Select()] };
+
+			const first = renderHook(() => useMap(options));
+
+			first.unmount();
+
+			const second = renderHook(() => useMap(options));
+
+			expect(
+				second.result.current
+					?.getInteractions()
+					.getArray()
+					.some((i) => i instanceof DragPan)
+			).toBe(true);
+			expect(second.result.current?.getInteractions().getArray()).toContain(options.interactions[0]);
 		});
 
 		it('options 참조가 바뀌어도 Map을 재생성하지 않는다', () => {

@@ -5,7 +5,8 @@
  * @since 2026.10.20 화 12:18:38
  */
 
-import type { MapBrowserEvent, MapEvent } from 'ol';
+import { Collection, type MapBrowserEvent, type MapEvent } from 'ol';
+import { defaults } from 'ol/interaction';
 import type { MapOptions } from 'ol/Map';
 import OlMap from 'ol/Map';
 import { type RefObject, use, useEffect, useEffectEvent, useRef, useState } from 'react';
@@ -30,7 +31,14 @@ export function useMap(options?: MapOptions): OlMap | undefined {
 	const optionsRef = useRef(options);
 
 	useEffect(() => {
-		const map = new OlMap(optionsRef.current);
+		const { interactions, ...rest } = optionsRef.current ?? {};
+
+		const map = new OlMap({
+			...rest,
+			interactions: interactions
+				? defaults().extend(interactions instanceof Collection ? interactions.getArray() : interactions)
+				: undefined
+		});
 
 		setMapState(map);
 
