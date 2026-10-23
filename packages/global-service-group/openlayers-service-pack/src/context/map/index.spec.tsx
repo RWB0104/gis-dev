@@ -6,8 +6,7 @@
  */
 
 import { renderHook } from '@testing-library/react';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Map } from 'ol';
+import { Map as OlMap } from 'ol';
 import type { ReactNode } from 'react';
 import { use } from 'react';
 
@@ -22,7 +21,7 @@ describe('[@gis-dev/openlayers-service-pack] map', () => {
 		});
 
 		it('Provider로 주입한 map을 소비한다', () => {
-			const map = new Map();
+			const map = new OlMap();
 
 			const wrapper = ({ children }: { children: ReactNode }): ReactNode => (
 				<MapContext value={{ map }}>{children}</MapContext>

@@ -6,8 +6,7 @@
  */
 
 import { fireEvent, render, screen } from '@testing-library/react';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Map } from 'ol';
+import { Map as OlMap } from 'ol';
 import VectorLayer from 'ol/layer/Vector';
 import type { ComponentProps } from 'react';
 
@@ -28,7 +27,7 @@ function createOverlay(): VectorLayer {
 /**
  * 맵 컨텍스트로 감싸 LayerSelect를 렌더링하는 메서드
  */
-function renderSelect(map?: Map, props?: ComponentProps<typeof LayerSelect>): void {
+function renderSelect(map?: OlMap, props?: ComponentProps<typeof LayerSelect>): void {
 	render(
 		<MapContext value={map === undefined ? {} : { map }}>
 			<LayerSelect defaultValue="base-google-road" {...props} />
@@ -39,7 +38,7 @@ function renderSelect(map?: Map, props?: ComponentProps<typeof LayerSelect>): vo
 /**
  * 맵에 올라간 레이어 이름 배열을 반환하는 메서드
  */
-function layerNames(map: Map): string[] {
+function layerNames(map: OlMap): string[] {
 	return map.getAllLayers().map((layer) => `${layer.get('name')}`);
 }
 
@@ -60,10 +59,10 @@ async function chooseOption(label: string): Promise<void> {
 }
 
 describe('[@gis-dev/root-ui-pack] LayerSelect', () => {
-	let map: Map;
+	let map: OlMap;
 
 	beforeEach(() => {
-		map = new Map({ layers: [baseLayer.googleRoadLayer, createOverlay()] });
+		map = new OlMap({ layers: [baseLayer.googleRoadLayer, createOverlay()] });
 	});
 
 	afterEach(() => {

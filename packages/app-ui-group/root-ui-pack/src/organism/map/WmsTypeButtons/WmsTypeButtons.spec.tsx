@@ -6,8 +6,7 @@
  */
 
 import { fireEvent, render, screen } from '@testing-library/react';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Map } from 'ol';
+import { Map as OlMap } from 'ol';
 import type { ComponentProps } from 'react';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
@@ -20,7 +19,7 @@ const ACTIVE_CLS = 'bg-sky-400';
 /**
  * 맵 컨텍스트로 감싸 WmsTypeButtons를 렌더링하는 메서드
  */
-function renderButtons(map?: Map, props?: ComponentProps<typeof WmsTypeButtons>): void {
+function renderButtons(map?: OlMap, props?: ComponentProps<typeof WmsTypeButtons>): void {
 	render(
 		<MapContext value={map === undefined ? {} : { map }}>
 			<WmsTypeButtons {...props} />
@@ -38,10 +37,10 @@ function getButtons(): { image: HTMLElement; tile: HTMLElement } {
 }
 
 describe('[@gis-dev/root-ui-pack] WmsTypeButtons', () => {
-	let map: Map;
+	let map: OlMap;
 
 	beforeEach(() => {
-		map = new Map();
+		map = new OlMap();
 	});
 
 	afterEach(() => {

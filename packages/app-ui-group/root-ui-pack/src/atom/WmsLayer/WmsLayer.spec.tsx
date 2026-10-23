@@ -6,8 +6,7 @@
  */
 
 import { render } from '@testing-library/react';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Map } from 'ol';
+import { Map as OlMap } from 'ol';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
 import { wmsLayer } from '@gis-dev/openlayers-service-pack/func/layer';
@@ -26,7 +25,7 @@ describe('[@gis-dev/root-ui-pack] WmsLayer', () => {
 	});
 
 	it('map이 있으면 sejongTileWmsLayer를 addLayer한다', () => {
-		const map = new Map();
+		const map = new OlMap();
 
 		const spy = vi.spyOn(map, 'addLayer');
 
@@ -43,7 +42,7 @@ describe('[@gis-dev/root-ui-pack] WmsLayer', () => {
 	});
 
 	it('map이 없으면 addLayer를 호출하지 않는다', () => {
-		const spy = vi.spyOn(Map.prototype, 'addLayer');
+		const spy = vi.spyOn(OlMap.prototype, 'addLayer');
 
 		render(
 			<MapContext value={{}}>

@@ -6,8 +6,7 @@
  */
 
 import { render, screen } from '@testing-library/react';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Map } from 'ol';
+import { Map as OlMap } from 'ol';
 
 import { useMap } from '@gis-dev/openlayers-service-pack/hooks/map';
 
@@ -19,8 +18,8 @@ vi.mock('@gis-dev/openlayers-service-pack/hooks/map', () => ({
 
 const mockedUseMap = vi.mocked(useMap);
 
-function createMap(): Map {
-	const map = new Map();
+function createMap(): OlMap {
+	const map = new OlMap();
 
 	vi.spyOn(map, 'setTarget');
 
