@@ -8,7 +8,6 @@
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
-import type { StyleLike } from 'ol/style/Style';
 
 import { drawLayer, sejongWfsLayer, wfsCityVectorLayer, wfsStarbucksClusterLayer, wfsTransactionLayer } from './wfs';
 
@@ -22,8 +21,7 @@ function clusterFeature(count: number): Feature<Point> {
 	return new Feature({ features: members, geometry: new Point([0, 0]) });
 }
 
-function callStyle(style: StyleLike | undefined, feature: Feature): unknown {
-	return (style as (f: Feature, r: number) => unknown)(feature, 1);
+function callStyle(style: ReturnType<VectorLayer['getStyle']>, feature: Feature): unknown {	return (style as (f: Feature, r: number) => unknown)(feature, 1);
 }
 
 describe('[@gis-dev/openlayers-service-pack] layer/wfs', () => {
