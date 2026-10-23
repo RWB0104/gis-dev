@@ -6,7 +6,7 @@
  */
 
 import { XIcon } from 'lucide-react';
-import type { DetailedHTMLProps, HTMLAttributes, MouseEventHandler } from 'react';
+import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useEffectEvent } from 'react';
 
 import { Button } from '@gis-dev/shadcn-ui-pack/components/ui/button';
 import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
@@ -33,7 +33,7 @@ export interface FeatureInfoCardProps
 	/**
 	 * 닫기 이벤트 메서드
 	 */
-	onClose?: MouseEventHandler<HTMLButtonElement>;
+	onClose?: Func<void>;
 
 	/**
 	 * 제목
@@ -55,6 +55,24 @@ export default function FeatureInfoCard({
 	className,
 	...props
 }: FeatureInfoCardProps): React.JSX.Element {
+	const handleClose = useEffectEvent(() => {
+		onClose?.();
+	});
+
+	useEffect(() => {
+		const handleKeyUp = (e: KeyboardEvent): void => {
+			if (e.code === 'Escape') {
+				handleClose();
+			}
+		};
+
+		document.addEventListener('keyup', handleKeyUp);
+
+		return () => {
+			document.removeEventListener('keyup', handleKeyUp);
+		};
+	}, []);
+
 	return (
 		<div
 			className={cn(
@@ -67,7 +85,7 @@ export default function FeatureInfoCard({
 			<div className="mb-1.5 flex items-start justify-between gap-2">
 				<h3 className="m-0 break-keep font-medium text-base text-blue-600 leading-snug dark:text-blue-400">{title}</h3>
 
-				<Button aria-label="닫기" className="-mt-1 -mr-1.5" onClick={onClose} size="icon-xs" variant="ghost">
+				<Button aria-label="닫기" className="-mt-1 -mr-1.5" onClick={handleClose} size="icon-xs" variant="ghost">
 					<XIcon />
 				</Button>
 			</div>

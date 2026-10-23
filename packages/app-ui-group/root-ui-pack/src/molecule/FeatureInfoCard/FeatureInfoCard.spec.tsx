@@ -54,6 +54,44 @@ describe('[@gis-dev/root-ui-pack] FeatureInfoCard', () => {
 		expect(() => fireEvent.click(screen.getByRole('button', { name: '닫기' }))).not.toThrow();
 	});
 
+	it('Escape 키를 떼면 onClose를 호출한다', () => {
+		const onClose = vi.fn();
+
+		render(<FeatureInfoCard items={ITEMS} onClose={onClose} title="세종시청사" />);
+
+		fireEvent.keyUp(document, { code: 'Escape' });
+
+		expect(onClose).toHaveBeenCalledOnce();
+	});
+
+	it('Escape가 아닌 키는 무시한다', () => {
+		const onClose = vi.fn();
+
+		render(<FeatureInfoCard items={ITEMS} onClose={onClose} title="세종시청사" />);
+
+		fireEvent.keyUp(document, { code: 'Enter' });
+
+		expect(onClose).not.toHaveBeenCalled();
+	});
+
+	it('onClose가 없어도 Escape 키가 에러 없이 동작한다', () => {
+		render(<FeatureInfoCard items={ITEMS} title="세종시청사" />);
+
+		expect(() => fireEvent.keyUp(document, { code: 'Escape' })).not.toThrow();
+	});
+
+	it('언마운트된 뒤에는 Escape 키를 무시한다', () => {
+		const onClose = vi.fn();
+
+		const { unmount } = render(<FeatureInfoCard items={ITEMS} onClose={onClose} title="세종시청사" />);
+
+		unmount();
+
+		fireEvent.keyUp(document, { code: 'Escape' });
+
+		expect(onClose).not.toHaveBeenCalled();
+	});
+
 	it('className을 병합하고 나머지 속성을 전달한다', () => {
 		render(<FeatureInfoCard className="custom" id="card" items={ITEMS} title="세종시청사" />);
 

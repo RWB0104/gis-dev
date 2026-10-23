@@ -25,8 +25,8 @@ import FeatureInfoCard from '#/molecule/FeatureInfoCard';
 export default function WfsPopup(): React.JSX.Element | null {
 	const { map } = use(MapContext);
 
-	const [featureState, setFeatureState] = useState<Feature>();
-	const [overlayState, setOverlayState] = useState<Overlay>();
+	const [featureState, setFeatureState] = useState<Feature | undefined>();
+	const [overlayState, setOverlayState] = useState<Overlay | undefined>();
 
 	const selectRef = useRef<Select>(undefined);
 
