@@ -5,11 +5,7 @@
  * @since 2026.10.21 수 18:43:50
  */
 
-import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
-
-import GoogleLayer from '#/atom/GoogleLayer';
-import MapController from '#/organism/map/MapController';
-import MapProvider from '#/organism/map/MapProvider';
+import MapInfoMap from '#/organism/extended-map/MapInfoMap';
 
 /**
  * 맵 정보 page 컴포넌트 반환 메서드
@@ -18,13 +14,8 @@ import MapProvider from '#/organism/map/MapProvider';
  */
 export default function MapInfoPage(): React.JSX.Element {
 	return (
-		<MapProvider
-			options={{
-				view: seoulView
-			}}
-		>
-			<MapController />
-			<GoogleLayer />
-		</MapProvider>
+		<main data-testid="MapInfoPage">
+			<MapInfoMap />
+		</main>
 	);
 }

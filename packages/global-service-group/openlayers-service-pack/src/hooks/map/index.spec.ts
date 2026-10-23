@@ -9,6 +9,7 @@ import { renderHook } from '@testing-library/react';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
 import { Map, MapEvent, View } from 'ol';
 import type BaseEvent from 'ol/events/Event';
+import TileLayer from 'ol/layer/Tile';
 import { createElement, type ReactNode, type RefObject } from 'react';
 
 import { MapContext } from '#/context/map';
@@ -79,6 +80,20 @@ describe('[@gis-dev/openlayers-service-pack] map', () => {
 			unmount();
 
 			expect(spy).toHaveBeenCalledWith(undefined);
+		});
+
+		it('언마운트 시 레이어를 비우고 Map을 dispose한다', () => {
+			const { result, unmount } = renderHook(() => useMap({ layers: [new TileLayer()] }));
+
+			const map = result.current as Map;
+			const disposeSpy = vi.spyOn(map, 'dispose');
+
+			expect(map.getLayers().getLength()).toBe(1);
+
+			unmount();
+
+			expect(map.getLayers().getLength()).toBe(0);
+			expect(disposeSpy).toHaveBeenCalledOnce();
 		});
 
 		it('options 참조가 바뀌어도 Map을 재생성하지 않는다', () => {

@@ -6,40 +6,23 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import type { ReactNode } from 'react';
-
-import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
 
 import OsmPage from '.';
 
-const mapProviderSpy = vi.fn();
-
-vi.mock('#/organism/map/MapProvider', () => ({
-	default: ({ options, children }: { options?: unknown; children?: ReactNode }) => {
-		mapProviderSpy(options);
-
-		return <div data-testid="MapProvider">{children}</div>;
-	}
-}));
-
-vi.mock('#/atom/OsmLayer', () => ({
-	default: () => <div data-testid="OsmLayer" />
+vi.mock('#/organism/extended-map/OsmMap', () => ({
+	default: () => <div data-testid="OsmMap" />
 }));
 
 describe('[@gis-dev/root-ui-pack] OsmPage', () => {
-	afterEach(() => {
-		vi.clearAllMocks();
-	});
-
-	it('MapProvider 안에 OsmLayer를 렌더링한다', () => {
+	it('main 요소를 렌더링한다', () => {
 		render(<OsmPage />);
 
-		expect(screen.getByTestId('MapProvider')).toContainElement(screen.getByTestId('OsmLayer'));
+		expect(screen.getByTestId('OsmPage').tagName).toBe('MAIN');
 	});
 
-	it('seoulView를 MapProvider의 view 옵션으로 전달한다', () => {
+	it('main 안에 OsmMap을 렌더링한다', () => {
 		render(<OsmPage />);
 
-		expect(mapProviderSpy).toHaveBeenCalledWith({ view: seoulView });
+		expect(screen.getByTestId('OsmPage')).toContainElement(screen.getByTestId('OsmMap'));
 	});
 });

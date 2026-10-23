@@ -7,10 +7,7 @@
 
 import type React from 'react';
 
-import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
-
-import GoogleLayer from '#/atom/GoogleLayer';
-import MapProvider from '#/organism/map/MapProvider';
+import GoogleMap from '#/organism/extended-map/GoogleMap';
 
 /**
  * Google page 컴포넌트 반환 메서드
@@ -19,12 +16,8 @@ import MapProvider from '#/organism/map/MapProvider';
  */
 export default function GooglePage(): React.JSX.Element {
 	return (
-		<MapProvider
-			options={{
-				view: seoulView
-			}}
-		>
-			<GoogleLayer />
-		</MapProvider>
+		<main data-testid="GooglePage">
+			<GoogleMap />
+		</main>
 	);
 }

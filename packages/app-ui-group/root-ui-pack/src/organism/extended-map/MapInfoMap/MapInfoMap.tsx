@@ -1,0 +1,32 @@
+/**
+ * 맵 정보 맵 organism 컴포넌트
+ *
+ * @author RWB
+ * @since 2026.10.23 금 14:30:12
+ */
+
+'use client';
+
+import { baseLayer } from '@gis-dev/openlayers-service-pack/func/layer';
+import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
+
+import MapController from '#/organism/map/MapController';
+import MapProvider from '#/organism/map/MapProvider';
+
+/**
+ * 맵 정보 맵 organism 컴포넌트 반환 메서드
+ *
+ * @returns {React.JSX.Element} JSX
+ */
+export default function MapInfoMap(): React.JSX.Element {
+	return (
+		<MapProvider
+			options={{
+				layers: [baseLayer.googleRoadLayer],
+				view: seoulView
+			}}
+		>
+			<MapController />
+		</MapProvider>
+	);
+}

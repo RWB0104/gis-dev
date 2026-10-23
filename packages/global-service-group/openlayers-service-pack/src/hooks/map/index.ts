@@ -36,6 +36,8 @@ export function useMap(options?: MapOptions): OlMap | undefined {
 
 		return () => {
 			map.setTarget(undefined);
+			map.getLayers().clear();
+			map.dispose();
 		};
 	}, []);
 

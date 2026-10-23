@@ -5,10 +5,7 @@
  * @since 2026.10.20 화 17:09:51
  */
 
-import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
-
-import OsmLayer from '#/atom/OsmLayer';
-import MapProvider from '#/organism/map/MapProvider';
+import OsmMap from '#/organism/extended-map/OsmMap';
 
 /**
  * OSM page 컴포넌트 반환 메서드
@@ -17,12 +14,8 @@ import MapProvider from '#/organism/map/MapProvider';
  */
 export default function OsmPage(): React.JSX.Element {
 	return (
-		<MapProvider
-			options={{
-				view: seoulView
-			}}
-		>
-			<OsmLayer />
-		</MapProvider>
+		<main data-testid="OsmPage">
+			<OsmMap />
+		</main>
 	);
 }
