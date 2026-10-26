@@ -8,6 +8,7 @@
 import { fragment } from 'xmlbuilder2';
 
 import {
+	featureIdFilter,
 	lineFragment,
 	multiLineFragment,
 	multiPointFragment,
@@ -238,6 +239,32 @@ describe('[@gis-dev/api-pack] model', () => {
 			const xml = wfsDeleteXml('buld_test', filter);
 
 			expect(xml).toContain('<wfs:Transaction');
+		});
+	});
+
+	describe('featureIdFilter 테스트', () => {
+		it('ogc:FeatureId 요소에 fid 속성을 붙인다', () => {
+			expect(featureIdFilter('buld_test.1').toString()).toContain('<ogc:FeatureId fid="buld_test.1"/>');
+		});
+
+		it('update XML의 ogc:Filter 안에 삽입할 수 있다', () => {
+			const xml = wfsUpdateXml(
+				'buld_test',
+				[{ tagName: 'name', type: 'string', value: 'a' }],
+				featureIdFilter('buld_test.7')
+			);
+
+			expect(xml).toContain('<ogc:Filter><ogc:FeatureId fid="buld_test.7"/></ogc:Filter>');
+		});
+
+		it('delete XML의 ogc:Filter 안에 삽입할 수 있다', () => {
+			expect(wfsDeleteXml('buld_test', featureIdFilter('buld_test.7'))).toContain(
+				'<ogc:Filter><ogc:FeatureId fid="buld_test.7"/></ogc:Filter>'
+			);
+		});
+
+		it('fid의 특수문자를 속성 값에서 이스케이프한다', () => {
+			expect(featureIdFilter('a"b').toString()).toContain('fid="a&quot;b"');
 		});
 	});
 });

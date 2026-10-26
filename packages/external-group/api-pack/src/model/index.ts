@@ -331,3 +331,14 @@ export function wfsDeleteXml(layerName: string, filter: XmlBuilder): string {
 
 	return root.end({ headless: true });
 }
+
+/**
+ * 피쳐 ID 필터 XML 반환 메서드
+ *
+ * @param {string} fid 피쳐 ID(예: buld_test.1)
+ *
+ * @returns {XmlBuilder} XmlBuilder
+ */
+export function featureIdFilter(fid: string): XmlBuilder {
+	return fragment().ele('ogc:FeatureId', { fid }).up();
+}
