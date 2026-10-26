@@ -5,11 +5,19 @@
  * @since 2026.10.26 월 21:20:00
  */
 
-import { Polygon } from 'ol/geom';
+// biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
+import { Map } from 'ol';
+import { LineString, MultiPolygon, Point, Polygon } from 'ol/geom';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
-import { getBuildingInsertXml, toPolygonParams } from '.';
+import { getBuildingInsertXml, getBuildingUpdateXml, refreshWfsLayer, toPolygonParams, toPolygons } from '.';
 
 const SRS_NAME = 'EPSG:3857';
+
+const DEFAULT_NAMESPACE_REGEX = /\sxmlns=/u;
+
+const POLYGON_XML_REGEX = /<gml:Polygon.*<\/gml:Polygon>/u;
 
 const EXTERIOR = [
 	[0, 0],
@@ -120,6 +128,113 @@ describe('[@gis-dev/openlayers-service-pack] transaction', () => {
 			expect(xml).not.toMatch(DEFAULT_NAMESPACE_REGEX);
 		});
 	});
-});
 
-const DEFAULT_NAMESPACE_REGEX = /\sxmlns=/u;
+	describe('getBuildingUpdateXml 테스트', () => {
+		const params = { address: '서울', id: 'buld_test.12', name: '청사', polygons: [createPolygon()], srsName: SRS_NAME };
+
+		it('buld_test 레이어에 WFS Update를 구성한다', () => {
+			const xml = getBuildingUpdateXml(params);
+
+			expect(xml).toContain('<wfs:Update typeName="buld_test">');
+			expect(xml).not.toContain('<wfs:Insert>');
+		});
+
+		it('name, address, SHAPE를 프로퍼티로 갱신한다', () => {
+			const xml = getBuildingUpdateXml(params);
+
+			expect(xml).toContain('<wfs:Name>name</wfs:Name><wfs:Value>청사</wfs:Value>');
+			expect(xml).toContain('<wfs:Name>address</wfs:Name><wfs:Value>서울</wfs:Value>');
+			expect(xml).toContain('<wfs:Name>SHAPE</wfs:Name><wfs:Value><gml:Polygon srsName="EPSG:3857">');
+		});
+
+		it('피쳐 ID 필터로 대상을 특정한다', () => {
+			expect(getBuildingUpdateXml(params)).toContain('<ogc:Filter><ogc:FeatureId fid="buld_test.12"/></ogc:Filter>');
+		});
+
+		it('폴리곤이 둘 이상이면 gml:MultiSurface로 묶는다', () => {
+			const xml = getBuildingUpdateXml({ ...params, polygons: [createPolygon(), createPolygon()] });
+
+			expect(xml).toContain('<gml:MultiSurface srsName="EPSG:3857">');
+		});
+
+		it('이름과 주소의 특수문자를 이스케이프한다', () => {
+			const xml = getBuildingUpdateXml({ ...params, address: 'A&B', name: '<청사>' });
+
+			expect(xml).toContain('<wfs:Value>&lt;청사&gt;</wfs:Value>');
+			expect(xml).toContain('<wfs:Value>A&amp;B</wfs:Value>');
+		});
+
+		it('삽입 XML과 같은 SHAPE 조각을 사용한다', () => {
+			const { id, ...insertParams } = params;
+
+			const pick = (xml: string): string | undefined => xml.match(POLYGON_XML_REGEX)?.[0];
+
+			expect(id).toBe('buld_test.12');
+			expect(pick(getBuildingUpdateXml(params))).toBeDefined();
+			expect(pick(getBuildingUpdateXml(params))).toBe(pick(getBuildingInsertXml(insertParams)));
+		});
+	});
+
+	describe('toPolygons 테스트', () => {
+		it('Polygon은 그대로 배열에 담는다', () => {
+			const polygon = createPolygon();
+
+			expect(toPolygons(polygon)).toEqual([polygon]);
+		});
+
+		it('MultiPolygon은 폴리곤으로 펼친다', () => {
+			const multi = new MultiPolygon([[EXTERIOR], [EXTERIOR]]);
+
+			const polygons = toPolygons(multi);
+
+			expect(polygons).toHaveLength(2);
+			expect(polygons.every((polygon) => polygon instanceof Polygon)).toBe(true);
+		});
+
+		it('폴리곤이 아닌 지오메트리는 빈 배열을 반환한다', () => {
+			expect(toPolygons(new Point([0, 0]))).toEqual([]);
+			expect(
+				toPolygons(
+					new LineString([
+						[0, 0],
+						[1, 1]
+					])
+				)
+			).toEqual([]);
+		});
+
+		it('지오메트리가 없으면 빈 배열을 반환한다', () => {
+			expect(toPolygons(undefined)).toEqual([]);
+		});
+	});
+
+	describe('refreshWfsLayer 테스트', () => {
+		it('name이 wfs인 레이어의 소스를 다시 불러온다', () => {
+			const source = new VectorSource();
+			const refresh = vi.spyOn(source, 'refresh');
+			const map = new Map({ layers: [new VectorLayer({ properties: { name: 'wfs' }, source })] });
+
+			refreshWfsLayer(map);
+
+			expect(refresh).toHaveBeenCalledOnce();
+		});
+
+		it('다른 이름의 레이어는 갱신하지 않는다', () => {
+			const source = new VectorSource();
+			const refresh = vi.spyOn(source, 'refresh');
+			const map = new Map({ layers: [new VectorLayer({ properties: { name: 'draw' }, source })] });
+
+			refreshWfsLayer(map);
+
+			expect(refresh).not.toHaveBeenCalled();
+		});
+
+		it('WFS 레이어가 없어도 에러 없이 동작한다', () => {
+			expect(() => refreshWfsLayer(new Map())).not.toThrow();
+		});
+
+		it('맵이 없어도 에러 없이 동작한다', () => {
+			expect(() => refreshWfsLayer(undefined)).not.toThrow();
+		});
+	});
+});
