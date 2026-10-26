@@ -21,7 +21,8 @@ function clusterFeature(count: number): Feature<Point> {
 	return new Feature({ features: members, geometry: new Point([0, 0]) });
 }
 
-function callStyle(style: ReturnType<VectorLayer['getStyle']>, feature: Feature): unknown {	return (style as (f: Feature, r: number) => unknown)(feature, 1);
+function callStyle(style: ReturnType<VectorLayer['getStyle']>, feature: Feature): unknown {
+	return (style as (f: Feature, r: number) => unknown)(feature, 1);
 }
 
 describe('[@gis-dev/openlayers-service-pack] layer/wfs', () => {
