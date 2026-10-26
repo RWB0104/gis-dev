@@ -6,15 +6,17 @@
  */
 
 // biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Feature, Map, type MapBrowserEvent } from 'ol';
-import { Select } from 'ol/interaction';
+import { Collection, Feature, Map, type MapBrowserEvent } from 'ol';
+import { Draw, Modify, Select, Snap } from 'ol/interaction';
 import type { Style } from 'ol/style';
 
 import { clickStyle, hoverStyle } from '#/func/style';
 
-import { getWfsClickSelect, getWfsHoverSelect } from '.';
+import { drawInteraction, getWfsClickSelect, getWfsHoverSelect, getWfsModify, getWfsSnap } from '.';
 
-vi.mock('#/func/style', () => ({
+// 레이어 모듈이 같은 스타일 모듈의 다른 export(drawStyle 등)를 쓰므로 hover, click 스타일만 대체한다
+vi.mock('#/func/style', async (importOriginal) => ({
+	...(await importOriginal<typeof import('#/func/style')>()),
 	clickStyle: vi.fn(),
 	hoverStyle: vi.fn()
 }));
@@ -168,6 +170,66 @@ describe('[@gis-dev/openlayers-service-pack] interaction', () => {
 
 			expect(styleFunction?.(feature, 1)).toBe(style);
 			expect(clickStyle).toHaveBeenCalledWith(feature, LABEL_COLUMN);
+		});
+	});
+
+	describe('drawInteraction 테스트', () => {
+		it('Draw 인터렉션이다', () => {
+			expect(drawInteraction).toBeInstanceOf(Draw);
+		});
+
+		it('draw 레이어에 소스가 없어도 Draw를 만든다', async () => {
+			vi.resetModules();
+			vi.doMock('../layer', () => ({ transactionLayer: { drawLayer: { getSource: () => null } } }));
+
+			// 모듈 레지스트리를 초기화했으므로 ol 모듈도 새로 불러와 같은 클래스로 비교한다
+			const { Draw: FreshDraw } = await import('ol/interaction');
+			const fresh = await import('.');
+
+			expect(fresh.drawInteraction).toBeInstanceOf(FreshDraw);
+
+			vi.doUnmock('../layer');
+			vi.resetModules();
+		});
+
+		it('맵에 추가할 수 있다', () => {
+			const map = new Map();
+
+			map.addInteraction(drawInteraction);
+
+			expect(map.getInteractions().getArray()).toContain(drawInteraction);
+
+			map.removeInteraction(drawInteraction);
+		});
+	});
+
+	describe('getWfsSnap 테스트', () => {
+		it('snap 이름을 가진 Snap을 반환한다', () => {
+			const snap = getWfsSnap(new Collection<Feature>());
+
+			expect(snap).toBeInstanceOf(Snap);
+			expect(snap.get('name')).toBe('snap');
+		});
+
+		it('호출할 때마다 새 인스턴스를 반환한다', () => {
+			const features = new Collection<Feature>();
+
+			expect(getWfsSnap(features)).not.toBe(getWfsSnap(features));
+		});
+	});
+
+	describe('getWfsModify 테스트', () => {
+		it('modify 이름을 가진 Modify를 반환한다', () => {
+			const modify = getWfsModify(new Collection<Feature>());
+
+			expect(modify).toBeInstanceOf(Modify);
+			expect(modify.get('name')).toBe('modify');
+		});
+
+		it('호출할 때마다 새 인스턴스를 반환한다', () => {
+			const features = new Collection<Feature>();
+
+			expect(getWfsModify(features)).not.toBe(getWfsModify(features));
 		});
 	});
 });

@@ -19,6 +19,8 @@ import {
 	wfsUpdateXml
 } from '.';
 
+const DEFAULT_NAMESPACE_REGEX = /\sxmlns=/u;
+
 describe('[@gis-dev/api-pack] model', () => {
 	describe('pointFragment 테스트', () => {
 		it('gml:Point와 gml:pos를 생성한다', () => {
@@ -181,6 +183,13 @@ describe('[@gis-dev/api-pack] model', () => {
 			expect(xml).toContain('version="1.1.0"');
 			expect(xml).toContain('xmlns:gml="http://www.opengis.net/gml"');
 			expect(xml).toContain('wfs/1.1.0/wfs.xsd');
+		});
+
+		it('기본 네임스페이스(xmlns=)를 선언하지 않아 피처 요소가 WFS 네임스페이스에 속하지 않는다', () => {
+			const xml = wfsInsertXml('buld_test', [{ tagName: 'name', type: 'string', value: 'a' }]);
+
+			expect(xml).not.toMatch(DEFAULT_NAMESPACE_REGEX);
+			expect(xml).toContain('xmlns:wfs="http://www.opengis.net/wfs"');
 		});
 	});
 

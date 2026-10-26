@@ -28,7 +28,6 @@ function getBaseDoc(): XmlBuilder {
 	return create({ encoding: 'UTF-8', version: '1.0' }).ele('wfs:Transaction', {
 		service: 'WFS',
 		version: '1.1.0',
-		xmlns: 'http://www.opengis.net/wfs',
 		'xmlns:gml': 'http://www.opengis.net/gml',
 		'xmlns:ogc': 'http://www.opengis.net/ogc',
 		'xmlns:ows': 'http://www.opengis.net/ows',
