@@ -8,8 +8,9 @@
 /** biome-ignore-all lint/style/useNamingConvention: for column name */
 
 import { Feature } from 'ol';
+import { Point, Polygon } from 'ol/geom';
 
-import { getWfsBuildingInfo } from '.';
+import { describeWfsBuilding, getFeatureCenter, getWfsBuildingInfo } from '.';
 
 /**
  * 속성이 지정된 피쳐를 생성하는 메서드
@@ -66,6 +67,58 @@ describe('[@gis-dev/openlayers-service-pack] feature', () => {
 
 		it.fails('고시일자가 없으면 대체 문자를 반환한다', () => {
 			expect(getWfsBuildingInfo(createFeature({})).noticeDate).toBe('-');
+		});
+	});
+
+	describe('describeWfsBuilding 테스트', () => {
+		it('건물명을 제목으로 한다', () => {
+			expect(describeWfsBuilding(createFeature({ buld_nm: '세종시청사' })).title).toBe('세종시청사');
+		});
+
+		it('ID, 고유일련번호, 고시일자 순서로 항목을 만든다', () => {
+			const feature = createFeature({ bul_man_no: '58190', ntfc_de: '2015-03-16' }, 'buld_sejong.108');
+
+			expect(describeWfsBuilding(feature).items).toEqual([
+				{ label: 'ID', value: 'buld_sejong.108' },
+				{ label: '고유일련번호', value: '58190' },
+				{ label: '고시일자', value: '2015-03-16' }
+			]);
+		});
+
+		it('값이 없으면 제목과 ID, 일련번호를 대체 문자로 채운다', () => {
+			const description = describeWfsBuilding(createFeature({}));
+
+			expect(description.title).toBe('-');
+			expect(description.items[0]).toEqual({ label: 'ID', value: '-' });
+			expect(description.items[1]).toEqual({ label: '고유일련번호', value: '-' });
+		});
+	});
+
+	describe('getFeatureCenter 테스트', () => {
+		it('피쳐가 없으면 undefined를 반환한다', () => {
+			expect(getFeatureCenter(undefined)).toBeUndefined();
+		});
+
+		it('지오메트리가 없으면 undefined를 반환한다', () => {
+			expect(getFeatureCenter(createFeature({}))).toBeUndefined();
+		});
+
+		it('폴리곤 extent의 중심을 반환한다', () => {
+			const polygon = new Polygon([
+				[
+					[0, 0],
+					[10, 0],
+					[10, 20],
+					[0, 20],
+					[0, 0]
+				]
+			]);
+
+			expect(getFeatureCenter(createFeature({ geometry: polygon }))).toEqual([5, 10]);
+		});
+
+		it('포인트는 그 좌표를 반환한다', () => {
+			expect(getFeatureCenter(createFeature({ geometry: new Point([100, 200]) }))).toEqual([100, 200]);
 		});
 	});
 });
