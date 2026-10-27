@@ -12,7 +12,7 @@ import { Map } from 'ol';
 import type BaseEvent from 'ol/events/Event';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
-import { getWfsBuildingInfo } from '@gis-dev/openlayers-service-pack/func/feature';
+import { describeWfsBuilding } from '@gis-dev/openlayers-service-pack/func/feature';
 import { getWmsFeatureInfoUrl } from '@gis-dev/openlayers-service-pack/func/wms';
 
 import WmsPopup from '.';
@@ -21,12 +21,15 @@ vi.mock('@gis-dev/openlayers-service-pack/func/wms', () => ({
 	getWmsFeatureInfoUrl: vi.fn()
 }));
 
-vi.mock('@gis-dev/openlayers-service-pack/func/feature', () => ({
-	getWfsBuildingInfo: vi.fn(() => ({
-		id: 'buld_sejong.108',
-		name: '세종시청사',
-		noticeDate: '2015-03-16',
-		serialNo: '58190'
+vi.mock('@gis-dev/openlayers-service-pack/func/feature', async (importOriginal) => ({
+	...(await importOriginal<typeof import('@gis-dev/openlayers-service-pack/func/feature')>()),
+	describeWfsBuilding: vi.fn(() => ({
+		items: [
+			{ label: 'ID', value: 'buld_sejong.108' },
+			{ label: '고유일련번호', value: '58190' },
+			{ label: '고시일자', value: '2015-03-16' }
+		],
+		title: '세종시청사'
 	}))
 }));
 
@@ -167,9 +170,9 @@ describe('[@gis-dev/root-ui-pack] WmsPopup', () => {
 
 		clickMap(map, [5, 10]);
 
-		await waitFor(() => expect(getWfsBuildingInfo).toHaveBeenCalled());
+		await waitFor(() => expect(describeWfsBuilding).toHaveBeenCalled());
 
-		const feature = vi.mocked(getWfsBuildingInfo).mock.calls[0]?.[0];
+		const feature = vi.mocked(describeWfsBuilding).mock.calls[0]?.[0];
 
 		expect(feature?.getId()).toBe('buld_sejong.108');
 	});

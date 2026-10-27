@@ -13,16 +13,19 @@ import { Select } from 'ol/interaction';
 import { SelectEvent } from 'ol/interaction/Select';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
-import { getWfsBuildingInfo } from '@gis-dev/openlayers-service-pack/func/feature';
+import { describeWfsBuilding } from '@gis-dev/openlayers-service-pack/func/feature';
 
 import WfsPopup from '.';
 
-vi.mock('@gis-dev/openlayers-service-pack/func/feature', () => ({
-	getWfsBuildingInfo: vi.fn(() => ({
-		id: 'buld_sejong.108',
-		name: '세종시청사',
-		noticeDate: '2015-03-16',
-		serialNo: '58190'
+vi.mock('@gis-dev/openlayers-service-pack/func/feature', async (importOriginal) => ({
+	...(await importOriginal<typeof import('@gis-dev/openlayers-service-pack/func/feature')>()),
+	describeWfsBuilding: vi.fn(() => ({
+		items: [
+			{ label: 'ID', value: 'buld_sejong.108' },
+			{ label: '고유일련번호', value: '58190' },
+			{ label: '고시일자', value: '2015-03-16' }
+		],
+		title: '세종시청사'
 	}))
 }));
 
@@ -152,7 +155,7 @@ describe('[@gis-dev/root-ui-pack] WfsPopup', () => {
 
 		selectFeatures(select, [feature]);
 
-		expect(getWfsBuildingInfo).toHaveBeenCalledWith(feature);
+		expect(describeWfsBuilding).toHaveBeenCalledWith(feature);
 	});
 
 	it('오버레이를 피쳐 extent의 중심에 위치시킨다', () => {
@@ -174,7 +177,7 @@ describe('[@gis-dev/root-ui-pack] WfsPopup', () => {
 		selectFeatures(select, [createPolygonFeature()]);
 		selectFeatures(select, [next]);
 
-		expect(getWfsBuildingInfo).toHaveBeenLastCalledWith(next);
+		expect(describeWfsBuilding).toHaveBeenLastCalledWith(next);
 		expect(map.getOverlays().item(0).getPosition()).toEqual([100, 200]);
 	});
 
