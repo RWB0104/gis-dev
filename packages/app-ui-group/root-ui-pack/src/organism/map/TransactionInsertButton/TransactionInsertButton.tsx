@@ -156,7 +156,13 @@ export default function TransactionInsertButton(): React.JSX.Element {
 
 	return (
 		<>
-			<Button data-testid="TransactionInsertButton" disabled={isDrawingState} onClick={handleClick}>
+			<Button
+				aria-label="도형 추가"
+				className="bg-purple-500 text-white hover:bg-purple-500/90 focus-visible:ring-purple-500/40"
+				data-testid="TransactionInsertButton"
+				disabled={isDrawingState}
+				onClick={handleClick}
+			>
 				<PlusIcon />
 			</Button>
 
