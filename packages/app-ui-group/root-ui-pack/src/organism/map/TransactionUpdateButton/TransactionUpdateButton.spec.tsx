@@ -578,7 +578,7 @@ describe('[@gis-dev/root-ui-pack] TransactionUpdateButton', () => {
 			expect(refresh).toHaveBeenCalledOnce();
 			expect(mocks.clear).toHaveBeenCalledOnce();
 			expect(isDialogOpen()).toBe(false);
-			expect(mockedToastAdd).not.toHaveBeenCalled();
+			expect(mockedToastAdd).toHaveBeenCalled();
 		});
 
 		it('응답에 ExceptionReport가 있으면 토스트로 알리고 다이얼로그를 유지한다', () => {

@@ -47,6 +47,8 @@ export default function TransactionInsertButton(): React.JSX.Element {
 					return;
 				}
 
+				toast.add({ description: '새로운 건물을 생성했습니다.', title: 'Insert success' });
+
 				map?.getAllLayers()
 					.find((layer) => layer.get('name') === 'wfs')
 					?.getSource()

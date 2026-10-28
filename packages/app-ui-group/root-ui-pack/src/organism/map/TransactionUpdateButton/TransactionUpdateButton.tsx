@@ -71,6 +71,8 @@ export default function TransactionUpdateButton(): React.JSX.Element {
 					return;
 				}
 
+				toast.add({ description: '건물을 수정했습니다.', title: 'Update success' });
+
 				refreshWfsLayer(map);
 
 				clear();
