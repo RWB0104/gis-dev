@@ -38,8 +38,8 @@ vi.mock('#/organism/map/MapController', () => ({
 	default: ({ children }: { children?: ReactNode }) => <div data-testid="MapController">{children}</div>
 }));
 
-vi.mock('#/organism/map/WfsPopup', () => ({
-	default: () => <div data-testid="WfsPopup" />
+vi.mock('#/organism/map/TransactionPopup', () => ({
+	default: () => <div data-testid="TransactionPopup" />
 }));
 
 vi.mock('#/organism/map/TransactionInsertButton', () => ({
@@ -95,13 +95,20 @@ describe('[@gis-dev/root-ui-pack] TransactionInsertMap', () => {
 		expect(options.layers).not.toContain(wfsLayer.sejongWfsLayer);
 	});
 
-	it('MapProvider 안에 MapController, WfsPopup, InteractionTemplate을 렌더링한다', () => {
+	it('buld_test 컬럼에 맞는 TransactionPopup을 쓰고 buld_sejong용 WfsPopup은 쓰지 않는다', () => {
+		render(<TransactionInsertMap />);
+
+		expect(screen.getByTestId('TransactionPopup')).toBeInTheDocument();
+		expect(screen.queryByTestId('WfsPopup')).not.toBeInTheDocument();
+	});
+
+	it('MapProvider 안에 MapController, TransactionPopup, InteractionTemplate을 렌더링한다', () => {
 		render(<TransactionInsertMap />);
 
 		const provider = screen.getByTestId('MapProvider');
 
 		expect(provider).toContainElement(screen.getByTestId('MapController'));
-		expect(provider).toContainElement(screen.getByTestId('WfsPopup'));
+		expect(provider).toContainElement(screen.getByTestId('TransactionPopup'));
 		expect(provider).toContainElement(screen.getByTestId('InteractionTemplate'));
 	});
 

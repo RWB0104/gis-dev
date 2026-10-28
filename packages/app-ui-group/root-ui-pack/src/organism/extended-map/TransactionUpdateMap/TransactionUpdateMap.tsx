@@ -23,6 +23,7 @@ import GeolocationButton from '#/atom/GeolocationButton';
 import GuideDialog from '#/molecule/GuideDialog';
 import MapController from '#/organism/map/MapController';
 import MapProvider from '#/organism/map/MapProvider';
+import TransactionPopup from '#/organism/map/TransactionPopup';
 import TransactionUpdateButton from '#/organism/map/TransactionUpdateButton';
 import InteractionTemplate from '#/template/InteractionTemplate';
 
@@ -60,6 +61,8 @@ export default function TransactionUpdateMap(): React.JSX.Element {
 	return (
 		<MapProvider options={options}>
 			<MapController />
+
+			<TransactionPopup />
 
 			<InteractionTemplate>
 				<TransactionUpdateButton />

@@ -52,6 +52,10 @@ vi.mock('#/organism/map/MapController', () => ({
 	default: ({ children }: { children?: ReactNode }) => <div data-testid="MapController">{children}</div>
 }));
 
+vi.mock('#/organism/map/TransactionPopup', () => ({
+	default: () => <div data-testid="TransactionPopup" />
+}));
+
 vi.mock('#/organism/map/TransactionUpdateButton', () => ({
 	default: () => <div data-testid="TransactionUpdateButton" />
 }));
@@ -130,12 +134,13 @@ describe('[@gis-dev/root-ui-pack] TransactionUpdateMap', () => {
 		expect(mapProviderSpy.mock.calls[1]?.[0]).toBe(mapProviderSpy.mock.calls[0]?.[0]);
 	});
 
-	it('MapProvider 안에 MapController와 InteractionTemplate을 렌더링한다', () => {
+	it('MapProvider 안에 MapController, TransactionPopup, InteractionTemplate을 렌더링한다', () => {
 		render(<TransactionUpdateMap />);
 
 		const provider = screen.getByTestId('MapProvider');
 
 		expect(provider).toContainElement(screen.getByTestId('MapController'));
+		expect(provider).toContainElement(screen.getByTestId('TransactionPopup'));
 		expect(provider).toContainElement(screen.getByTestId('InteractionTemplate'));
 	});
 

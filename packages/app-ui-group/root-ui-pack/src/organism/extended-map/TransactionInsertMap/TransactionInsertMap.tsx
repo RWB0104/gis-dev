@@ -9,7 +9,7 @@ import GuideDialog from '#/molecule/GuideDialog';
 import MapController from '#/organism/map/MapController';
 import MapProvider from '#/organism/map/MapProvider';
 import TransactionInsertButton from '#/organism/map/TransactionInsertButton';
-import WfsPopup from '#/organism/map/WfsPopup';
+import TransactionPopup from '#/organism/map/TransactionPopup';
 import InteractionTemplate from '#/template/InteractionTemplate';
 
 export default function TransactionInsertMap(): React.JSX.Element {
@@ -23,7 +23,7 @@ export default function TransactionInsertMap(): React.JSX.Element {
 		>
 			<MapController />
 
-			<WfsPopup />
+			<TransactionPopup />
 
 			<InteractionTemplate>
 				<TransactionInsertButton />
