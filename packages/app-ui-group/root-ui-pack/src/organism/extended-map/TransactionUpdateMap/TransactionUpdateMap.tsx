@@ -10,12 +10,7 @@
 import type { MapOptions } from 'ol/Map';
 import { useState } from 'react';
 
-import {
-	getWfsClickSelect,
-	getWfsHoverSelect,
-	getWfsModify,
-	getWfsSnap
-} from '@gis-dev/openlayers-service-pack/func/interaction';
+import { getWfsEditInteractions } from '@gis-dev/openlayers-service-pack/func/interaction';
 import { baseLayer, wfsLayer } from '@gis-dev/openlayers-service-pack/func/layer';
 import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
 
@@ -30,20 +25,11 @@ import InteractionTemplate from '#/template/InteractionTemplate';
 /**
  * 수정용 맵 옵션 반환 메서드
  *
- * snap, modify는 선택된 피쳐(clickSelect)만 대상으로 하고, 수정 버튼을 누르기 전까지는 꺼 둔다.
- *
  * @returns {MapOptions} MapOptions
  */
 function createOptions(): MapOptions {
-	const select = getWfsClickSelect('name');
-	const snap = getWfsSnap(select.getFeatures());
-	const modify = getWfsModify(select.getFeatures());
-
-	snap.setActive(false);
-	modify.setActive(false);
-
 	return {
-		interactions: [getWfsHoverSelect('name'), select, snap, modify],
+		interactions: getWfsEditInteractions('name'),
 		layers: [baseLayer.googleRoadLayer, wfsLayer.wfsTransactionLayer],
 		view: seoulView
 	};

@@ -8,21 +8,19 @@
 'use client';
 
 import { PencilIcon } from 'lucide-react';
-import type { Feature, Map as OlMap } from 'ol';
-import type { Interaction } from 'ol/interaction';
+import type { Feature } from 'ol';
 import { Modify } from 'ol/interaction';
 import { use, useEffect, useEffectEvent, useRef, useState } from 'react';
 
 import { useWfsTransaction } from '@gis-dev/api-pack/generated/react-query/api/wfs/wfs';
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
+import { setEditInteractionsActive } from '@gis-dev/openlayers-service-pack/func/interaction';
 import { getBuildingUpdateXml, refreshWfsLayer, toPolygons } from '@gis-dev/openlayers-service-pack/func/transaction';
 import { useSelectedFeature } from '@gis-dev/openlayers-service-pack/hooks/selectedFeature';
 import { Button } from '@gis-dev/shadcn-ui-pack/components/ui/button';
 import { toast } from '@gis-dev/shadcn-ui-pack/components/ui/toast';
 
 import TransactionFormDialog, { type TransactionFormParams } from '../TransactionFormDialog';
-
-const EDIT_INTERACTION_NAMES = ['modify', 'snap'];
 
 interface EditSession {
 	/**
@@ -34,20 +32,6 @@ interface EditSession {
 	 * 편집 중인 피쳐
 	 */
 	feature: Feature;
-}
-
-/**
- * 편집용 인터렉션(snap, modify)의 활성 상태를 바꾸는 메서드
- *
- * @param {OlMap | undefined} map 맵
- * @param {boolean} active 활성 여부
- */
-function setEditInteractionsActive(map: OlMap | undefined, active: boolean): void {
-	map?.getInteractions().forEach((interaction: Interaction) => {
-		if (EDIT_INTERACTION_NAMES.includes(interaction.get('name'))) {
-			interaction.setActive(active);
-		}
-	});
 }
 
 /**

@@ -8,12 +8,7 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import {
-	getWfsClickSelect,
-	getWfsHoverSelect,
-	getWfsModify,
-	getWfsSnap
-} from '@gis-dev/openlayers-service-pack/func/interaction';
+import { getWfsEditInteractions } from '@gis-dev/openlayers-service-pack/func/interaction';
 import { baseLayer, wfsLayer } from '@gis-dev/openlayers-service-pack/func/layer';
 import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
 
@@ -21,23 +16,12 @@ import TransactionUpdateMap from '.';
 
 const mapProviderSpy = vi.fn();
 
-const mocks = vi.hoisted(() => {
-	const features = { name: 'selectedFeatures' };
-
-	return {
-		click: { getFeatures: vi.fn(() => features), name: 'clickSelect' },
-		features,
-		hover: { name: 'hoverSelect' },
-		modify: { name: 'modify', setActive: vi.fn() },
-		snap: { name: 'snap', setActive: vi.fn() }
-	};
-});
+const mocks = vi.hoisted(() => ({
+	interactions: [{ name: 'hoverSelect' }, { name: 'clickSelect' }, { name: 'snap' }, { name: 'modify' }]
+}));
 
 vi.mock('@gis-dev/openlayers-service-pack/func/interaction', () => ({
-	getWfsClickSelect: vi.fn(() => mocks.click),
-	getWfsHoverSelect: vi.fn(() => mocks.hover),
-	getWfsModify: vi.fn(() => mocks.modify),
-	getWfsSnap: vi.fn(() => mocks.snap)
+	getWfsEditInteractions: vi.fn(() => mocks.interactions)
 }));
 
 vi.mock('#/organism/map/MapProvider', () => ({
@@ -83,32 +67,17 @@ describe('[@gis-dev/root-ui-pack] TransactionUpdateMap', () => {
 		expect(screen.getByTestId('MapProvider')).toBeInTheDocument();
 	});
 
-	it('호버, 클릭 Select를 트랜잭션 레이어의 name 컬럼 기준으로 생성한다', () => {
+	it('편집용 인터렉션을 트랜잭션 레이어의 name 컬럼 기준으로 생성한다', () => {
 		render(<TransactionUpdateMap />);
 
-		expect(getWfsHoverSelect).toHaveBeenCalledWith('name');
-		expect(getWfsClickSelect).toHaveBeenCalledWith('name');
-	});
-
-	it('snap, modify를 선택된 피쳐 컬렉션 기준으로 생성한다', () => {
-		render(<TransactionUpdateMap />);
-
-		expect(getWfsSnap).toHaveBeenCalledWith(mocks.features);
-		expect(getWfsModify).toHaveBeenCalledWith(mocks.features);
-	});
-
-	it('snap, modify는 수정 버튼을 누르기 전까지 꺼 둔다', () => {
-		render(<TransactionUpdateMap />);
-
-		expect(mocks.snap.setActive).toHaveBeenCalledExactlyOnceWith(false);
-		expect(mocks.modify.setActive).toHaveBeenCalledExactlyOnceWith(false);
+		expect(getWfsEditInteractions).toHaveBeenCalledExactlyOnceWith('name');
 	});
 
 	it('인터렉션, 레이어, seoulView를 MapProvider 옵션으로 전달한다', () => {
 		render(<TransactionUpdateMap />);
 
 		expect(mapProviderSpy).toHaveBeenCalledWith({
-			interactions: [mocks.hover, mocks.click, mocks.snap, mocks.modify],
+			interactions: mocks.interactions,
 			layers: [baseLayer.googleRoadLayer, wfsLayer.wfsTransactionLayer],
 			view: seoulView
 		});
@@ -128,9 +97,7 @@ describe('[@gis-dev/root-ui-pack] TransactionUpdateMap', () => {
 
 		rerender(<TransactionUpdateMap />);
 
-		expect(getWfsClickSelect).toHaveBeenCalledOnce();
-		expect(getWfsSnap).toHaveBeenCalledOnce();
-		expect(getWfsModify).toHaveBeenCalledOnce();
+		expect(getWfsEditInteractions).toHaveBeenCalledOnce();
 		expect(mapProviderSpy.mock.calls[1]?.[0]).toBe(mapProviderSpy.mock.calls[0]?.[0]);
 	});
 
