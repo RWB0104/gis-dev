@@ -8,20 +8,18 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { getWfsEditInteractions } from '@gis-dev/openlayers-service-pack/func/interaction';
-import { baseLayer, wfsLayer } from '@gis-dev/openlayers-service-pack/func/layer';
-import { seoulView } from '@gis-dev/openlayers-service-pack/func/view';
+import { getTransactionUpdateOptions } from '@gis-dev/openlayers-service-pack/func/options';
 
 import TransactionUpdateMap from '.';
 
 const mapProviderSpy = vi.fn();
 
 const mocks = vi.hoisted(() => ({
-	interactions: [{ name: 'hoverSelect' }, { name: 'clickSelect' }, { name: 'snap' }, { name: 'modify' }]
+	options: { name: 'updateOptions' }
 }));
 
-vi.mock('@gis-dev/openlayers-service-pack/func/interaction', () => ({
-	getWfsEditInteractions: vi.fn(() => mocks.interactions)
+vi.mock('@gis-dev/openlayers-service-pack/func/options', () => ({
+	getTransactionUpdateOptions: vi.fn(() => mocks.options)
 }));
 
 vi.mock('#/organism/map/MapProvider', () => ({
@@ -67,29 +65,11 @@ describe('[@gis-dev/root-ui-pack] TransactionUpdateMap', () => {
 		expect(screen.getByTestId('MapProvider')).toBeInTheDocument();
 	});
 
-	it('편집용 인터렉션을 트랜잭션 레이어의 name 컬럼 기준으로 생성한다', () => {
+	it('수정용 맵 옵션을 한 번 만들어 MapProvider에 그대로 전달한다', () => {
 		render(<TransactionUpdateMap />);
 
-		expect(getWfsEditInteractions).toHaveBeenCalledExactlyOnceWith('name');
-	});
-
-	it('인터렉션, 레이어, seoulView를 MapProvider 옵션으로 전달한다', () => {
-		render(<TransactionUpdateMap />);
-
-		expect(mapProviderSpy).toHaveBeenCalledWith({
-			interactions: mocks.interactions,
-			layers: [baseLayer.googleRoadLayer, wfsLayer.wfsTransactionLayer],
-			view: seoulView
-		});
-	});
-
-	it('수정 대상인 buld_test 레이어(wfsTransactionLayer)를 지도에 올린다', () => {
-		render(<TransactionUpdateMap />);
-
-		const options = mapProviderSpy.mock.calls[0]?.[0] as { layers: unknown[] };
-
-		expect(options.layers).toContain(wfsLayer.wfsTransactionLayer);
-		expect(options.layers).not.toContain(wfsLayer.sejongWfsLayer);
+		expect(getTransactionUpdateOptions).toHaveBeenCalledOnce();
+		expect(mapProviderSpy).toHaveBeenCalledExactlyOnceWith(mocks.options);
 	});
 
 	it('리렌더해도 인터렉션을 다시 만들지 않고 같은 옵션을 유지한다', () => {
@@ -97,7 +77,7 @@ describe('[@gis-dev/root-ui-pack] TransactionUpdateMap', () => {
 
 		rerender(<TransactionUpdateMap />);
 
-		expect(getWfsEditInteractions).toHaveBeenCalledOnce();
+		expect(getTransactionUpdateOptions).toHaveBeenCalledOnce();
 		expect(mapProviderSpy.mock.calls[1]?.[0]).toBe(mapProviderSpy.mock.calls[0]?.[0]);
 	});
 
