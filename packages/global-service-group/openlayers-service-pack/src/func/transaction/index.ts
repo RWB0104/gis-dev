@@ -14,6 +14,7 @@ import {
 	multiPolygonFragment,
 	type PolygonFragmentParams,
 	polygonFragment,
+	wfsDeleteXml,
 	wfsInsertXml,
 	wfsUpdateXml
 } from '@gis-dev/api-pack/model/index';
@@ -106,6 +107,17 @@ export interface BuildingUpdateParams extends BuildingInsertParams {
  */
 export function getBuildingUpdateXml({ id, ...params }: BuildingUpdateParams): string {
 	return wfsUpdateXml(LAYER_NAME, getBuildingItems(params), featureIdFilter(id));
+}
+
+/**
+ * 건물 삭제 WFS-T XML 반환 메서드
+ *
+ * @param {string} id 빌딩 ID
+ *
+ * @returns {string} XML
+ */
+export function getBuildingDeleteXml(id: string): string {
+	return wfsDeleteXml(LAYER_NAME, featureIdFilter(id));
 }
 
 /**

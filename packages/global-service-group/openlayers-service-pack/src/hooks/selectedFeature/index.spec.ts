@@ -7,10 +7,10 @@
 
 import { act, renderHook } from '@testing-library/react';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Feature, Map, type MapBrowserEvent } from 'ol';
+import { Feature, Map } from 'ol';
 import { Select } from 'ol/interaction';
-import { SelectEvent } from 'ol/interaction/Select';
 import { createElement, type ReactNode } from 'react';
+import { renderToString } from 'react-dom/server';
 
 import { MapContext } from '#/context/map';
 
@@ -40,12 +40,20 @@ function renderSelected(map?: Map): ReturnType<typeof renderHook<ReturnType<type
 }
 
 /**
- * select 이벤트를 발생시키는 메서드
+ * 선택 피쳐 컬렉션을 주어진 피쳐로 교체하는 메서드
  */
-function emitSelect(select: Select, selected: Feature[], deselected: Feature[] = []): void {
+function setSelected(select: Select, selected: Feature[]): void {
 	act(() => {
-		select.dispatchEvent(new SelectEvent('select', selected, deselected, {} as MapBrowserEvent));
+		select.getFeatures().clear();
+		select.getFeatures().extend(selected);
 	});
+}
+
+/**
+ * 선택 피쳐가 없는지 여부를 문자열로 렌더링하는 컴포넌트
+ */
+function Probe(): string {
+	return `${useSelectedFeature().feature === undefined}`;
 }
 
 describe('[@gis-dev/openlayers-service-pack] selectedFeature', () => {
@@ -64,45 +72,51 @@ describe('[@gis-dev/openlayers-service-pack] selectedFeature', () => {
 
 			const { result } = renderSelected(map);
 
-			emitSelect(select, [feature]);
+			setSelected(select, [feature]);
+
+			expect(result.current.feature).toBe(feature);
+		});
+
+		it('훅을 렌더링하기 전에 이미 선택된 피쳐도 반환한다', () => {
+			const { map, select } = createMap('clickSelect');
+			const feature = new Feature();
+
+			select.getFeatures().push(feature);
+
+			const { result } = renderSelected(map);
 
 			expect(result.current.feature).toBe(feature);
 		});
 
 		it('선택이 바뀌면 새 피쳐를 반환한다', () => {
 			const { map, select } = createMap('clickSelect');
-			const first = new Feature();
 			const second = new Feature();
 
 			const { result } = renderSelected(map);
 
-			emitSelect(select, [first]);
-			emitSelect(select, [second], [first]);
+			setSelected(select, [new Feature()]);
+			setSelected(select, [second]);
 
 			expect(result.current.feature).toBe(second);
 		});
 
 		it('선택이 해제되면 undefined를 반환한다', () => {
 			const { map, select } = createMap('clickSelect');
-			const feature = new Feature();
 
 			const { result } = renderSelected(map);
 
-			emitSelect(select, [feature]);
-			emitSelect(select, [], [feature]);
+			setSelected(select, [new Feature()]);
+			setSelected(select, []);
 
 			expect(result.current.feature).toBeUndefined();
 		});
 
 		it('clear를 호출하면 선택 피쳐 컬렉션을 비우고 undefined를 반환한다', () => {
 			const { map, select } = createMap('clickSelect');
-			const feature = new Feature();
 
 			const { result } = renderSelected(map);
 
-			select.getFeatures().push(feature);
-
-			emitSelect(select, [feature]);
+			setSelected(select, [new Feature()]);
 
 			act(() => {
 				result.current.clear();
@@ -112,12 +126,41 @@ describe('[@gis-dev/openlayers-service-pack] selectedFeature', () => {
 			expect(result.current.feature).toBeUndefined();
 		});
 
-		it('clickSelect가 아닌 Select의 이벤트는 구독하지 않는다', () => {
+		it('여러 곳에서 훅을 써도 한쪽의 clear가 다른 쪽에도 반영된다', () => {
+			const { map, select } = createMap('clickSelect');
+
+			const first = renderSelected(map);
+			const second = renderSelected(map);
+
+			setSelected(select, [new Feature()]);
+
+			expect(second.result.current.feature).toBeDefined();
+
+			act(() => {
+				first.result.current.clear();
+			});
+
+			expect(first.result.current.feature).toBeUndefined();
+			expect(second.result.current.feature).toBeUndefined();
+		});
+
+		it('다른 맵의 선택은 반영하지 않는다', () => {
+			const { map } = createMap('clickSelect');
+			const other = createMap('clickSelect');
+
+			const { result } = renderSelected(map);
+
+			setSelected(other.select, [new Feature()]);
+
+			expect(result.current.feature).toBeUndefined();
+		});
+
+		it('clickSelect가 아닌 Select의 선택은 구독하지 않는다', () => {
 			const { map, select } = createMap('hoverSelect');
 
 			const { result } = renderSelected(map);
 
-			emitSelect(select, [new Feature()]);
+			setSelected(select, [new Feature()]);
 
 			expect(result.current.feature).toBeUndefined();
 		});
@@ -141,15 +184,25 @@ describe('[@gis-dev/openlayers-service-pack] selectedFeature', () => {
 			expect(result.current.feature).toBeUndefined();
 		});
 
-		it('언마운트하면 select 리스너를 해제한다', () => {
+		it('서버 렌더링에서는 이미 선택된 피쳐가 있어도 undefined로 렌더링한다', () => {
 			const { map, select } = createMap('clickSelect');
-			const spy = vi.spyOn(select, 'un');
+
+			select.getFeatures().push(new Feature());
+
+			const html = renderToString(createElement(MapContext, { value: { map } }, createElement(Probe)));
+
+			expect(html).toBe('true');
+		});
+
+		it('언마운트하면 컬렉션 리스너를 해제한다', () => {
+			const { map, select } = createMap('clickSelect');
+			const spy = vi.spyOn(select.getFeatures(), 'un');
 
 			const { unmount } = renderSelected(map);
 
 			unmount();
 
-			expect(spy).toHaveBeenCalledWith('select', expect.any(Function));
+			expect(spy).toHaveBeenCalledWith(['add', 'remove'], expect.any(Function));
 		});
 	});
 });

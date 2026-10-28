@@ -11,7 +11,14 @@ import { LineString, MultiPolygon, Point, Polygon } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 
-import { getBuildingInsertXml, getBuildingUpdateXml, refreshWfsLayer, toPolygonParams, toPolygons } from '.';
+import {
+	getBuildingDeleteXml,
+	getBuildingInsertXml,
+	getBuildingUpdateXml,
+	refreshWfsLayer,
+	toPolygonParams,
+	toPolygons
+} from '.';
 
 const SRS_NAME = 'EPSG:3857';
 
@@ -126,6 +133,26 @@ describe('[@gis-dev/openlayers-service-pack] transaction', () => {
 			const xml = getBuildingInsertXml({ address: 'a', name: 'n', polygons: [createPolygon()], srsName: SRS_NAME });
 
 			expect(xml).not.toMatch(DEFAULT_NAMESPACE_REGEX);
+		});
+	});
+
+	describe('getBuildingDeleteXml 테스트', () => {
+		it('buld_test 레이어에 WFS Delete를 구성한다', () => {
+			const xml = getBuildingDeleteXml('buld_test.12');
+
+			expect(xml).toContain('<wfs:Delete typeName="buld_test">');
+			expect(xml).not.toContain('<wfs:Insert>');
+			expect(xml).not.toContain('<wfs:Update');
+		});
+
+		it('피쳐 ID 필터로 대상을 특정한다', () => {
+			const xml = getBuildingDeleteXml('buld_test.12');
+
+			expect(xml).toContain('<ogc:Filter><ogc:FeatureId fid="buld_test.12"/></ogc:Filter>');
+		});
+
+		it('기본 xmlns 선언을 포함하지 않는다', () => {
+			expect(getBuildingDeleteXml('buld_test.12')).not.toMatch(DEFAULT_NAMESPACE_REGEX);
 		});
 	});
 
