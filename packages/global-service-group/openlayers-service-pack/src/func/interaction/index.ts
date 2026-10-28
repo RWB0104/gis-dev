@@ -5,10 +5,10 @@
  * @since 2026.10.23 금 15:22:46
  */
 
-import type { Collection, Feature } from 'ol';
+import type { Collection, Feature, Map as OlMap } from 'ol';
 import { click, pointerMove } from 'ol/events/condition';
 import type { Geometry } from 'ol/geom';
-import { Draw, Modify, Select, Snap } from 'ol/interaction';
+import { Draw, type Interaction, Modify, Select, Snap } from 'ol/interaction';
 import type VectorSource from 'ol/source/Vector';
 import type { Style } from 'ol/style';
 
@@ -16,6 +16,8 @@ import { clickStyle, hoverStyle } from '#/func/style';
 
 import { transactionLayer } from '../layer';
 import { wfsSource } from '../source';
+
+const EDIT_INTERACTION_NAMES = ['modify', 'snap'];
 
 /**
  * WFS 호버 상호작용 반환 메서드
@@ -95,4 +97,37 @@ export function getWfsModify(feature: Collection<Feature<Geometry>>): Modify {
 	modify.set('name', 'modify');
 
 	return modify;
+}
+
+/**
+ * 편집용 인터렉션(snap, modify)의 활성 상태를 바꾸는 메서드
+ *
+ * @param {OlMap | undefined} map 맵
+ * @param {boolean} active 활성 여부
+ */
+export function setEditInteractionsActive(map: OlMap | undefined, active: boolean): void {
+	map?.getInteractions().forEach((interaction: Interaction) => {
+		if (EDIT_INTERACTION_NAMES.includes(interaction.get('name'))) {
+			interaction.setActive(active);
+		}
+	});
+}
+
+/**
+ * WFS 편집용 인터렉션 목록 반환 메서드
+ *
+ * snap, modify는 선택된 피쳐(clickSelect)만 대상으로 하고, 편집을 시작하기 전까지는 꺼 둔다.
+ *
+ * @param {string} name 라벨 컬럼
+ * @returns {Interaction[]} 인터렉션 목록
+ */
+export function getWfsEditInteractions(name: string): Interaction[] {
+	const select = getWfsClickSelect(name);
+	const snap = getWfsSnap(select.getFeatures());
+	const modify = getWfsModify(select.getFeatures());
+
+	snap.setActive(false);
+	modify.setActive(false);
+
+	return [getWfsHoverSelect(name), select, snap, modify];
 }

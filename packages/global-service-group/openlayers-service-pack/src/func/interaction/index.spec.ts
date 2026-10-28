@@ -12,7 +12,15 @@ import type { Style } from 'ol/style';
 
 import { clickStyle, hoverStyle } from '#/func/style';
 
-import { drawInteraction, getWfsClickSelect, getWfsHoverSelect, getWfsModify, getWfsSnap } from '.';
+import {
+	drawInteraction,
+	getWfsClickSelect,
+	getWfsEditInteractions,
+	getWfsHoverSelect,
+	getWfsModify,
+	getWfsSnap,
+	setEditInteractionsActive
+} from '.';
 
 // 레이어 모듈이 같은 스타일 모듈의 다른 export(drawStyle 등)를 쓰므로 hover, click 스타일만 대체한다
 vi.mock('#/func/style', async (importOriginal) => ({
@@ -239,6 +247,112 @@ describe('[@gis-dev/openlayers-service-pack] interaction', () => {
 			const features = new Collection<Feature>();
 
 			expect(getWfsModify(features)).not.toBe(getWfsModify(features));
+		});
+	});
+
+	describe('setEditInteractionsActive 테스트', () => {
+		/**
+		 * 편집용(snap, modify)과 그 외 인터렉션이 함께 등록된 맵을 생성하는 메서드
+		 */
+		function createEditMap(): { click: Select; hover: Select; map: Map; modify: Modify; snap: Snap } {
+			const features = new Collection<Feature>();
+			const click = getWfsClickSelect(LABEL_COLUMN);
+			const hover = getWfsHoverSelect(LABEL_COLUMN);
+			const modify = getWfsModify(features);
+			const snap = getWfsSnap(features);
+
+			return { click, hover, map: new Map({ interactions: [hover, click, modify, snap] }), modify, snap };
+		}
+
+		it('true이면 snap, modify를 활성화한다', () => {
+			const { map, modify, snap } = createEditMap();
+
+			modify.setActive(false);
+			snap.setActive(false);
+
+			setEditInteractionsActive(map, true);
+
+			expect(modify.getActive()).toBe(true);
+			expect(snap.getActive()).toBe(true);
+		});
+
+		it('false이면 snap, modify를 비활성화한다', () => {
+			const { map, modify, snap } = createEditMap();
+
+			setEditInteractionsActive(map, false);
+
+			expect(modify.getActive()).toBe(false);
+			expect(snap.getActive()).toBe(false);
+		});
+
+		it('hoverSelect, clickSelect 등 편집용이 아닌 인터렉션은 건드리지 않는다', () => {
+			const { click, hover, map } = createEditMap();
+
+			setEditInteractionsActive(map, false);
+
+			expect(click.getActive()).toBe(true);
+			expect(hover.getActive()).toBe(true);
+
+			click.setActive(false);
+
+			setEditInteractionsActive(map, true);
+
+			expect(click.getActive()).toBe(false);
+		});
+
+		it('이름이 없는 인터렉션은 건드리지 않는다', () => {
+			const unnamed = new Snap({ features: new Collection<Feature>() });
+			const map = new Map({ interactions: [unnamed] });
+
+			setEditInteractionsActive(map, false);
+
+			expect(unnamed.getActive()).toBe(true);
+		});
+
+		it('맵이 없으면 에러 없이 무시한다', () => {
+			expect(() => setEditInteractionsActive(undefined, true)).not.toThrow();
+		});
+
+		it('인터렉션이 없는 맵도 에러 없이 처리한다', () => {
+			expect(() => setEditInteractionsActive(new Map({ interactions: [] }), true)).not.toThrow();
+		});
+	});
+
+	describe('getWfsEditInteractions 테스트', () => {
+		it('hover, click, snap, modify 순서의 인터렉션을 반환한다', () => {
+			const interactions = getWfsEditInteractions(LABEL_COLUMN);
+
+			expect(interactions.map((interaction) => interaction.get('name'))).toEqual([
+				'hoverSelect',
+				'clickSelect',
+				'snap',
+				'modify'
+			]);
+		});
+
+		it('snap, modify는 꺼 두고 hover, click은 켜 둔다', () => {
+			const [hover, click, snap, modify] = getWfsEditInteractions(LABEL_COLUMN);
+
+			expect(hover?.getActive()).toBe(true);
+			expect(click?.getActive()).toBe(true);
+			expect(snap?.getActive()).toBe(false);
+			expect(modify?.getActive()).toBe(false);
+		});
+
+		it('호출할 때마다 새 인스턴스를 반환한다', () => {
+			const [first] = getWfsEditInteractions(LABEL_COLUMN);
+			const [second] = getWfsEditInteractions(LABEL_COLUMN);
+
+			expect(first).not.toBe(second);
+		});
+
+		it('편집용 인터렉션 목록을 setEditInteractionsActive가 그대로 제어할 수 있다', () => {
+			const interactions = getWfsEditInteractions(LABEL_COLUMN);
+			const map = new Map({ interactions });
+
+			setEditInteractionsActive(map, true);
+
+			expect(interactions.map((interaction) => interaction.getActive())).toEqual([true, true, true, true]);
 		});
 	});
 });
