@@ -23,6 +23,8 @@ vi.mock('#/func/style', async (importOriginal) => ({
 
 const LABEL_COLUMN = 'buld_nm';
 
+const DEFAULT_PIXEL_TOLERANCE = 10;
+
 /**
  * 지정한 타입의 맵 브라우저 이벤트 흉내 객체를 생성하는 메서드
  */
@@ -215,6 +217,13 @@ describe('[@gis-dev/openlayers-service-pack] interaction', () => {
 			const features = new Collection<Feature>();
 
 			expect(getWfsSnap(features)).not.toBe(getWfsSnap(features));
+		});
+
+		it('빠른 움직임에도 붙도록 스냅 허용 반경을 OL 기본값(10px)보다 크게 한다', () => {
+			const snap = getWfsSnap(new Collection<Feature>());
+
+			// OL은 허용 반경을 공개 getter로 제공하지 않아 내부 필드를 읽는다
+			expect(Reflect.get(snap, 'pixelTolerance_')).toBeGreaterThan(DEFAULT_PIXEL_TOLERANCE);
 		});
 	});
 

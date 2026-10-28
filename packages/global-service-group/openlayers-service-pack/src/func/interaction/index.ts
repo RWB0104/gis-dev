@@ -70,6 +70,7 @@ export const drawInteraction = new Draw({
 export function getWfsSnap(feature: Collection<Feature<Geometry>>): Snap {
 	const snap = new Snap({
 		features: feature,
+		pixelTolerance: 100,
 		source: wfsSource.transactionSource as VectorSource
 	});
 

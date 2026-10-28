@@ -57,6 +57,31 @@ export function getWfsBuildingInfo(feature: FeatureLike): WfsBuildingInfo {
 	};
 }
 
+export interface TransactionBuildingInfo {
+	/**
+	 * 주소
+	 */
+	address: string;
+
+	/**
+	 * 피쳐 ID
+	 */
+	id: string;
+
+	/**
+	 * 이름
+	 */
+	name: string;
+}
+
+export function getTransactionBuildingInfo(feature: FeatureLike): TransactionBuildingInfo {
+	return {
+		address: read(feature, 'address'),
+		id: `${feature.getId() ?? EMPTY}`,
+		name: read(feature, 'name')
+	};
+}
+
 export interface FeatureDescriptionItem {
 	/**
 	 * 라벨
@@ -96,6 +121,24 @@ export function describeWfsBuilding(feature: FeatureLike): FeatureDescription {
 			{ label: 'ID', value: id },
 			{ label: '고유일련번호', value: serialNo },
 			{ label: '고시일자', value: noticeDate }
+		],
+		title: name
+	};
+}
+
+export function describeTransactionBuilding(feature: FeatureLike): FeatureDescription {
+	const { address, id, name } = getTransactionBuildingInfo(feature);
+
+	return {
+		items: [
+			{
+				label: 'ID',
+				value: id
+			},
+			{
+				label: '주소',
+				value: address
+			}
 		],
 		title: name
 	};

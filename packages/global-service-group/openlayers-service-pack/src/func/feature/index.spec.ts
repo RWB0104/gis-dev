@@ -10,7 +10,13 @@
 import { Feature } from 'ol';
 import { Point, Polygon } from 'ol/geom';
 
-import { describeWfsBuilding, getFeatureCenter, getWfsBuildingInfo } from '.';
+import {
+	describeTransactionBuilding,
+	describeWfsBuilding,
+	getFeatureCenter,
+	getTransactionBuildingInfo,
+	getWfsBuildingInfo
+} from '.';
 
 /**
  * 속성이 지정된 피쳐를 생성하는 메서드
@@ -91,6 +97,66 @@ describe('[@gis-dev/openlayers-service-pack] feature', () => {
 			expect(description.title).toBe('-');
 			expect(description.items[0]).toEqual({ label: 'ID', value: '-' });
 			expect(description.items[1]).toEqual({ label: '고유일련번호', value: '-' });
+		});
+	});
+
+	describe('getTransactionBuildingInfo 테스트', () => {
+		it('피쳐 ID, 이름, 주소를 추출한다', () => {
+			const feature = createFeature({ address: '서울 중구', name: '청사' }, 'buld_test.12');
+
+			expect(getTransactionBuildingInfo(feature)).toEqual({ address: '서울 중구', id: 'buld_test.12', name: '청사' });
+		});
+
+		it('숫자 ID도 문자열로 변환한다', () => {
+			expect(getTransactionBuildingInfo(createFeature({}, 12)).id).toBe('12');
+		});
+
+		it('값이 없으면 대체 문자를 반환한다', () => {
+			expect(getTransactionBuildingInfo(createFeature({}))).toEqual({ address: '-', id: '-', name: '-' });
+		});
+
+		it('이름과 주소가 null이거나 빈 문자열이면 대체 문자를 반환한다', () => {
+			const feature = createFeature({ address: '', name: null });
+
+			expect(getTransactionBuildingInfo(feature)).toMatchObject({ address: '-', name: '-' });
+		});
+
+		it('buld_sejong 전용 컬럼(buld_nm, bul_man_no)은 읽지 않는다', () => {
+			const feature = createFeature({ bul_man_no: '58190', buld_nm: '세종시청사' });
+
+			expect(getTransactionBuildingInfo(feature)).toMatchObject({ address: '-', name: '-' });
+		});
+	});
+
+	describe('describeTransactionBuilding 테스트', () => {
+		it('이름을 제목으로 한다', () => {
+			expect(describeTransactionBuilding(createFeature({ name: '청사' })).title).toBe('청사');
+		});
+
+		it('ID, 주소 순서로 항목을 만든다', () => {
+			const feature = createFeature({ address: '서울 중구', name: '청사' }, 'buld_test.12');
+
+			expect(describeTransactionBuilding(feature).items).toEqual([
+				{ label: 'ID', value: 'buld_test.12' },
+				{ label: '주소', value: '서울 중구' }
+			]);
+		});
+
+		it('값이 없으면 제목과 항목 값을 대체 문자로 채운다', () => {
+			const description = describeTransactionBuilding(createFeature({}));
+
+			expect(description.title).toBe('-');
+			expect(description.items).toEqual([
+				{ label: 'ID', value: '-' },
+				{ label: '주소', value: '-' }
+			]);
+		});
+
+		it('WFS 건물 정보와 달리 일련번호, 고시일자 항목을 만들지 않는다', () => {
+			const labels = describeTransactionBuilding(createFeature({})).items.map((item) => item.label);
+
+			expect(labels).not.toContain('고유일련번호');
+			expect(labels).not.toContain('고시일자');
 		});
 	});
 
