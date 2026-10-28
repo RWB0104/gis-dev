@@ -7,10 +7,9 @@
 
 import { act, fireEvent, render, within } from '@testing-library/react';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Feature, Map, type MapBrowserEvent } from 'ol';
+import { Feature, Map } from 'ol';
 import { Polygon } from 'ol/geom';
 import { Select } from 'ol/interaction';
-import { SelectEvent } from 'ol/interaction/Select';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
 
@@ -41,21 +40,28 @@ function renderPopup(map?: Map): ReturnType<typeof render> {
 }
 
 /**
- * 피쳐를 선택한 것처럼 select 이벤트를 발생시키는 메서드
- */
-function selectFeatures(select: Select, selected: Feature[], deselected: Feature[] = []): void {
-	act(() => {
-		select.dispatchEvent(new SelectEvent('select', selected, deselected, {} as MapBrowserEvent));
-	});
-}
-
-/**
  * 오버레이 요소 안의 정보 카드를 반환하는 메서드
  *
  * 맵에 target이 없어 오버레이 요소가 document에 붙지 않으므로, screen이 아니라 오버레이 요소 기준으로 조회한다.
  */
 function queryCard(map: Map): HTMLElement | null {
 	return within(map.getOverlays().item(0).getElement() as HTMLElement).queryByTestId('FeatureInfoCard');
+}
+
+/**
+ * 선택 피쳐 컬렉션을 주어진 피쳐로 교체해 피쳐를 선택한 것처럼 만드는 메서드
+ */
+function selectFeatures(select: Select, selected: Feature[]): void {
+	act(() => {
+		const features = select.getFeatures();
+
+		// clear 호출 여부를 검증하는 테스트가 있어 clear 대신 하나씩 제거한다
+		for (const feature of [...features.getArray()]) {
+			features.remove(feature);
+		}
+
+		features.extend(selected);
+	});
 }
 
 /**
@@ -144,7 +150,7 @@ describe('[@gis-dev/root-ui-pack] TransactionPopup', () => {
 		renderPopup(map);
 
 		selectFeatures(select, [first]);
-		selectFeatures(select, [createFeature('buld_test.13', '시청', '세종')], [first]);
+		selectFeatures(select, [createFeature('buld_test.13', '시청', '세종')]);
 
 		const card = queryCard(map) as HTMLElement;
 
@@ -163,7 +169,7 @@ describe('[@gis-dev/root-ui-pack] TransactionPopup', () => {
 
 		expect(queryCard(map)).not.toBeNull();
 
-		selectFeatures(select, [], [feature]);
+		selectFeatures(select, []);
 
 		expect(queryCard(map)).toBeNull();
 		expect(map.getOverlays().item(0).getPosition()).toBeUndefined();

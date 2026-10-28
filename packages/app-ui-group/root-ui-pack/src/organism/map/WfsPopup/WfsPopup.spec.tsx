@@ -7,10 +7,9 @@
 
 import { act, fireEvent, render, within } from '@testing-library/react';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: for dependencies
-import { Feature, Map, type MapBrowserEvent } from 'ol';
+import { Feature, Map } from 'ol';
 import { Point, Polygon } from 'ol/geom';
 import { Select } from 'ol/interaction';
-import { SelectEvent } from 'ol/interaction/Select';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
 import { describeWfsBuilding } from '@gis-dev/openlayers-service-pack/func/feature';
@@ -65,11 +64,18 @@ function queryCard(map: Map): HTMLElement | null {
 }
 
 /**
- * 피쳐를 선택한 것처럼 select 이벤트를 발생시키는 메서드
+ * 선택 피쳐 컬렉션을 주어진 피쳐로 교체해 피쳐를 선택한 것처럼 만드는 메서드
  */
-function selectFeatures(select: Select, selected: Feature[], deselected: Feature[] = []): void {
+function selectFeatures(select: Select, selected: Feature[]): void {
 	act(() => {
-		select.dispatchEvent(new SelectEvent('select', selected, deselected, {} as MapBrowserEvent));
+		const features = select.getFeatures();
+
+		// clear 호출 여부를 검증하는 테스트가 있어 clear 대신 하나씩 제거한다
+		for (const feature of [...features.getArray()]) {
+			features.remove(feature);
+		}
+
+		features.extend(selected);
 	});
 }
 
@@ -122,13 +128,13 @@ describe('[@gis-dev/root-ui-pack] WfsPopup', () => {
 
 	it('언마운트하면 select 리스너를 해제한다', () => {
 		const { map, select } = createMap('clickSelect');
-		const spy = vi.spyOn(select, 'un');
+		const spy = vi.spyOn(select.getFeatures(), 'un');
 
 		const { unmount } = renderPopup(map);
 
 		unmount();
 
-		expect(spy).toHaveBeenCalledWith('select', expect.any(Function));
+		expect(spy).toHaveBeenCalledWith(['add', 'remove'], expect.any(Function));
 	});
 
 	it('피쳐를 선택하면 오버레이 요소 안에 정보 카드를 보여준다', () => {
@@ -190,7 +196,7 @@ describe('[@gis-dev/root-ui-pack] WfsPopup', () => {
 		selectFeatures(select, [feature]);
 		expect(queryCard(map)).not.toBeNull();
 
-		selectFeatures(select, [], [feature]);
+		selectFeatures(select, []);
 
 		expect(queryCard(map)).toBeNull();
 		expect(map.getOverlays().item(0).getPosition()).toBeUndefined();
