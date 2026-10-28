@@ -6,7 +6,6 @@
  */
 
 import { PlusIcon } from 'lucide-react';
-import type { FeatureLike } from 'ol/Feature';
 import { Polygon } from 'ol/geom';
 import { use, useEffect, useEffectEvent, useState } from 'react';
 
@@ -30,7 +29,6 @@ export default function TransactionInsertButton(): React.JSX.Element {
 
 	const [isOpenState, setIsOpenState] = useState(false);
 	const [isDrawingState, setIsDrawingState] = useState(false);
-	const [featuresState, setFeaturesState] = useState<FeatureLike[]>([]);
 
 	const { isPending, mutate } = useWfsTransaction({
 		axios: {
@@ -56,7 +54,6 @@ export default function TransactionInsertButton(): React.JSX.Element {
 
 				transactionLayer.drawLayer.getSource()?.clear();
 
-				setFeaturesState([]);
 				setIsDrawingState(false);
 				setIsOpenState(false);
 			}
@@ -90,17 +87,18 @@ export default function TransactionInsertButton(): React.JSX.Element {
 
 		// 그려진 피쳐가 있을 경우
 		if (features && features.length > 0) {
-			setFeaturesState(features);
 			setIsOpenState(true);
 		}
 	});
 
 	const handleSubmit: Func<TransactionFormParams> = ({ address, name }) => {
-		if (map === undefined) {
+		const features = transactionLayer.drawLayer.getSource()?.getFeatures() ?? [];
+
+		if (map === undefined || features.length === 0) {
 			return;
 		}
 
-		const polygons = featuresState
+		const polygons = features
 			.map((feature) => feature.getGeometry())
 			.filter((geometry): geometry is Polygon => geometry instanceof Polygon);
 

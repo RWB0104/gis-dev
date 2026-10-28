@@ -392,6 +392,48 @@ describe('[@gis-dev/root-ui-pack] TransactionInsertButton', () => {
 			expect(mocks.mutate).not.toHaveBeenCalled();
 		});
 
+		it('draw 레이어에 그려진 피쳐가 없으면 전송하지 않는다', () => {
+			render(createTree(map));
+
+			act(() => {
+				mocks.dialogProps.onSubmit({ address: '서울', name: '청사' });
+			});
+
+			expect(mocks.mutate).not.toHaveBeenCalled();
+		});
+
+		it('제출 시점에 draw 레이어에 남은 폴리곤을 대상으로 한다', () => {
+			render(createTree(map));
+
+			startDrawing();
+			drawPolygon();
+			pressEscape();
+			drawPolygon();
+
+			act(() => {
+				mocks.dialogProps.onSubmit({ address: '서울', name: '청사' });
+			});
+
+			const xml = mocks.mutate.mock.calls[0]?.[0].data as string;
+
+			expect(xml.match(/<gml:Polygon /gu)).toHaveLength(2);
+		});
+
+		it('draw 레이어에 소스가 없어도 에러 없이 전송하지 않는다', () => {
+			const spy = vi.spyOn(transactionLayer.drawLayer, 'getSource').mockReturnValue(null);
+
+			render(createTree(map));
+
+			expect(() =>
+				act(() => {
+					mocks.dialogProps.onSubmit({ address: '서울', name: '청사' });
+				})
+			).not.toThrow();
+			expect(mocks.mutate).not.toHaveBeenCalled();
+
+			spy.mockRestore();
+		});
+
 		it('XML 본문을 text/plain으로 전송하도록 요청 헤더를 지정한다', () => {
 			render(createTree(map));
 
