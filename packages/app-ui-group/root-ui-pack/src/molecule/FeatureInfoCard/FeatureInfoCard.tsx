@@ -6,34 +6,30 @@
  */
 
 import { XIcon } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useEffectEvent } from 'react';
 
+import type { FeatureDescriptionItem } from '@gis-dev/openlayers-service-pack/func/feature';
 import { Button } from '@gis-dev/shadcn-ui-pack/components/ui/button';
 import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
-
-export interface FeatureInfoCardItem {
-	/**
-	 * 라벨
-	 */
-	label: string;
-
-	/**
-	 * 값
-	 */
-	value: string;
-}
 
 export interface FeatureInfoCardProps
 	extends PropsWithoutChildren<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>> {
 	/**
 	 * 항목 배열
 	 */
-	items: FeatureInfoCardItem[];
+	items: FeatureDescriptionItem[];
 
 	/**
 	 * 닫기 이벤트 메서드
 	 */
 	onClose?: Func<void>;
+
+	/**
+	 * 썸네일
+	 */
+	thumbnail?: string;
 
 	/**
 	 * 제목
@@ -51,6 +47,7 @@ export interface FeatureInfoCardProps
 export default function FeatureInfoCard({
 	items,
 	onClose,
+	thumbnail,
 	title,
 	className,
 	...props
@@ -90,14 +87,32 @@ export default function FeatureInfoCard({
 				</Button>
 			</div>
 
-			{items.map(({ label, value }) => (
+			{thumbnail !== undefined && (
+				<div className="relative my-4 aspect-square overflow-hidden rounded border">
+					<Image alt={title} fill sizes="100vw" src={thumbnail} />
+				</div>
+			)}
+
+			{items.map(({ label, value, link }) => (
 				<div
 					className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-2 border-t py-2 text-[13px] leading-normal"
 					key={label}
 				>
 					<span className="text-muted-foreground">{label}</span>
 
-					<span className="break-all tabular-nums">{value}</span>
+					{link !== undefined && (
+						<Link
+							className={cn('text-sky-500', {
+								'text-green-500': link.startsWith('tel:')
+							})}
+							href={link}
+							target="_blank"
+						>
+							{value}
+						</Link>
+					)}
+
+					{link === undefined && <span className="break-all tabular-nums">{value}</span>}
 				</div>
 			))}
 
