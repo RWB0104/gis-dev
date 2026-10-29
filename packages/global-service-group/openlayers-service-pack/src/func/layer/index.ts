@@ -15,6 +15,7 @@ import {
 import { osmLayer } from '#/func/layer/osm';
 import {
 	drawLayer,
+	getWfsHeatmapLayer,
 	sejongWfsLayer,
 	wfsCityVectorLayer,
 	wfsFeatureVectorLayer,
@@ -39,6 +40,7 @@ export const baseLayer = {
 };
 
 export const wfsLayer = {
+	getWfsHeatmapLayer,
 	sejongWfsLayer,
 	wfsCityVectorLayer,
 	wfsStarbucksClusterLayer,

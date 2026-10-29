@@ -23,9 +23,10 @@ describe('[@gis-dev/openlayers-service-pack] layer', () => {
 	});
 
 	describe('wfsLayer 테스트', () => {
-		it('WFS 레이어 4종을 묶는다', () => {
+		it('WFS 레이어 5종을 묶는다', () => {
 			expect(Object.keys(wfsLayer)).toEqual(
 				expect.arrayContaining([
+					'getWfsHeatmapLayer',
 					'sejongWfsLayer',
 					'wfsCityVectorLayer',
 					'wfsStarbucksClusterLayer',

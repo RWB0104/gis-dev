@@ -7,9 +7,19 @@
 
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
+import { Heatmap } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
 
-import { drawLayer, sejongWfsLayer, wfsCityVectorLayer, wfsStarbucksClusterLayer, wfsTransactionLayer } from './wfs';
+import { wfsSource } from '#/func/source';
+
+import {
+	drawLayer,
+	getWfsHeatmapLayer,
+	sejongWfsLayer,
+	wfsCityVectorLayer,
+	wfsStarbucksClusterLayer,
+	wfsTransactionLayer
+} from './wfs';
 
 function labelFeature(column: string, value: string): Feature<Point> {
 	return new Feature({ [column]: value, geometry: new Point([0, 0]) });
@@ -73,6 +83,44 @@ describe('[@gis-dev/openlayers-service-pack] layer/wfs', () => {
 		it('name wfs인 VectorLayer다', () => {
 			expect(wfsCityVectorLayer).toBeInstanceOf(VectorLayer);
 			expect(wfsCityVectorLayer.get('name')).toBe('wfs');
+		});
+	});
+
+	describe('getWfsHeatmapLayer 테스트', () => {
+		// jsdom은 canvas 2d 컨텍스트가 없어 Heatmap 그라디언트 생성이 실패하므로 최소한의 컨텍스트로 대체한다
+		beforeEach(() => {
+			vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+				createLinearGradient: () => ({ addColorStop: vi.fn() }),
+				fillRect: vi.fn(),
+				getImageData: () => ({ data: new Uint8ClampedArray(4 * 256) })
+			} as unknown as CanvasRenderingContext2D);
+		});
+
+		afterEach(() => {
+			vi.restoreAllMocks();
+		});
+
+		it('name wfs, zIndex 5인 Heatmap을 반환한다', () => {
+			const layer = getWfsHeatmapLayer();
+
+			expect(layer).toBeInstanceOf(Heatmap);
+			expect(layer.get('name')).toBe('wfs');
+			expect(layer.getZIndex()).toBe(5);
+		});
+
+		it('blur와 radius가 20이다', () => {
+			const layer = getWfsHeatmapLayer();
+
+			expect(layer.getBlur()).toBe(20);
+			expect(layer.getRadius()).toBe(20);
+		});
+
+		it('스타벅스 WFS 소스를 사용한다', () => {
+			expect(getWfsHeatmapLayer().getSource()).toBe(wfsSource.starbucksSource);
+		});
+
+		it('호출할 때마다 새 레이어를 만든다', () => {
+			expect(getWfsHeatmapLayer()).not.toBe(getWfsHeatmapLayer());
 		});
 	});
 });

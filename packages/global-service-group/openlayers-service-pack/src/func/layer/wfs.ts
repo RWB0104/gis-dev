@@ -5,6 +5,7 @@
  * @since 2026.10.19 월 19:47:20
  */
 
+import { Heatmap } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Circle, Style } from 'ol/style';
@@ -72,3 +73,13 @@ export const wfsFeatureVectorLayer = new VectorLayer({
 	}),
 	zIndex: 10
 });
+
+// 히트맵 WFS 레이어 (Heatmap 생성자가 document를 사용하므로 SSR 시점에 평가되지 않도록 함수로 제공)
+export const getWfsHeatmapLayer = (): Heatmap =>
+	new Heatmap({
+		blur: 20,
+		properties: { name: 'wfs' },
+		radius: 20,
+		source: wfsSource.starbucksSource as VectorSource,
+		zIndex: 5
+	});
