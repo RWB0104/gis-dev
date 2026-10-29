@@ -172,7 +172,7 @@ export function starbucksBasicStyle(feature: RenderFeature | Feature<Geometry>, 
 export function starbucksHoverStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string): Style {
 	return new Style({
 		image: new Icon({
-			scale: 0.5,
+			scale: 0.4,
 			src: STARBUCKS_IMAGE
 		}),
 		text: new Text({
@@ -199,7 +199,7 @@ export function starbucksHoverStyle(feature: RenderFeature | Feature<Geometry>, 
 export function starbucksClickStyle(feature: RenderFeature | Feature<Geometry>, labelColumn: string): Style {
 	return new Style({
 		image: new Icon({
-			scale: 0.5,
+			scale: 0.4,
 			src: STARBUCKS_IMAGE
 		}),
 		text: new Text({

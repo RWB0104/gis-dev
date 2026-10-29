@@ -12,7 +12,7 @@ import { Draw, type Interaction, Modify, Select, Snap } from 'ol/interaction';
 import type VectorSource from 'ol/source/Vector';
 import type { Style } from 'ol/style';
 
-import { clickStyle, hoverStyle } from '#/func/style';
+import { clickStyle, hoverStyle, starbucksClickStyle, starbucksHoverStyle } from '#/func/style';
 
 import { transactionLayer } from '../layer';
 import { wfsSource } from '../source';
@@ -130,4 +130,38 @@ export function getWfsEditInteractions(name: string): Interaction[] {
 	modify.setActive(false);
 
 	return [getWfsHoverSelect(name), select, snap, modify];
+}
+
+/**
+ * 클러스터 클릭 상호작용 반환 메서드
+ *
+ * @param {string} name: 라벨 컬럼
+ *
+ * @returns {Select} Select 객체
+ */
+export function getClusterClickSelect(name: string): Select {
+	const select = new Select({
+		condition: click,
+		filter: (feature) => feature.get('features').length === 1,
+		style: (feature) => starbucksClickStyle(feature, name)
+	});
+
+	select.set('name', 'clickSelect');
+
+	return select;
+}
+
+/**
+ * 클러스터 호버 상호작용 반환 메서드
+ *
+ * @param {string} name: 라벨 컬럼
+ *
+ * @returns {Select} Select 객체
+ */
+export function getClusterHoverSelect(name: string): Select {
+	return new Select({
+		condition: pointerMove,
+		filter: (feature) => feature.get('features').length === 1,
+		style: (feature) => starbucksHoverStyle(feature, name)
+	});
 }

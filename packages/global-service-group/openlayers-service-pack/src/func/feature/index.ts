@@ -74,6 +74,13 @@ export interface TransactionBuildingInfo {
 	name: string;
 }
 
+/**
+ * WFS 트랜잭션 빌딩 정보 반환 메서드
+ *
+ * @param {FeatureLike} feature 피쳐
+ *
+ * @returns {WfsBuildingInfo} 건물 정보
+ */
 export function getTransactionBuildingInfo(feature: FeatureLike): TransactionBuildingInfo {
 	return {
 		address: read(feature, 'address'),
@@ -82,11 +89,92 @@ export function getTransactionBuildingInfo(feature: FeatureLike): TransactionBui
 	};
 }
 
+export interface ClusterPointInfo {
+	/**
+	 * 주소
+	 */
+	addr: string;
+
+	/**
+	 * 코드
+	 */
+	code: string;
+
+	/**
+	 * 도로명주소
+	 */
+	doroAddr: string;
+
+	/**
+	 * 군구
+	 */
+	gungu: string;
+
+	/**
+	 * 피쳐 ID
+	 */
+	id: string;
+
+	/**
+	 * 이름
+	 */
+	name: string;
+
+	/**
+	 * 오픈일자
+	 */
+	open: number;
+
+	/**
+	 * 시도
+	 */
+	sido: string;
+
+	/**
+	 * 전화번호
+	 */
+	tel: string;
+
+	/**
+	 * 썸네일
+	 */
+	thumbnail: string;
+}
+
+/**
+ * 클러스터 포인트 표시 정보 반환 메서드
+ *
+ * @param {FeatureLike} feature FeatureLike
+ *
+ * @returns {ClusterPointInfo} 포인트 정보
+ */
+export function getClusterPointInfo(feature: FeatureLike): ClusterPointInfo {
+	const source: FeatureLike = feature.get('features')?.[0] ?? feature;
+
+	return {
+		addr: read(source, 'addr'),
+		code: read(source, 'code'),
+		doroAddr: read(source, 'doro_addr'),
+		gungu: read(source, 'gungu'),
+		id: `${source.getId() ?? EMPTY}`,
+		name: read(source, 'name'),
+		open: Number(read(source, 'open')),
+		sido: read(source, 'sido'),
+		tel: read(source, 'tel'),
+		thumbnail: `https://www.starbucks.co.kr${read(source, 'thumbnail')}`
+	};
+}
+
 export interface FeatureDescriptionItem {
 	/**
 	 * 라벨
 	 */
 	label: string;
+
+	/**
+	 * 링크
+	 */
+	link?: string;
 
 	/**
 	 * 값
@@ -99,6 +187,11 @@ export interface FeatureDescription {
 	 * 표시 항목 배열
 	 */
 	items: FeatureDescriptionItem[];
+
+	/**
+	 * 썸네일
+	 */
+	thumbnail?: string;
 
 	/**
 	 * 제목
@@ -126,6 +219,13 @@ export function describeWfsBuilding(feature: FeatureLike): FeatureDescription {
 	};
 }
 
+/**
+ * WFS 트랜잭션 피쳐 정보 반환 메서드
+ *
+ * @param {FeatureLike} feature 피쳐
+ *
+ * @returns {FeatureDescription} 제목과 표시 항목
+ */
 export function describeTransactionBuilding(feature: FeatureLike): FeatureDescription {
 	const { address, id, name } = getTransactionBuildingInfo(feature);
 
@@ -140,6 +240,43 @@ export function describeTransactionBuilding(feature: FeatureLike): FeatureDescri
 				value: address
 			}
 		],
+		title: name
+	};
+}
+
+/**
+ * 클러스터 피쳐 정보 반환 메서드
+ *
+ * @param {FeatureLike} feature FeatureLike
+ *
+ * @returns {FeatureDescription} 제목과 표시 항목
+ */
+export function describeClusterPoint(feature: FeatureLike): FeatureDescription {
+	const { addr, doroAddr, id, name, tel, thumbnail } = getClusterPointInfo(feature);
+
+	return {
+		items: [
+			{
+				label: 'ID',
+				value: id
+			},
+			{
+				label: '도로명주소',
+				link: `https://map.naver.com/p/search/${encodeURIComponent(doroAddr)}`,
+				value: doroAddr
+			},
+			{
+				label: '지번주소',
+				link: `https://map.naver.com/p/search/${encodeURIComponent(addr)}`,
+				value: addr
+			},
+			{
+				label: '연락처',
+				link: `tel:${tel}`,
+				value: tel
+			}
+		],
+		thumbnail,
 		title: name
 	};
 }

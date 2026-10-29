@@ -10,10 +10,12 @@ import { Collection, Feature, Map, type MapBrowserEvent } from 'ol';
 import { Draw, Modify, Select, Snap } from 'ol/interaction';
 import type { Style } from 'ol/style';
 
-import { clickStyle, hoverStyle } from '#/func/style';
+import { clickStyle, hoverStyle, starbucksClickStyle, starbucksHoverStyle } from '#/func/style';
 
 import {
 	drawInteraction,
+	getClusterClickSelect,
+	getClusterHoverSelect,
 	getWfsClickSelect,
 	getWfsEditInteractions,
 	getWfsHoverSelect,
@@ -26,7 +28,9 @@ import {
 vi.mock('#/func/style', async (importOriginal) => ({
 	...(await importOriginal<typeof import('#/func/style')>()),
 	clickStyle: vi.fn(),
-	hoverStyle: vi.fn()
+	hoverStyle: vi.fn(),
+	starbucksClickStyle: vi.fn(),
+	starbucksHoverStyle: vi.fn()
 }));
 
 const LABEL_COLUMN = 'buld_nm';
@@ -353,6 +357,116 @@ describe('[@gis-dev/openlayers-service-pack] interaction', () => {
 			setEditInteractionsActive(map, true);
 
 			expect(interactions.map((interaction) => interaction.getActive())).toEqual([true, true, true, true]);
+		});
+	});
+
+	describe('클러스터 Select 테스트', () => {
+		/**
+		 * 원본 피쳐 개수만큼 묶인 클러스터 래퍼 피쳐를 생성하는 메서드
+		 */
+		function createCluster(count: number): Feature {
+			return new Feature({ features: Array.from({ length: count }, () => new Feature()) });
+		}
+
+		describe('getClusterClickSelect 테스트', () => {
+			it('clickSelect 이름을 가진 Select를 반환한다', () => {
+				const select = getClusterClickSelect(LABEL_COLUMN);
+
+				expect(select).toBeInstanceOf(Select);
+				expect(select.get('name')).toBe('clickSelect');
+			});
+
+			it('click 이벤트에서 피쳐 하나만 묶인 클러스터를 선택한다', () => {
+				const select = getClusterClickSelect(LABEL_COLUMN);
+				const cluster = createCluster(1);
+				const map = attachSelect(select, [cluster]);
+
+				select.handleEvent(createEvent(map, 'click'));
+
+				expect(select.getFeatures().getArray()).toEqual([cluster]);
+			});
+
+			it('여러 피쳐가 묶인 클러스터는 선택하지 않는다', () => {
+				const select = getClusterClickSelect(LABEL_COLUMN);
+				const map = attachSelect(select, [createCluster(2)]);
+
+				select.handleEvent(createEvent(map, 'click'));
+
+				expect(select.getFeatures().getLength()).toBe(0);
+			});
+
+			it('click이 아닌 이벤트는 무시한다', () => {
+				const select = getClusterClickSelect(LABEL_COLUMN);
+				const map = attachSelect(select, [createCluster(1)]);
+
+				select.handleEvent(createEvent(map, 'pointermove'));
+
+				expect(select.getFeatures().getLength()).toBe(0);
+			});
+
+			it('선택된 클러스터에 라벨 컬럼 기준 starbucksClickStyle을 적용한다', () => {
+				const style = { id: 'starbucks-click' } as unknown as Style;
+
+				vi.mocked(starbucksClickStyle).mockReturnValue(style);
+
+				const select = getClusterClickSelect(LABEL_COLUMN);
+				const cluster = createCluster(1);
+				const map = attachSelect(select, [cluster]);
+
+				select.handleEvent(createEvent(map, 'click'));
+
+				expect(cluster.getStyleFunction()?.(cluster, 1)).toBe(style);
+				expect(starbucksClickStyle).toHaveBeenCalledWith(cluster, LABEL_COLUMN);
+			});
+		});
+
+		describe('getClusterHoverSelect 테스트', () => {
+			it('Select를 반환한다', () => {
+				expect(getClusterHoverSelect(LABEL_COLUMN)).toBeInstanceOf(Select);
+			});
+
+			it('pointermove 이벤트에서 피쳐 하나만 묶인 클러스터를 선택한다', () => {
+				const select = getClusterHoverSelect(LABEL_COLUMN);
+				const cluster = createCluster(1);
+				const map = attachSelect(select, [cluster]);
+
+				select.handleEvent(createEvent(map, 'pointermove'));
+
+				expect(select.getFeatures().getArray()).toEqual([cluster]);
+			});
+
+			it('여러 피쳐가 묶인 클러스터는 선택하지 않는다', () => {
+				const select = getClusterHoverSelect(LABEL_COLUMN);
+				const map = attachSelect(select, [createCluster(3)]);
+
+				select.handleEvent(createEvent(map, 'pointermove'));
+
+				expect(select.getFeatures().getLength()).toBe(0);
+			});
+
+			it('pointermove가 아닌 이벤트는 무시한다', () => {
+				const select = getClusterHoverSelect(LABEL_COLUMN);
+				const map = attachSelect(select, [createCluster(1)]);
+
+				select.handleEvent(createEvent(map, 'click'));
+
+				expect(select.getFeatures().getLength()).toBe(0);
+			});
+
+			it('선택된 클러스터에 라벨 컬럼 기준 starbucksHoverStyle을 적용한다', () => {
+				const style = { id: 'starbucks-hover' } as unknown as Style;
+
+				vi.mocked(starbucksHoverStyle).mockReturnValue(style);
+
+				const select = getClusterHoverSelect(LABEL_COLUMN);
+				const cluster = createCluster(1);
+				const map = attachSelect(select, [cluster]);
+
+				select.handleEvent(createEvent(map, 'pointermove'));
+
+				expect(cluster.getStyleFunction()?.(cluster, 1)).toBe(style);
+				expect(starbucksHoverStyle).toHaveBeenCalledWith(cluster, LABEL_COLUMN);
+			});
 		});
 	});
 });
