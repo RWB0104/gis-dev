@@ -5,6 +5,8 @@
  * @since 2026.10.21 수 15:07:38
  */
 
-import MapController from './MapController';
+import MapController, { type MapControllerProps } from './MapController';
 
 export default MapController;
+
+export type { MapControllerProps };
