@@ -97,5 +97,34 @@ describe('[@gis-dev/openlayers-service-pack] style', () => {
 			expect(style).toHaveProperty('circle-radius');
 			expect(style).toHaveProperty('circle-fill-color');
 		});
+
+		it('hover 속성이 1이면 빨강, 아니면 기본 파랑으로 채운다', () => {
+			expect((getWebglStyle() as Record<string, unknown>)['circle-fill-color']).toEqual([
+				'match',
+				['get', 'hover'],
+				1,
+				'#ff3f3f',
+				'#006688'
+			]);
+		});
+
+		it('인구수에 비례해 반지름 4~14, 투명도 0.6~0.92로 보간한다', () => {
+			const style = getWebglStyle() as Record<string, unknown>;
+
+			expect(style['circle-radius']).toEqual(['interpolate', ['linear'], ['get', 'population'], 40000, 4, 2000000, 14]);
+			expect(style['circle-opacity']).toEqual([
+				'interpolate',
+				['linear'],
+				['get', 'population'],
+				40000,
+				0.6,
+				2000000,
+				0.92
+			]);
+		});
+
+		it('호출마다 새 객체를 반환한다', () => {
+			expect(getWebglStyle()).not.toBe(getWebglStyle());
+		});
 	});
 });
