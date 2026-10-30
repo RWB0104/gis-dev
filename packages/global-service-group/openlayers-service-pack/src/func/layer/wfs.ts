@@ -5,7 +5,7 @@
  * @since 2026.10.19 월 19:47:20
  */
 
-import { Heatmap } from 'ol/layer';
+import { Heatmap, WebGLVector } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Circle, Style } from 'ol/style';
@@ -13,7 +13,7 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 
 import { clusterSource, wfsSource } from '#/func/source';
-import { basicStyle, clusterBasicStyle, drawStyle, starbucksBasicStyle } from '#/func/style';
+import { basicStyle, clusterBasicStyle, drawStyle, getWebglStyle, starbucksBasicStyle } from '#/func/style';
 
 // 세종시 건물 WFS 레이어
 export const sejongWfsLayer = new VectorLayer({
@@ -54,6 +54,16 @@ export const wfsStarbucksClusterLayer = new VectorLayer({
 export const wfsCityVectorLayer = new VectorLayer({
 	properties: { name: 'wfs' },
 	source: wfsSource.wfsCitySource,
+	style: new Style({
+		image: new Circle({
+			fill: new Fill({ color: 'dodgerblue' }),
+			radius: 4,
+			stroke: new Stroke({
+				color: 'black',
+				width: 1
+			})
+		})
+	}),
 	zIndex: 5
 });
 
@@ -83,3 +93,10 @@ export const getWfsHeatmapLayer = (): Heatmap =>
 		source: wfsSource.starbucksSource as VectorSource,
 		zIndex: 5
 	});
+
+export const wfsCityWebglLayer = new WebGLVector({
+	properties: { name: 'wfs-webgl' },
+	source: wfsSource.wfsCitySource,
+	style: getWebglStyle(),
+	zIndex: 5
+});

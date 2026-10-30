@@ -7,8 +7,9 @@
 
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
-import { Heatmap } from 'ol/layer';
+import { Heatmap, WebGLVector } from 'ol/layer';
 import VectorLayer from 'ol/layer/Vector';
+import { Circle, type Style } from 'ol/style';
 
 import { wfsSource } from '#/func/source';
 
@@ -17,6 +18,7 @@ import {
 	getWfsHeatmapLayer,
 	sejongWfsLayer,
 	wfsCityVectorLayer,
+	wfsCityWebglLayer,
 	wfsStarbucksClusterLayer,
 	wfsTransactionLayer
 } from './wfs';
@@ -83,6 +85,32 @@ describe('[@gis-dev/openlayers-service-pack] layer/wfs', () => {
 		it('name wfs인 VectorLayer다', () => {
 			expect(wfsCityVectorLayer).toBeInstanceOf(VectorLayer);
 			expect(wfsCityVectorLayer.get('name')).toBe('wfs');
+		});
+
+		it('반지름 4의 원형 포인트 스타일을 사용한다', () => {
+			const style = wfsCityVectorLayer.getStyle() as Style;
+			const image = style.getImage() as Circle;
+
+			expect(image).toBeInstanceOf(Circle);
+			expect(image.getRadius()).toBe(4);
+			expect(image.getFill()?.getColor()).toBe('dodgerblue');
+			expect(image.getStroke()?.getWidth()).toBe(1);
+		});
+
+		it('WebGL 레이어와 같은 도시 소스를 공유한다', () => {
+			expect(wfsCityVectorLayer.getSource()).toBe(wfsCityWebglLayer.getSource());
+		});
+	});
+
+	describe('wfsCityWebglLayer 테스트', () => {
+		it('name wfs-webgl, zIndex 5인 WebGLVector다', () => {
+			expect(wfsCityWebglLayer).toBeInstanceOf(WebGLVector);
+			expect(wfsCityWebglLayer.get('name')).toBe('wfs-webgl');
+			expect(wfsCityWebglLayer.getZIndex()).toBe(5);
+		});
+
+		it('도시 WFS 소스를 사용한다', () => {
+			expect(wfsCityWebglLayer.getSource()).toBe(wfsSource.wfsCitySource);
 		});
 	});
 

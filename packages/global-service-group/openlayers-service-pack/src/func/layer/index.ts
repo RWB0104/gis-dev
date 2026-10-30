@@ -18,6 +18,7 @@ import {
 	getWfsHeatmapLayer,
 	sejongWfsLayer,
 	wfsCityVectorLayer,
+	wfsCityWebglLayer,
 	wfsFeatureVectorLayer,
 	wfsStarbucksClusterLayer,
 	wfsTransactionLayer
@@ -43,6 +44,7 @@ export const wfsLayer = {
 	getWfsHeatmapLayer,
 	sejongWfsLayer,
 	wfsCityVectorLayer,
+	wfsCityWebglLayer,
 	wfsStarbucksClusterLayer,
 	wfsTransactionLayer
 };
