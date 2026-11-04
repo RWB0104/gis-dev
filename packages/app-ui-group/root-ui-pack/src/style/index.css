@@ -1,4 +1,5 @@
 @import "@gis-dev/shadcn-ui-pack/globals.css";
+@import "./ol.css";
 
 @source "../../../../../{apps,packages}/**/*.tsx";
 
