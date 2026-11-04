@@ -7,7 +7,10 @@
 
 import { render, screen } from '@testing-library/react';
 import { Map as OlMap } from 'ol';
+import { getUid } from 'ol/util';
+import { use } from 'react';
 
+import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
 import { useMap } from '@gis-dev/openlayers-service-pack/hooks/map';
 
 import MapProvider from '.';
@@ -24,6 +27,15 @@ function createMap(): OlMap {
 	vi.spyOn(map, 'setTarget');
 
 	return map;
+}
+
+/**
+ * MapContext의 map 식별자를 노출하는 테스트용 컴포넌트
+ */
+function Consumer(): React.JSX.Element {
+	const { map } = use(MapContext);
+
+	return <span data-map-id={map === undefined ? undefined : getUid(map)} data-testid="Consumer" />;
 }
 
 describe('[@gis-dev/root-ui-pack] MapProvider', () => {
@@ -83,5 +95,48 @@ describe('[@gis-dev/root-ui-pack] MapProvider', () => {
 		render(<MapProvider options={options} />);
 
 		expect(mockedUseMap).toHaveBeenCalledWith(options);
+	});
+
+	it('홈(/)으로 돌아가는 링크를 렌더링한다', () => {
+		render(<MapProvider />);
+
+		const link = screen.getByTestId('MapProvider').querySelector('a');
+
+		expect(link).toHaveAttribute('href', '/');
+		expect(screen.getByTestId('MapProvider')).toContainElement(link);
+	});
+
+	it('십자선 가이드를 가로/세로 두 개 렌더링한다', () => {
+		render(<MapProvider />);
+
+		const guides = screen.getByTestId('MapProvider').querySelectorAll('.pointer-events-none');
+
+		expect(guides).toHaveLength(2);
+		expect(guides[0]).toHaveClass('h-0.5', 'w-4');
+		expect(guides[1]).toHaveClass('h-4', 'w-0.5');
+	});
+
+	it('children을 section 안에 렌더링한다', () => {
+		render(
+			<MapProvider>
+				<span data-testid="Child" />
+			</MapProvider>
+		);
+
+		expect(screen.getByTestId('MapProvider')).toContainElement(screen.getByTestId('Child'));
+	});
+
+	it('MapContext로 map을 하위 컴포넌트에 제공한다', () => {
+		const map = createMap();
+
+		mockedUseMap.mockReturnValue(map);
+
+		render(
+			<MapProvider>
+				<Consumer />
+			</MapProvider>
+		);
+
+		expect(screen.getByTestId('Consumer')).toHaveAttribute('data-map-id', getUid(map));
 	});
 });

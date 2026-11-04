@@ -9,11 +9,14 @@
 
 import 'ol/ol.css';
 
+import { ChevronLeftIcon } from 'lucide-react';
+import Link from 'next/link';
 import type { MapOptions } from 'ol/Map';
 import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useRef } from 'react';
 
 import { MapContext } from '@gis-dev/openlayers-service-pack/context/map';
 import { useMap } from '@gis-dev/openlayers-service-pack/hooks/map';
+import { Button } from '@gis-dev/shadcn-ui-pack/components/ui/button';
 import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
 
 const CROSS_HAIR_CLS = cn('-translate-1/2 pointer-events-none absolute top-1/2 left-1/2 z-10 bg-neutral-500/70');
@@ -61,6 +64,17 @@ export default function MapProvider({ options, className, children, ...props }: 
 				suppressHydrationWarning
 				{...props}
 			>
+				<Button
+					className="absolute top-2 left-2 z-10"
+					nativeButton={false}
+					render={
+						<Link href="/">
+							<ChevronLeftIcon />
+						</Link>
+					}
+					variant="secondary"
+				/>
+
 				<div className={cn(CROSS_HAIR_CLS, 'h-0.5 w-4')} />
 				<div className={cn(CROSS_HAIR_CLS, 'h-4 w-0.5')} />
 
