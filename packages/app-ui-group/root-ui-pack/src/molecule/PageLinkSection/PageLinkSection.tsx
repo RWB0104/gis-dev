@@ -5,6 +5,7 @@
  * @since 2026.11.04 수 19:10:00
  */
 
+import { getLocale } from 'next-intl/server';
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
@@ -24,13 +25,15 @@ export type PageLinkSectionProps = PropsWithoutChildren<
  *
  * @returns {React.JSX.Element} JSX
  */
-export default function PageLinkSection({
+export default async function PageLinkSection({
 	description,
 	pages,
 	title,
 	className,
 	...props
-}: PageLinkSectionProps): React.JSX.Element {
+}: PageLinkSectionProps): Promise<React.JSX.Element> {
+	const locale = await getLocale();
+
 	return (
 		<section className={cn('flex flex-col gap-3', className)} data-testid="PageLinkSection" {...props}>
 			<div>
@@ -40,8 +43,8 @@ export default function PageLinkSection({
 			</div>
 
 			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-				{pages.map((page) => (
-					<PageLinkCard key={page.href} {...page} />
+				{pages.map(({ href, ...page }) => (
+					<PageLinkCard href={`/${locale}${href}`} key={href} {...page} />
 				))}
 			</div>
 		</section>

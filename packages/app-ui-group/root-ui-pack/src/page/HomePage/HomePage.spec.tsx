@@ -11,6 +11,12 @@ import { PAGE_LINK_GROUPS } from '@gis-dev/util-pack/const';
 
 import HomePage from '.';
 
+vi.mock('#/molecule/PageLinkSection', () => ({
+	default: ({ pages, title }: { pages: unknown[]; title: string }) => (
+		<section data-page-count={pages.length} data-testid="PageLinkSection" data-title={title} />
+	)
+}));
+
 describe('[@gis-dev/root-ui-pack] HomePage', () => {
 	it('main 요소를 렌더링한다', () => {
 		render(<HomePage />);
@@ -30,11 +36,14 @@ describe('[@gis-dev/root-ui-pack] HomePage', () => {
 		expect(screen.getAllByTestId('PageLinkSection')).toHaveLength(PAGE_LINK_GROUPS.length);
 	});
 
-	it('모든 페이지로 연결되는 카드를 렌더링한다', () => {
+	it('섹션마다 그룹의 제목과 페이지 목록을 전달한다', () => {
 		render(<HomePage />);
 
-		const total = PAGE_LINK_GROUPS.reduce((sum, { pages }) => sum + pages.length, 0);
+		const sections = screen.getAllByTestId('PageLinkSection');
 
-		expect(screen.getAllByTestId('PageLinkCard')).toHaveLength(total);
+		PAGE_LINK_GROUPS.forEach(({ pages, title }, index) => {
+			expect(sections[index]).toHaveAttribute('data-title', title);
+			expect(sections[index]).toHaveAttribute('data-page-count', String(pages.length));
+		});
 	});
 });
