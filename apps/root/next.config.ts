@@ -6,8 +6,12 @@
  */
 
 import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('../../packages/global-service-group/i18n-service-pack/src/func/request/index.ts');
 
 const nextConfig: NextConfig = {
+	basePath: '/gis-dev',
 	/* config options here */
 	cacheComponents: true,
 	experimental: {
@@ -27,4 +31,4 @@ const nextConfig: NextConfig = {
 	reactCompiler: true
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
