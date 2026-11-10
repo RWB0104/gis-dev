@@ -1,6 +1,5 @@
 {
 	"service": {
-		"subtitle": "SUBTITLE",
-		"title": "TITLE"
+		"subtitle": "GIS feature examples built with OpenLayers and GeoServer. Try WMS/WFS layers, feature editing, clustering, heatmaps, and WFS-T transactions right in your browser."
 	}
 }

@@ -1,6 +1,71 @@
 {
+	"page": {
+		"cluster-map": {
+			"subtitle": "",
+			"title": "클러스터 맵"
+		},
+		"feature": {
+			"subtitle": "",
+			"title": "피쳐"
+		},
+		"feature-click": {
+			"subtitle": "",
+			"title": "피쳐 클릭"
+		},
+		"geolocation": {
+			"subtitle": "",
+			"title": "지오로케이션"
+		},
+		"google": {
+			"subtitle": "",
+			"title": "Google"
+		},
+		"heat-map": {
+			"subtitle": "",
+			"title": "히트맵"
+		},
+		"map-info": {
+			"subtitle": "",
+			"title": "맵 정보"
+		},
+		"osm": {
+			"subtitle": "",
+			"title": "OSM"
+		},
+		"transaction-delete": {
+			"subtitle": "",
+			"title": "트랜잭션 삭제"
+		},
+		"transaction-insert": {
+			"subtitle": "",
+			"title": "트랜잭션 추가"
+		},
+		"transaction-update": {
+			"subtitle": "",
+			"title": "트랜잭션 수정"
+		},
+		"webgl": {
+			"subtitle": "",
+			"title": "WebGL"
+		},
+		"wfs": {
+			"subtitle": "",
+			"title": "WFS"
+		},
+		"wfs-popup": {
+			"subtitle": "",
+			"title": "WFS 팝업"
+		},
+		"wms": {
+			"subtitle": "",
+			"title": "WMS"
+		},
+		"wms-popup": {
+			"subtitle": "",
+			"title": "WMS 팝업"
+		}
+	},
 	"service": {
-		"subtitle": "SUBTITLE",
-		"title": "TITLE"
+		"subtitle": "OpenLayers와 GeoServer를 활용하여 만든 GIS 기능 예제 모음. WMS·WFS 레이어, 피처 편집, 클러스터·히트맵, WFS-T 트랜잭션을 브라우저에서 바로 실행해 볼 수 있습니다."
 	}
 }
