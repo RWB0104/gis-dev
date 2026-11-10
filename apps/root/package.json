@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"@gis-dev/i18n-service-pack": "workspace:*",
 		"@gis-dev/root-ui-pack": "workspace:*",
 		"@gis-dev/shadcn-ui-pack": "workspace:*"
 	},
