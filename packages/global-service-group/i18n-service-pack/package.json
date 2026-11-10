@@ -4,8 +4,8 @@
 	},
 	"imports": {
 		"#/*": "./src/*/index.ts",
-		"#/dictionary/en": "./src/dictionary/en.json",
-		"#/dictionary/ko": "./src/dictionary/ko.json",
+		"#/func/dictionary/en": "./src/func/dictionary/en.json",
+		"#/func/dictionary/ko": "./src/func/dictionary/ko.json",
 		"#/package": "./package.json"
 	},
 	"name": "@gis-dev/i18n-service-pack",
