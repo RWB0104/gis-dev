@@ -8,7 +8,9 @@
 import '@gis-dev/root-ui-pack/root.css';
 
 import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
 
+import { routing } from '@gis-dev/i18n-service-pack/func/routing';
 import ThemeScript from '@gis-dev/root-ui-pack/atom/ThemeScript';
 import ReactQueryProvider from '@gis-dev/root-ui-pack/organism/global/ReactQueryProvider';
 import { Toaster } from '@gis-dev/shadcn-ui-pack/components/ui/toast';
@@ -25,20 +27,28 @@ export const metadata: Metadata = {
  *
  * @returns {React.JSX.Element} JSX
  */
-export default function RootLayout({ children }: LayoutProps<'/'>): React.JSX.Element {
+export default async function RootLayout({ params, children }: LayoutProps<'/[locale]'>): Promise<React.JSX.Element> {
+	const { locale } = await params;
+
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning>
 			<head>
-				<ThemeScript strategy="beforeInteractive" />
+				<ThemeScript />
 			</head>
 
 			<body>
-				<ReactQueryProvider>
-					{children}
+				<NextIntlClientProvider>
+					<ReactQueryProvider>
+						{children}
 
-					<Toaster />
-				</ReactQueryProvider>
+						<Toaster />
+					</ReactQueryProvider>
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	);
+}
+
+export function generateStaticParams() {
+	return routing.locales.map((locale) => ({ locale }));
 }
