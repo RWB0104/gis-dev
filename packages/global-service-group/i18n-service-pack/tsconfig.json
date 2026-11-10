@@ -1,0 +1,4 @@
+{
+	"extends": "@gis-dev/typescript-pack/browser.json",
+	"include": ["./src/**/*.ts"]
+}
