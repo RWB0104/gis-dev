@@ -13,3 +13,5 @@ type Theme = 'light' | 'dark';
 type PropsWithoutChildren<T> = Omit<T, 'children'>;
 
 type DateSource = string | number | Date;
+
+type Locale = 'ko' | 'en';
