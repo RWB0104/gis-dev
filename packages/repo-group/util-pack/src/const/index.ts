@@ -98,3 +98,8 @@ export const PAGE_LINK_GROUPS: PageLinkGroup[] = [
 		title: '기타'
 	}
 ];
+
+export const LOCALES: Locale[] = ['ko', 'en'];
+
+export const SERVICE_TITLE = 'OpenLayers Playground';
+export const SERVICE_TITLE_TEMPLATE = '%s | OpenLayers Playground';
