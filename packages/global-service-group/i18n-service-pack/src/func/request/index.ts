@@ -4,6 +4,7 @@
  * @author RWB
  * @since 2026.11.10 화 14:53:20
  */
+
 import { locale } from 'next/root-params';
 import { hasLocale } from 'next-intl';
 import { getRequestConfig } from 'next-intl/server';
