@@ -17,8 +17,8 @@ vi.mock('next-intl/server', () => ({
 const mockedGetLocale = vi.mocked(getLocale);
 
 const PAGES = [
-	{ description: '첫 번째', href: '/a', title: 'A' },
-	{ description: '두 번째', href: '/b', title: 'B' }
+	{ href: '/a', subtitle: '첫 번째', title: 'A' },
+	{ href: '/b', subtitle: '두 번째', title: 'B' }
 ];
 
 /**

@@ -10,8 +10,8 @@ import { render, screen } from '@testing-library/react';
 import PageLinkCard from '.';
 
 describe('[@gis-dev/root-ui-pack] PageLinkCard', () => {
-	it('제목, 설명, 경로를 렌더링한다', () => {
-		render(<PageLinkCard description="설명" href="/osm" title="OSM" />);
+	it('제목, 부제목, 경로를 렌더링한다', () => {
+		render(<PageLinkCard href="/osm" subtitle="설명" title="OSM" />);
 
 		expect(screen.getByText('OSM')).toBeInTheDocument();
 		expect(screen.getByText('설명')).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe('[@gis-dev/root-ui-pack] PageLinkCard', () => {
 	});
 
 	it('a 태그로 href에 연결된다', () => {
-		render(<PageLinkCard description="설명" href="/osm" title="OSM" />);
+		render(<PageLinkCard href="/osm" subtitle="설명" title="OSM" />);
 
 		const card = screen.getByTestId('PageLinkCard');
 
@@ -28,7 +28,7 @@ describe('[@gis-dev/root-ui-pack] PageLinkCard', () => {
 	});
 
 	it('className과 나머지 속성을 전달한다', () => {
-		render(<PageLinkCard className="custom" description="설명" href="/osm" id="card" title="OSM" />);
+		render(<PageLinkCard className="custom" href="/osm" id="card" subtitle="설명" title="OSM" />);
 
 		const card = screen.getByTestId('PageLinkCard');
 

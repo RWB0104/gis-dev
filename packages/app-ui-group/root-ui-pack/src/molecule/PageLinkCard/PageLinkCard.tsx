@@ -12,14 +12,14 @@ import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
 
 export interface PageLinkCardProps extends PropsWithoutChildren<Omit<ComponentProps<typeof Link>, 'href'>> {
 	/**
-	 * 설명
-	 */
-	description: string;
-
-	/**
 	 * 이동 경로
 	 */
 	href: string;
+
+	/**
+	 * 설명
+	 */
+	subtitle: string;
 
 	/**
 	 * 제목
@@ -34,7 +34,7 @@ export interface PageLinkCardProps extends PropsWithoutChildren<Omit<ComponentPr
  *
  * @returns {React.JSX.Element} JSX
  */
-export default function PageLinkCard({ description, href, title, className, ...props }: PageLinkCardProps): React.JSX.Element {
+export default function PageLinkCard({ href, subtitle, title, className, ...props }: PageLinkCardProps): React.JSX.Element {
 	return (
 		<Link
 			className={cn(
@@ -47,7 +47,7 @@ export default function PageLinkCard({ description, href, title, className, ...p
 		>
 			<span className="font-semibold text-sm">{title}</span>
 
-			<span className="text-muted-foreground text-xs">{description}</span>
+			<span className="text-muted-foreground text-xs">{subtitle}</span>
 
 			<span className="font-mono text-[11px] text-muted-foreground">{href}</span>
 		</Link>

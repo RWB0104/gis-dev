@@ -8,8 +8,8 @@
 import { getLocale } from 'next-intl/server';
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
+import type { PageLinkGroup } from '@gis-dev/root-service-pack/func/router';
 import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
-import type { PageLinkGroup } from '@gis-dev/util-pack/const';
 
 import PageLinkCard from '#/molecule/PageLinkCard';
 
