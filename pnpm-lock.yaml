@@ -107,6 +107,8 @@ importers:
         specifier: ^5
         version: 5.9.3
 
+  packages/app-service-group/root-service-pack: {}
+
   packages/app-ui-group/root-ui-pack:
     dependencies:
       '@gis-dev/api-pack':
@@ -115,6 +117,9 @@ importers:
       '@gis-dev/openlayers-service-pack':
         specifier: workspace:*
         version: link:../../global-service-group/openlayers-service-pack
+      '@gis-dev/root-service-pack':
+        specifier: workspace:*
+        version: link:../../app-service-group/root-service-pack
       '@gis-dev/shadcn-ui-pack':
         specifier: workspace:*
         version: link:../../global-ui-group/shadcn-ui-pack
