@@ -7,7 +7,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { API_URL, EPSG, PAGE_LINK_GROUPS } from '#/const';
+import { API_URL, EPSG, LOCALES, SERVICE_TITLE, SERVICE_TITLE_TEMPLATE } from '#/const';
 
 describe('[@gis-dev/util-pack] const', () => {
 	describe('API_URL 테스트', () => {
@@ -26,16 +26,19 @@ describe('[@gis-dev/util-pack] const', () => {
 		});
 	});
 
-	describe('링크 그룹 테스트', () => {
-		it('모든 그룹은 한 개 이상의 페이지를 가진다', () => {
-			expect(PAGE_LINK_GROUPS.every(({ pages }) => pages.length > 0)).toBe(true);
+	describe('LOCALES 테스트', () => {
+		it('지원 로케일은 ko, en이다', () => {
+			expect(LOCALES).toEqual(['ko', 'en']);
+		});
+	});
+
+	describe('SERVICE_TITLE 테스트', () => {
+		it('서비스 이름이다', () => {
+			expect(SERVICE_TITLE).toBe('OpenLayers Playground');
 		});
 
-		it('모든 경로는 /로 시작하며 중복되지 않는다', () => {
-			const hrefs = PAGE_LINK_GROUPS.flatMap(({ pages }) => pages.map(({ href }) => href));
-
-			expect(hrefs.every((href) => href.startsWith('/'))).toBe(true);
-			expect(new Set(hrefs).size).toBe(hrefs.length);
+		it('타이틀 템플릿은 서비스 이름으로 끝난다', () => {
+			expect(SERVICE_TITLE_TEMPLATE).toBe(`%s | ${SERVICE_TITLE}`);
 		});
 	});
 });
