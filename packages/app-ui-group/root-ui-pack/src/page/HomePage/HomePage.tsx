@@ -5,9 +5,20 @@
  * @since 2026.11.04 수 19:12:00
  */
 
+import { Space_Grotesk } from 'next/font/google';
+import Image from 'next/image';
+
 import { getLinkGroups } from '@gis-dev/root-service-pack/func/router';
+import { cn } from '@gis-dev/shadcn-ui-pack/lib/utils';
+import { SERVICE_TITLE } from '@gis-dev/util-pack/const';
 
 import PageLinkSection from '#/molecule/PageLinkSection';
+
+const spaceGrotesk = Space_Grotesk({
+	subsets: ['latin'],
+	variable: '--font-title',
+	weight: ['700']
+});
 
 /**
  * 홈 page 컴포넌트 반환 메서드
@@ -19,10 +30,10 @@ export default async function HomePage(): Promise<React.JSX.Element> {
 
 	return (
 		<main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8" data-testid="HomePage">
-			<header>
-				<h1 className="m-0 font-bold text-2xl">gis-dev</h1>
+			<header className="flex flex-col gap-2">
+				<Image alt={SERVICE_TITLE} height={48} src="/gis-dev/icon.svg" width={48} />
 
-				<p className="m-0 mt-1 text-muted-foreground text-sm">OpenLayers 기반 GIS 기능 예제 모음</p>
+				<h1 className={cn('font-bold text-2xl', spaceGrotesk.className)}>{SERVICE_TITLE}</h1>
 			</header>
 
 			{links.map((group) => (
