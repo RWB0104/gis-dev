@@ -1,4 +1,44 @@
 {
+	"group": {
+		"basic": {
+			"description": "",
+			"title": "Basic Map"
+		},
+		"geoserver": {
+			"description": "",
+			"title": "Using GeoServer"
+		},
+		"interaction": {
+			"description": "",
+			"title": "Basic Interaction"
+		},
+		"other": {
+			"description": "",
+			"title": "Other Map"
+		},
+		"transaction": {
+			"description": "",
+			"title": "WFS Transaction"
+		}
+	},
+	"page": {
+		"cluster-map": { "subtitle": "Point clustering", "title": "Cluster Map" },
+		"feature": { "subtitle": "Drawing shapes and managing features", "title": "Feature" },
+		"feature-click": { "subtitle": "Feature click interaction", "title": "Feature Click" },
+		"geolocation": { "subtitle": "Get the current location", "title": "Geolocation" },
+		"google": { "subtitle": "Google tile layer", "title": "Google" },
+		"heat-map": { "subtitle": "Heatmap visualization", "title": "Heat Map" },
+		"map-info": { "subtitle": "View map info such as SRS, zoom level, and center coordinates", "title": "Map Info" },
+		"osm": { "subtitle": "OpenStreetMap tile layer", "title": "OSM" },
+		"transaction-delete": { "subtitle": "Delete a feature", "title": "Transaction Delete" },
+		"transaction-insert": { "subtitle": "Add a feature", "title": "Transaction Insert" },
+		"transaction-update": { "subtitle": "Edit a feature", "title": "Transaction Update" },
+		"webgl": { "subtitle": "Large-scale rendering with WebGL", "title": "WebGL" },
+		"wfs": { "subtitle": "WFS vector layer", "title": "WFS" },
+		"wfs-popup": { "subtitle": "WFS feature info popup", "title": "WFS Popup" },
+		"wms": { "subtitle": "WMS image layer", "title": "WMS" },
+		"wms-popup": { "subtitle": "WMS feature info popup", "title": "WMS Popup" }
+	},
 	"service": {
 		"subtitle": "GIS feature examples built with OpenLayers and GeoServer. Try WMS/WFS layers, feature editing, clustering, heatmaps, and WFS-T transactions right in your browser."
 	}

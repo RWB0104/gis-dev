@@ -1,67 +1,89 @@
 {
+	"group": {
+		"basic": {
+			"description": "",
+			"title": "기본 지도"
+		},
+		"geoserver": {
+			"description": "",
+			"title": "GeoServer 활용"
+		},
+		"interaction": {
+			"description": "",
+			"title": "기초 상호작용"
+		},
+		"other": {
+			"description": "",
+			"title": "기타 지도"
+		},
+		"transaction": {
+			"description": "",
+			"title": "WFS 트랜잭션"
+		}
+	},
 	"page": {
 		"cluster-map": {
-			"subtitle": "",
+			"subtitle": "포인트 클러스터링",
 			"title": "클러스터 맵"
 		},
 		"feature": {
-			"subtitle": "",
+			"subtitle": "도형 그리기와 피처 관리",
 			"title": "피쳐"
 		},
 		"feature-click": {
-			"subtitle": "",
+			"subtitle": "피처 클릭 상호작용",
 			"title": "피쳐 클릭"
 		},
 		"geolocation": {
-			"subtitle": "",
+			"subtitle": "현재 위치 조회",
 			"title": "지오로케이션"
 		},
 		"google": {
-			"subtitle": "",
+			"subtitle": "Google 타일 레이어",
 			"title": "Google"
 		},
 		"heat-map": {
-			"subtitle": "",
+			"subtitle": "히트맵 시각화",
 			"title": "히트맵"
 		},
 		"map-info": {
-			"subtitle": "",
+			"subtitle": "SRS, 줌 레벨, 중심 좌표 등 맵 정보 확인",
 			"title": "맵 정보"
 		},
 		"osm": {
-			"subtitle": "",
+			"subtitle": "OpenStreetMap 타일 레이어",
 			"title": "OSM"
 		},
 		"transaction-delete": {
-			"subtitle": "",
+			"subtitle": "피처 삭제",
 			"title": "트랜잭션 삭제"
 		},
 		"transaction-insert": {
-			"subtitle": "",
+			"subtitle": "피처 추가",
 			"title": "트랜잭션 추가"
 		},
 		"transaction-update": {
-			"subtitle": "",
+			"subtitle": "피처 수정",
 			"title": "트랜잭션 수정"
 		},
 		"webgl": {
-			"subtitle": "",
+			"subtitle": "WebGL 기반 대용량 렌더링",
 			"title": "WebGL"
 		},
 		"wfs": {
-			"subtitle": "",
+			"subtitle": "WFS 벡터 레이어",
 			"title": "WFS"
 		},
 		"wfs-popup": {
-			"subtitle": "",
+			"subtitle": "WFS 피처 정보 팝업",
 			"title": "WFS 팝업"
 		},
 		"wms": {
-			"subtitle": "",
+			"subtitle": "WMS 이미지 레이어",
 			"title": "WMS"
 		},
 		"wms-popup": {
-			"subtitle": "",
+			"subtitle": "WMS 피처 정보 팝업",
 			"title": "WMS 팝업"
 		}
 	},
