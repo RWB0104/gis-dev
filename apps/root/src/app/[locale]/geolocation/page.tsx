@@ -10,6 +10,7 @@ import { getTranslations } from 'next-intl/server';
 
 import GeolocationPage from '@gis-dev/root-ui-pack/page/GeolocationPage';
 import { SERVICE_TITLE_TEMPLATE } from '@gis-dev/util-pack/const';
+import { getMetadataAlternates } from '@gis-dev/util-pack/seo';
 
 /**
  * 메타데이터 비동기 메서드
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/geolocat
 	const t = await getTranslations({ locale, namespace: 'page.geolocation' });
 
 	return {
+		alternates: getMetadataAlternates('/geolocation', locale),
 		description: t('subtitle'),
 		title: {
 			default: t('title'),

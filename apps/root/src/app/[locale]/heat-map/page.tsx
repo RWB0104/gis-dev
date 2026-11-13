@@ -10,6 +10,7 @@ import { getTranslations } from 'next-intl/server';
 
 import HeatMapPage from '@gis-dev/root-ui-pack/page/HeatMapPage';
 import { SERVICE_TITLE_TEMPLATE } from '@gis-dev/util-pack/const';
+import { getMetadataAlternates } from '@gis-dev/util-pack/seo';
 
 /**
  * 메타데이터 비동기 메서드
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/heat-map
 	const t = await getTranslations({ locale, namespace: 'page.heat-map' });
 
 	return {
+		alternates: getMetadataAlternates('/heat-map', locale),
 		description: t('subtitle'),
 		title: {
 			default: t('title'),

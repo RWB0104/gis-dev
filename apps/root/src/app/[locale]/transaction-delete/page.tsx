@@ -10,6 +10,7 @@ import { getTranslations } from 'next-intl/server';
 
 import TransactionDeletePage from '@gis-dev/root-ui-pack/page/TransactionDeletePage';
 import { SERVICE_TITLE_TEMPLATE } from '@gis-dev/util-pack/const';
+import { getMetadataAlternates } from '@gis-dev/util-pack/seo';
 
 /**
  * 메타데이터 비동기 메서드
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/transact
 	const t = await getTranslations({ locale, namespace: 'page.transaction-delete' });
 
 	return {
+		alternates: getMetadataAlternates('/transaction-delete', locale),
 		description: t('subtitle'),
 		title: {
 			default: t('title'),

@@ -38,7 +38,8 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Pr
 	return {
 		description: t('subtitle'),
 		openGraph: {
-			images: '/gis-dev/assets/og.png'
+			images: '/gis-dev/assets/og.png',
+			locale
 		},
 		title: {
 			default: SERVICE_TITLE,
